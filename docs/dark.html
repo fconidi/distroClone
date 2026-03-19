@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>distroClone - Universal Live ISO Builder</title>
+    <meta name="description" content="distroClone creates a bootable live ISO image from any running Debian-based system, preserving the current configuration, packages, and desktop settings.">
+    <link rel="stylesheet" href="style-dark.css">
+</head>
+<body>
+
+<!-- ─── NAVIGATION ──────────────────────────────────────── -->
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="nav-brand">distro<span>Clone</span></a>
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#dependencies">Dependencies</a></li>
+            <li><a href="https://github.com/fconidi/distroClone">GitHub</a></li>
+            <li><a href="index.html" class="theme-switch">Light theme</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────────────────── -->
+<header class="hero">
+    <div class="hero-inner">
+        <span class="hero-label">Version 1.3.3 - Debian-based systems</span>
+        <h1>distroClone</h1>
+        <p>
+            Create a bootable live ISO from any running Debian-based system.
+            Clone your environment, preserve your configuration, distribute it anywhere.
+        </p>
+        <div class="hero-badges">
+            <span class="badge">Debian</span>
+            <span class="badge">Ubuntu</span>
+            <span class="badge">Linux Mint</span>
+            <span class="badge">LMDE</span>
+            <span class="badge">Elementary OS</span>
+            <span class="badge">SysLinuxOS</span>
+        </div>
+        <div class="hero-actions">
+            <a href="https://github.com/fconidi/distroClone/releases/latest" class="btn btn-primary">Download .deb</a>
+            <a href="https://github.com/fconidi/distroClone" class="btn btn-secondary">View on GitHub</a>
+        </div>
+    </div>
+</header>
+
+<!-- ─── MAIN CONTENT ─────────────────────────────────────── -->
+<main>
+
+    <!-- OVERVIEW -->
+    <section id="overview">
+        <h2>Overview</h2>
+
+        <div class="info-grid" style="margin-bottom: 1.75rem;">
+            <div class="info-card">
+                <div class="label">Version</div>
+                <div class="value">1.3.3</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Architecture</div>
+                <div class="value">all (architecture-independent)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">License</div>
+                <div class="value">GPL-3.0-or-later</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Maintainer</div>
+                <div class="value">Franco Conidi (edmond)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Section</div>
+                <div class="value">admin</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Build time</div>
+                <div class="value">10 to 30 minutes</div>
+            </div>
+        </div>
+
+        <p>
+            distroClone is a shell-based tool that generates a complete, bootable live ISO image
+            directly from the running system. Unlike snapshot utilities that require a separate live
+            environment, distroClone operates from within the installed system and produces an ISO
+            ready for distribution, testing, or archival.
+        </p>
+        <p>
+            The resulting ISO includes the Calamares graphical installer, allowing the cloned system
+            to be permanently installed on other machines with UEFI or Legacy BIOS firmware.
+        </p>
+
+        <h3 style="margin-top: 1.5rem;">Supported distributions</h3>
+        <div class="distro-list">
+            <span class="distro-tag">Debian (Bookworm and later)</span>
+            <span class="distro-tag">Ubuntu 22.04+</span>
+            <span class="distro-tag">Linux Mint</span>
+            <span class="distro-tag">LMDE</span>
+            <span class="distro-tag">Elementary OS</span>
+            <span class="distro-tag">SysLinuxOS</span>
+            <span class="distro-tag">Other Debian derivatives</span>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Automatic detection</h3>
+                <p>Detects distribution, version, and desktop environment at runtime. No manual configuration required.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Multilanguage interface</h3>
+                <p>Auto-detected from the system locale. Supports English, Italian, French, Spanish, German, and Portuguese. Override with <code>--lang=</code>.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Graphical interface</h3>
+                <p>Uses YAD for an advanced graphical experience, with Zenity and terminal fallback for compatibility across environments.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-time build log</h3>
+                <p>A dedicated window shows all 30 build steps in real time, providing full visibility into the ISO creation process.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Calamares installer</h3>
+                <p>Integrates Calamares with dynamic branding per distribution. Detects the display manager and configures post-install cleanup automatically.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Dual boot support</h3>
+                <p>Generates both GRUB (UEFI) and isolinux (Legacy BIOS) configurations. The ISO boots on any modern or older system.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Compression options</h3>
+                <p>Choose between standard xz, fast lz4, or maximum xz+bcj squashfs compression depending on build time and size requirements.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Desktop cloning</h3>
+                <p>Optionally copies current user configuration to <code>/etc/skel</code>, so the live system and installed system reflect your desktop setup.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Manual chroot pause</h3>
+                <p>Optional pause before squashfs creation allows direct chroot modifications for advanced customization before the final image is built.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Desktop environment support</h3>
+                <p>Handles GNOME, Pantheon, Cinnamon, MATE, KDE, XFCE. Applies specific workarounds per environment where needed.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Checksums</h3>
+                <p>MD5 and SHA256 checksums are generated alongside the ISO automatically at the end of every successful build.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Automatic cleanup</h3>
+                <p>Live packages and build tools are removed from the host system after the ISO is built. The host is left in its original state.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- REQUIREMENTS -->
+    <section id="requirements">
+        <h2>Requirements</h2>
+        <div class="callout">
+            <strong>Note:</strong> distroClone must be run on a Debian-based system. Root privileges are required. The <code>/mnt</code> partition must have sufficient free space to hold a full system clone.
+        </div>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">System</div>
+                <div class="value">Debian-based Linux distribution</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Privileges</div>
+                <div class="value">Root (sudo or direct)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Free disk space</div>
+                <div class="value">Minimum 4 to 6 GB in /mnt</div>
+            </div>
+            <div class="info-card">
+                <div class="label">RAM</div>
+                <div class="value">Minimum 2 GB</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTALLATION -->
+    <section id="installation">
+        <h2>Installation</h2>
+
+        <div class="install-box">
+            <h3>Recommended method - from the .deb package</h3>
+            <ol class="step-list">
+                <li>
+                    <div>
+                        <strong>Download the package</strong> from the releases page on GitHub.
+                        <pre>wget https://github.com/fconidi/distroClone/releases/latest/download/distroClone_1.3.3_all.deb</pre>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Install the package</strong> with dpkg.
+                        <pre>sudo dpkg -i distroClone_1.3.3_all.deb</pre>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Resolve any missing dependencies</strong> automatically.
+                        <pre>sudo apt install -f</pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="install-box">
+            <h3>Alternative method - standalone script</h3>
+            <ol class="step-list">
+                <li>
+                    <div>
+                        <strong>Make the script executable.</strong>
+                        <pre>chmod +x DistroClone.sh</pre>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Run it as root.</strong> Required packages are installed automatically on first run.
+                        <pre>sudo ./DistroClone.sh</pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h3 style="margin-top: 1.5rem; margin-bottom: 0.6rem;">What the package installs</h3>
+        <table class="dep-table">
+            <thead>
+                <tr>
+                    <th>Path</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>/usr/bin/distroClone</td>
+                    <td>Launcher script with multilanguage splash screen</td>
+                </tr>
+                <tr>
+                    <td>/usr/share/distroClone/</td>
+                    <td>Main build script and branding resources</td>
+                </tr>
+                <tr>
+                    <td>/usr/share/applications/distroClone.desktop</td>
+                    <td>Desktop menu entry (System category)</td>
+                </tr>
+                <tr>
+                    <td>/usr/share/polkit-1/actions/</td>
+                    <td>PolicyKit policy for graphical authentication</td>
+                </tr>
+                <tr>
+                    <td>/usr/share/icons/hicolor/</td>
+                    <td>Application icon at 48x48, 128x128, and 256x256 px</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- USAGE -->
+    <section id="usage">
+        <h2>Usage</h2>
+
+        <div class="usage-block">
+            <h3>From the desktop menu</h3>
+            <p>Launch <strong>distroClone</strong> from the System category in your application menu. Authentication is requested via PolicyKit - no terminal needed.</p>
+        </div>
+
+        <div class="usage-block">
+            <h3>From the terminal</h3>
+            <pre>sudo distroClone</pre>
+            <p>Or run the main script directly:</p>
+            <pre>sudo ./DistroClone.sh</pre>
+        </div>
+
+        <div class="usage-block">
+            <h3>Language selection</h3>
+            <p>The interface language is detected from the system locale automatically. To override, pass the language code as a flag:</p>
+            <pre>sudo distroClone --lang=fr</pre>
+            <p>Or via environment variable:</p>
+            <pre>DISTROCLONE_LANG=de sudo distroClone</pre>
+            <p>Supported codes: <code>en</code>, <code>it</code>, <code>fr</code>, <code>es</code>, <code>de</code>, <code>pt</code>.</p>
+        </div>
+
+        <div class="usage-block">
+            <h3>Build process</h3>
+            <ol style="padding-left: 1.25rem; color: var(--color-text-muted); font-size: 0.92rem; line-height: 2;">
+                <li>Splash screen appears while the system initializes.</li>
+                <li>Welcome dialog shows the detected distribution, version, desktop environment, and build options: compression type, root password, hostname.</li>
+                <li>Optional dialog asks whether to clone the current desktop configuration to the live system.</li>
+                <li>Build proceeds through 30 steps visible in the real-time log window: cloning via rsync, chroot configuration, package installation, Calamares setup, squashfs compression, GRUB and isolinux configuration, ISO creation with xorriso.</li>
+                <li>Optional pause before squashfs allows manual chroot modifications.</li>
+                <li>Final dialog reports success with the ISO path and size, or error details if the build failed.</li>
+            </ol>
+        </div>
+
+        <div class="usage-block">
+            <h3>Output</h3>
+            <p>The ISO is created in <code>/mnt/&lt;distro&gt;_live/</code> following this naming convention:</p>
+            <pre>&lt;Distro&gt;-&lt;Version&gt;-&lt;Desktop&gt;.iso</pre>
+            <p>Examples:</p>
+            <pre>Ubuntu-24.04-Gnome.iso
+SysLinuxOS-12-Mate.iso
+Debian-12-XFCE.iso</pre>
+            <p>MD5 and SHA256 checksum files are generated in the same directory.</p>
+        </div>
+
+        <div class="usage-block">
+            <h3>Testing the ISO</h3>
+            <p>Write to a USB drive:</p>
+            <pre>sudo dd if=/mnt/&lt;distro&gt;_live/&lt;name&gt;.iso of=/dev/sdX bs=4M status=progress</pre>
+            <p>Or mount in a virtual machine such as VirtualBox or QEMU:</p>
+            <pre>qemu-system-x86_64 -m 2G -cdrom /mnt/&lt;distro&gt;_live/&lt;name&gt;.iso -boot d</pre>
+        </div>
+    </section>
+
+    <!-- DEPENDENCIES -->
+    <section id="dependencies">
+        <h2>Dependencies</h2>
+
+        <h3 style="margin-bottom: 0.75rem;">Required</h3>
+        <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1rem;">Installed automatically when using <code>sudo apt install -f</code> after dpkg.</p>
+        <table class="dep-table" style="margin-bottom: 2rem;">
+            <thead>
+                <tr>
+                    <th>Package</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>bash</td>
+                    <td>Shell interpreter for the main script</td>
+                </tr>
+                <tr>
+                    <td>rsync</td>
+                    <td>System cloning with exclusion rules</td>
+                </tr>
+                <tr>
+                    <td>xorriso</td>
+                    <td>ISO image creation</td>
+                </tr>
+                <tr>
+                    <td>mtools</td>
+                    <td>FAT filesystem tools for EFI partition handling</td>
+                </tr>
+                <tr>
+                    <td>syslinux-utils</td>
+                    <td>Syslinux utilities for BIOS boot</td>
+                </tr>
+                <tr>
+                    <td>syslinux-common</td>
+                    <td>Common Syslinux files</td>
+                </tr>
+                <tr>
+                    <td>isolinux</td>
+                    <td>Legacy BIOS bootloader</td>
+                </tr>
+                <tr>
+                    <td>imagemagick</td>
+                    <td>Generation of placeholder branding graphics</td>
+                </tr>
+                <tr>
+                    <td>grub-pc-bin</td>
+                    <td>GRUB binaries for i386-pc target</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-bottom: 0.75rem;">Recommended</h3>
+        <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1rem;">Installed automatically during the build process if not already present.</p>
+        <table class="dep-table">
+            <thead>
+                <tr>
+                    <th>Package</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>yad</td>
+                    <td>Advanced graphical dialog interface</td>
+                </tr>
+                <tr>
+                    <td>zenity</td>
+                    <td>Fallback graphical dialog interface</td>
+                </tr>
+                <tr>
+                    <td>calamares</td>
+                    <td>Graphical system installer included in the ISO</td>
+                </tr>
+                <tr>
+                    <td>calamares-settings-debian</td>
+                    <td>Default Calamares configuration for Debian-based systems</td>
+                </tr>
+                <tr>
+                    <td>live-boot</td>
+                    <td>Scripts for booting a live system from the ISO</td>
+                </tr>
+                <tr>
+                    <td>live-config</td>
+                    <td>Live system configuration scripts</td>
+                </tr>
+                <tr>
+                    <td>live-config-systemd</td>
+                    <td>Systemd integration for live-config</td>
+                </tr>
+                <tr>
+                    <td>grub-efi-amd64</td>
+                    <td>GRUB for UEFI systems</td>
+                </tr>
+                <tr>
+                    <td>efibootmgr</td>
+                    <td>EFI boot entry management</td>
+                </tr>
+                <tr>
+                    <td>os-prober</td>
+                    <td>Detection of other operating systems for GRUB</td>
+                </tr>
+                <tr>
+                    <td>fdisk</td>
+                    <td>Partition table manipulation during install</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works">
+        <h2>How it works</h2>
+        <div class="install-box">
+            <ol class="step-list">
+                <li>
+                    <div>
+                        <strong>System clone via rsync</strong><br>
+                        The running system is copied to a staging directory, excluding virtual filesystems, temporary files, caches, snap directories, and user-specific data.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Chroot environment setup</strong><br>
+                        A chroot is configured inside the staging directory. live-boot, Calamares, and boot components are installed within the chroot.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Calamares configuration</strong><br>
+                        Branding, partition layout (ext4 with EFI), display manager detection, and a post-install systemd service are configured. The service removes live packages from the installed system after first boot.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Squashfs creation</strong><br>
+                        The chroot is compressed into a squashfs filesystem using the selected compression algorithm (xz, lz4, or xz+bcj).
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Boot configuration</strong><br>
+                        GRUB (EFI) and isolinux (BIOS) configurations are written with translated menu entries matching the selected language.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>ISO assembly</strong><br>
+                        xorriso builds the final ISO with dual boot support. MD5 and SHA256 checksums are generated.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Host cleanup</strong><br>
+                        Calamares, live-boot, and build dependencies are removed from the host system. The staging directory is deleted.
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- LICENSE -->
+    <section id="license">
+        <h2>License</h2>
+        <p>
+            distroClone is distributed under the
+            <strong>GNU General Public License version 3 or later (GPL-3.0-or-later)</strong>.
+        </p>
+        <p>
+            You are free to use, study, modify, and distribute this software under the terms of the GPL-3.0.
+            See the <code>copyright</code> file included in the package for the full license text, or refer to
+            <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">gnu.org/licenses/gpl-3.0</a>.
+        </p>
+    </section>
+
+</main>
+
+<!-- ─── FOOTER ───────────────────────────────────────────── -->
+<footer>
+    <p>
+        distroClone 1.3.3
+        <span class="footer-sep">|</span>
+        Maintained by <a href="https://francoconidi.it" target="_blank" rel="noopener">Franco Conidi</a>
+        <span class="footer-sep">|</span>
+        <a href="https://syslinuxos.com" target="_blank" rel="noopener">syslinuxos.com</a>
+        <span class="footer-sep">|</span>
+        <a href="https://github.com/fconidi/distroClone" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">|</span>
+        GPL-3.0-or-later
+    </p>
+</footer>
+
+</body>
+</html>

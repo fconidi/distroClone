@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=DistroClone
+GenericName=Live ISO Builder
+Comment=Create customized live ISO from your Debian-based system
+Exec=pkexec /usr/bin/distroClone
+Icon=distroClone
+Terminal=false
+Categories=System;Utility;
+Keywords=clone;iso;live;backup;distribution;
+StartupNotify=true

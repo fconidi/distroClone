@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+command -v mandb >/dev/null 2>&1 && mandb -q 2>/dev/null || true
+command -v gtk-update-icon-cache >/dev/null 2>&1 && gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
+command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database /usr/share/applications 2>/dev/null || true
+echo ""
+echo "=========================================="
+echo "  DistroClone 1.3.3 installed successfully"
+echo "=========================================="
+echo "  Launch from menu or run: sudo distroClone"
+echo "  Man page: man distroClone"
+echo ""
+exit 0

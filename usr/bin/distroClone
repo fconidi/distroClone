@@ -1,0 +1,87 @@
+#!/bin/bash
+if [ "$(id -u)" -ne 0 ]; then
+    echo "DistroClone requires root privileges."
+    echo "Run: sudo distroClone"
+    exit 1
+fi
+
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY=:0
+fi
+if [ -z "$XAUTHORITY" ] && [ -f "/home/$SUDO_USER/.Xauthority" ]; then
+    export XAUTHORITY="/home/$SUDO_USER/.Xauthority"
+fi
+
+cd /usr/share/distroClone || exit 1
+
+############################################
+# MULTILANGUAGE SPLASH
+############################################
+DISTROCLONE_LANG="${DISTROCLONE_LANG:-}"
+
+for arg in "$@"; do
+    case "$arg" in
+        --lang=*) DISTROCLONE_LANG="${arg#--lang=}" ;;
+    esac
+done
+
+if [ -z "$DISTROCLONE_LANG" ]; then
+    SYS_LANG="${LC_ALL:-${LC_MESSAGES:-${LANG:-en}}}"
+    case "$SYS_LANG" in
+        it*) DISTROCLONE_LANG="it" ;;
+        fr*) DISTROCLONE_LANG="fr" ;;
+        es*) DISTROCLONE_LANG="es" ;;
+        de*) DISTROCLONE_LANG="de" ;;
+        pt*) DISTROCLONE_LANG="pt" ;;
+        *)   DISTROCLONE_LANG="en" ;;
+    esac
+fi
+
+case "$DISTROCLONE_LANG" in
+    it) SPLASH_TEXT="\n<big><b>DistroClone - Creatore ISO Live</b></big>\n\n<i>Inizializzazione in corso...\nInstallazione pacchetti necessari...</i>\n" ;;
+    fr) SPLASH_TEXT="\n<big><b>DistroClone - Créateur d'ISO Live</b></big>\n\n<i>Initialisation en cours...\nInstallation des paquets requis...</i>\n" ;;
+    es) SPLASH_TEXT="\n<big><b>DistroClone - Creador de ISO Live</b></big>\n\n<i>Inicializando, por favor espere...\nInstalando paquetes necesarios...</i>\n" ;;
+    de) SPLASH_TEXT="\n<big><b>DistroClone - Live-ISO-Ersteller</b></big>\n\n<i>Initialisierung läuft...\nErforderliche Pakete werden installiert...</i>\n" ;;
+    pt) SPLASH_TEXT="\n<big><b>DistroClone - Criador de ISO Live</b></big>\n\n<i>Inicializando, por favor aguarde...\nInstalando pacotes necessários...</i>\n" ;;
+    *)  SPLASH_TEXT="\n<big><b>DistroClone - Live ISO Builder</b></big>\n\n<i>Initializing, please wait...\nInstalling required packages...</i>\n" ;;
+esac
+
+export DISTROCLONE_LANG
+
+SPLASH_PID=""
+if command -v yad >/dev/null 2>&1; then
+SPLASH_LOGO=""
+    for s in 256 128; do
+        if [ -f "/usr/share/icons/hicolor/${s}x${s}/apps/distroClone.png" ]; then
+            SPLASH_LOGO="/usr/share/icons/hicolor/${s}x${s}/apps/distroClone.png"
+            break
+        fi
+    done
+    if [ -z "$SPLASH_LOGO" ] && command -v convert >/dev/null 2>&1; then
+        SPLASH_LOGO="/tmp/distroClone-splash.png"
+        convert -size 256x256 xc:transparent \
+            -fill '#0d47a1' -draw 'polygon 128,20 218,73 218,183 128,236 38,183 38,73' \
+            -fill 'none' -strokewidth 6 -stroke '#1976d2' -draw 'polygon 128,40 198,83 198,173 128,216 58,173 58,83' \
+            -fill '#2196f3' -draw 'polygon 128,70 170,93 170,163 128,186 86,163 86,93' \
+            -fill 'white' -font '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf' -pointsize 64 -gravity center \
+            -annotate +0+0 'DC' \
+            "$SPLASH_LOGO" 2>/dev/null || SPLASH_LOGO=""
+    fi
+    
+    yad --info \
+        --no-buttons \
+        --timeout=300 \
+        --title="DistroClone" \
+        --text="$SPLASH_TEXT" \
+        ${SPLASH_LOGO:+--window-icon="$SPLASH_LOGO"} \
+        ${SPLASH_LOGO:+--image="$SPLASH_LOGO"} \
+        --width=450 --height=250 \
+        --center \
+        --undecorated \
+        --on-top \
+        2>/dev/null &
+    SPLASH_PID=$!
+fi
+
+export DISTROCLONE_SPLASH_PID="$SPLASH_PID"
+exec bash /usr/share/distroClone/DistroClone.sh "$@"
