@@ -2,7 +2,18 @@
 
 **Universal Live ISO Builder for Debian-based distributions**
 
+
+<img width="256" height="256" alt="distroClone-installer" src="https://github.com/user-attachments/assets/28c89c59-a98e-4430-8a1d-dd8506595fed" />
+
+
+
 DistroClone creates a bootable live ISO image from any running Debian-based system, preserving the current configuration, installed packages, desktop theme, and user settings. The resulting ISO includes the Calamares installer for permanent installation on other machines.
+
+
+
+<img width="1472" height="720" alt="DC-Welcome" src="https://github.com/user-attachments/assets/ab9fdd83-f0aa-4017-b809-ab88aa559243" />
+
+
 
 ---
 
