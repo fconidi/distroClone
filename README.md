@@ -24,7 +24,7 @@ DistroClone creates a bootable live ISO image from any running Debian-based syst
 | LMDE | Linux Mint Debian Edition |
 | Elementary OS | All current releases |
 | SysLinuxOS | All releases |
-| Other Debian-based derivatives | -- |
+| Other Debian-based derivatives | ZorinOS 18 |
 
 ---
 
