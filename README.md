@@ -61,7 +61,8 @@ DistroClone creates a bootable live ISO image from any running Debian-based syst
 
 ```bash
 sudo apt install -y yad
-sudo dpkg -i distroClone_1.3.4_all.deb
+sudo apt install -y ./distroClone_1.3.4_all.deb # recommended
+sudo dpkg -i distroClone_1.3.4_all.deb  
 sudo apt install -f
 ```
 
