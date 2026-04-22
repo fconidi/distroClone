@@ -11,6 +11,9 @@ DistroClone creates a bootable live ISO image from any running Debian-based syst
 <img width="1472" height="720" alt="DC-Welcome" src="https://github.com/user-attachments/assets/ab9fdd83-f0aa-4017-b809-ab88aa559243" />
 
 
+---
+
+DEFAULT PASSWORD LIVE = root
 
 ---
 
