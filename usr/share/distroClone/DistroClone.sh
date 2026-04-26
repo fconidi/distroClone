@@ -1409,11 +1409,11 @@ if [ -z "$SPLASH_PID" ] && command -v yad >/dev/null 2>&1; then
 fi
 
 # Ripara stato dpkg da build precedenti (clone da clone)
-dpkg --configure -a 2>/dev/null || true
-apt-get install -f -y 2>/dev/null || true
+DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
+DEBIAN_FRONTEND=noninteractive apt-get install -f -y 2>/dev/null || true
 
 # Pacchetti obbligatori
-apt update; apt install -y mtools syslinux-utils isolinux zenity syslinux-common \
+apt update; DEBIAN_FRONTEND=noninteractive apt install -y mtools syslinux-utils isolinux zenity syslinux-common \
   rsync xorriso live-boot live-config live-config-systemd imagemagick \
   calamares calamares-settings-debian grub-pc-bin yad fdisk \
   cryptsetup cryptsetup-initramfs cryptsetup-bin
@@ -1514,7 +1514,7 @@ if [ "$GUI_TOOL" = "yad" ]; then
     # ===== INTERFACCIA YAD (AVANZATA) =====
     RESULT=$(yad --form \
         --title="$MSG_WELCOME_TITLE" \
-        --window-icon="$TEMP_LOGO" \
+        ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
         ${TEMP_LOGO:+--image="$TEMP_LOGO"} \
         --image-on-top \
         --width=750 --height=550 \
@@ -1543,7 +1543,7 @@ if [ "$GUI_TOOL" = "yad" ]; then
     DIALOG_EXIT=$?
     
     # Cleanup logo temporaneo
-    [ -f "$TEMP_LOGO" ] && rm -f "$TEMP_LOGO"
+    [[ "$TEMP_LOGO" == /tmp/* ]] && rm -f "$TEMP_LOGO"
     
     if [ $DIALOG_EXIT -ne 0 ]; then
         echo ""
@@ -1695,8 +1695,8 @@ log_msg "$MSG_STEP3x1"
 # Pulizia residui da build precedenti
 rm -rf /etc/calamares 2>/dev/null || true
 rm -rf /usr/share/calamares/branding 2>/dev/null || true
-dpkg --configure -a 2>/dev/null || true
-apt-get install -f -y 2>/dev/null || true
+DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
+DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get install -f -y 2>/dev/null || true
 
 ############################################
 # [4/30] CONFIG
@@ -1712,7 +1712,7 @@ LIVE_USER="admin"
 LIVE_PASSWORD="root"
 LIVE_FULLNAME="${DISTRO_NAME} Live User"
 LIVE_HOSTNAME="${DISTRO_ID}"
-ROOT_PASSWORD="root"
+ROOT_PASSWORD="${ROOT_PASSWORD:-root}"
 
 ############################################
 # [5/30] Cleanup mount precedenti (se script interrotto)
@@ -1787,12 +1787,6 @@ rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
   --exclude=/var/log/* \
   --exclude=/var/tmp/* \
   --exclude=/etc/NetworkManager/system-connections/* \
-  --exclude=/usr/share/distroClone \
-  --exclude=/usr/bin/distroClone \
-  --exclude=/usr/share/applications/distroClone.desktop \
-  --exclude=/usr/share/polkit-1/actions/com.github.distroClone.policy \
-  --exclude=/usr/share/man/man1/distroClone.1.gz \
-  --exclude=/usr/share/icons/hicolor/*/apps/distroClone.png \
   --exclude=/snap \
   --exclude=/snap/* \
   --exclude=/var/snap \
@@ -1912,7 +1906,7 @@ fi
 if [ "$GUI_TOOL" = "yad" ]; then
     if yad --question \
         --title="$MSG_USERCONF_TITLE" \
-        --window-icon="$TEMP_LOGO" \
+        ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
         ${TEMP_LOGO:+--image="$TEMP_LOGO"} \
         --button="$MSG_BTN_NO:1" \
         --button="$MSG_BTN_YES:0" \
@@ -2259,6 +2253,15 @@ log_msg "  $MSG_CHROOT_INSTALLING"
 
 chroot "$DEST" /bin/bash << 'CHROOT_EOF'
 set -e
+export DEBIAN_FRONTEND=noninteractive
+export NEEDRESTART_SUSPEND=1
+mkdir -p /etc/needrestart/conf.d
+printf '$nrconf{restart} = "a";\n$nrconf{verbosity} = 0;\n' > /etc/needrestart/conf.d/99-silent.conf
+
+# Pre-configure debconf to avoid interactive grub-efi dialog
+echo "grub-efi-amd64 grub2/update_nvram boolean false" | debconf-set-selections
+echo "grub-efi-amd64 grub-efi/install_devices string" | debconf-set-selections
+echo "grub-pc grub-pc/install_devices string" | debconf-set-selections
 
 apt update
 apt install -y --no-install-recommends \
@@ -2334,8 +2337,6 @@ EOF
 
 # Utente live
 id admin &>/dev/null || useradd -m -s /bin/bash -u 1000 admin
-echo "admin:root" | chpasswd
-echo "root:root" | chpasswd
 usermod -aG sudo,audio,video,dialout,cdrom,plugdev,netdev admin
 
 # Pulizia Nextcloud dalla home admin appena creata
@@ -2987,6 +2988,9 @@ find /home/admin/Desktop -name "calamares-install-debian*" -delete 2>/dev/null |
 
 CHROOT_EOF
 
+echo "admin:${ROOT_PASSWORD}" | chroot "$DEST" chpasswd
+echo "root:${ROOT_PASSWORD}" | chroot "$DEST" chpasswd
+
 log_msg "  $MSG_CHROOT_DONE"
 
 # Sostituisci branding statico con quello dinamico
@@ -3023,6 +3027,8 @@ ExecStartPost=-/usr/bin/apt-get -y purge live-boot live-boot-doc live-config liv
 # Retry calamares purge (may fail on first attempt due to dpkg lock)
 ExecStartPost=-/bin/bash -c 'sleep 10 && apt-get -y purge calamares calamares-settings-debian 2>/dev/null || true'
 
+# Keep SysLinuxOS Tools: distroClone and distroclone-backup must survive autoremove
+ExecStartPost=-/usr/bin/apt-mark manual distroclone distroclone-backup
 ExecStartPost=-/usr/bin/apt-get -y autoremove --purge
 ExecStartPost=-/usr/bin/apt-get clean
 
@@ -3043,13 +3049,7 @@ ExecStartPost=-/bin/rm -f /etc/skel/Desktop/calamares-install-debian.desktop
 ExecStartPost=-/bin/rm -f /etc/skel/Desktop/install-system.desktop
 ExecStartPost=-/usr/bin/update-desktop-database
 
-# Remove DistroClone menu entry (binaries not present on target)
-ExecStartPost=-/bin/rm -f /usr/share/applications/distroClone.desktop
-
-# Remove Imagemagick menu entry (binaries not present DistroClone)
-ExecStartPost=-/usr/bin/apt-get -y purge imagemagick-7-common
-ExecStartPost=-/usr/bin/apt-get -y autoremove --purge
-ExecStartPost=-/usr/bin/apt-get clean
+# Remove Imagemagick GUI menu entry (keep imagemagick: needed by distroclone-backup)
 ExecStartPost=-/bin/rm -f /usr/share/applications/display-im7.q16.desktop
 ExecStartPost=-/usr/bin/update-desktop-database
 
@@ -3145,7 +3145,7 @@ TEMP_LOGO="$(get_dc_logo 128)"
 if [ "$GUI_TOOL" = "yad" ]; then
         yad --question \
         --title="$MSG_MANEDIT_TITLE" \
-        --window-icon="$TEMP_LOGO" \
+        ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
         ${TEMP_LOGO:+--image="$TEMP_LOGO"} \
         --text="$MSG_MANEDIT_HEADING\n\n$MSG_MANEDIT_TEXT\n\n<b>$MSG_MANEDIT_PATH</b> $DEST\n\n$MSG_MANEDIT_SELECT" \
         --button="$MSG_BTN_EDIT:0" \
