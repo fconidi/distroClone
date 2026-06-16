@@ -64,8 +64,8 @@ DEFAULT PASSWORD LIVE = root
 
 ```bash
 sudo apt install -y yad
-sudo apt install -y ./distroClone_1.3.6_all.deb # recommended
-sudo dpkg -i distroClone_1.3.6_all.deb  
+sudo apt install -y ./distroClone_1.4.8_all.deb # recommended
+sudo dpkg -i distroClone_1.4.8_all.deb  
 sudo apt install -f
 ```
 

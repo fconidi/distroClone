@@ -1,0 +1,14 @@
+078f8864d7dcba12bd5df422c9ed85dc  usr/bin/distroClone
+32d5b22303e7a482646ee9c739273430  usr/share/applications/distroClone.desktop
+9930e1c51ac79aa4bcaac4e915e5d159  usr/share/distroClone/distroClone-installer.png
+a7146ae5d08c32a9624b9881e07a069d  usr/share/distroClone/distroClone-logo.png
+38e818213476b5b3e05480aa132febe8  usr/share/distroClone/DistroClone.sh
+d8f0e03ecea50ff6142346d4778998c5  usr/share/distroClone/distroClone-welcome.png
+8123e57c72d2d6b441ff5fb971852349  usr/share/doc/distroClone/changelog.gz
+ba5fc55b5526b5520a510f7d92a5acd2  usr/share/doc/distroClone/copyright
+d0936ef8589b091b227f7d614d0acea4  usr/share/doc/distroClone/README
+317aba004f7823d5ebdc7edb913fb781  usr/share/icons/hicolor/128x128/apps/distroClone.png
+4c4240c5211ff84a57c54480be310061  usr/share/icons/hicolor/256x256/apps/distroClone.png
+e2c0bd8848261ef95d2cdc72480078bf  usr/share/icons/hicolor/48x48/apps/distroClone.png
+10dccd866158f29aeaefafb7d3530779  usr/share/man/man1/distroClone.1.gz
+4c617d4ee1011996d6b65560d6de888e  usr/share/polkit-1/actions/com.github.distroClone.policy

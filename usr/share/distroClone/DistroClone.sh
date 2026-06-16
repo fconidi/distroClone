@@ -120,7 +120,7 @@ load_lang_en() {
     MSG_TTY_PROCEED_YN="y/n"
 
     # --- Welcome dialog ---
-    MSG_WELCOME_TITLE="DistroClone Universal ISO Builder v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Universal ISO Builder v1.4.7"
     MSG_WELCOME_HEADING="Welcome to DistroClone"
     MSG_WELCOME_SUBTITLE="Universal Live ISO Builder for distro Debian-based"
     MSG_SYSTEM_DETECTED="System Detected"
@@ -287,6 +287,7 @@ load_lang_en() {
     MSG_MD5_GEN="MD5 and sha256 checksum generation"
     MSG_CREATED="Create"
     MSG_TEST_ISO="To test the ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox: Create VM and mount"
     MSG_TEST_USB="USB: dd if="
 
@@ -300,7 +301,7 @@ load_lang_en() {
     # --- Final dialog ---
     MSG_COMPLETED_TITLE="DistroClone - Completed"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ISO created successfully!</b></big>"
-    MSG_TEST_TEXT="<b>Test the ISO:</b>\n• VirtualBox: Create VM and mount the ISO\n• USB: dd if="
+    MSG_TEST_TEXT="<b>Test the ISO:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: Create VM and mount the ISO\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ ERROR: ISO not created!"
     MSG_ERROR_TITLE="DistroClone - Error"
     MSG_ISO_FAIL_BIG="<big><b>✗ ISO creation failed!</b></big>\n\nCheck the terminal for details."
@@ -351,7 +352,7 @@ load_lang_it() {
     MSG_TTY_PROCEED_YN="s/n"
 
     # --- Welcome dialog ---
-    MSG_WELCOME_TITLE="DistroClone Creatore Universale ISO v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Creatore Universale ISO v1.4.7"
     MSG_WELCOME_HEADING="Benvenuto in DistroClone"
     MSG_WELCOME_SUBTITLE="Creatore universale ISO Live per distribuzioni Debian-based"
     MSG_SYSTEM_DETECTED="Sistema Rilevato"
@@ -518,6 +519,7 @@ load_lang_it() {
     MSG_MD5_GEN="Generazione checksum MD5 e sha256"
     MSG_CREATED="Creati"
     MSG_TEST_ISO="Per testare la ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox: Crea una VM e monta"
     MSG_TEST_USB="USB: dd if="
 
@@ -531,7 +533,7 @@ load_lang_it() {
     # --- Final dialog ---
     MSG_COMPLETED_TITLE="DistroClone - Completato"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ISO creata con successo!</b></big>"
-    MSG_TEST_TEXT="<b>Testa la ISO:</b>\n• VirtualBox: Crea una VM e monta la ISO\n• USB: dd if="
+    MSG_TEST_TEXT="<b>Testa la ISO:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: Crea una VM e monta la ISO\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ ERRORE: ISO non creata!"
     MSG_ERROR_TITLE="DistroClone - Errore"
     MSG_ISO_FAIL_BIG="<big><b>✗ Creazione ISO fallita!</b></big>\n\nControlla il terminale per i dettagli."
@@ -573,7 +575,7 @@ load_lang_fr() {
     MSG_BTN_NO="Non"
     MSG_TTY_YN="o/N"
     MSG_TTY_PROCEED_YN="o/n"
-    MSG_WELCOME_TITLE="DistroClone Créateur Universel d'ISO v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Créateur Universel d'ISO v1.4.7"
     MSG_WELCOME_HEADING="Bienvenue dans DistroClone"
     MSG_WELCOME_SUBTITLE="Créateur universel d'ISO Live pour distributions Debian"
     MSG_SYSTEM_DETECTED="Système Détecté"
@@ -714,6 +716,7 @@ load_lang_fr() {
     MSG_MD5_GEN="Génération des checksums MD5 et sha256"
     MSG_CREATED="Créés"
     MSG_TEST_ISO="Pour tester l'ISO :"
+    MSG_TEST_QEMU="QEMU : qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox : Créer une VM et monter"
     MSG_TEST_USB="USB : dd if="
     MSG_STEP30="[30/30] (Dernière étape) Nettoyage système hôte"
@@ -724,7 +727,7 @@ load_lang_fr() {
     MSG_REMOVING_DIR="→ Suppression du répertoire..."
     MSG_COMPLETED_TITLE="DistroClone - Terminé"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ISO créée avec succès !</b></big>"
-    MSG_TEST_TEXT="<b>Tester l'ISO :</b>\n• VirtualBox : Créer une VM et monter l'ISO\n• USB : dd if="
+    MSG_TEST_TEXT="<b>Tester l'ISO :</b>\n• QEMU : qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox : Créer une VM et monter l'ISO\n• USB : dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ ERREUR : ISO non créée !"
     MSG_ERROR_TITLE="DistroClone - Erreur"
     MSG_ISO_FAIL_BIG="<big><b>✗ Création de l'ISO échouée !</b></big>\n\nVérifiez le terminal pour les détails."
@@ -762,7 +765,7 @@ load_lang_es() {
     MSG_BTN_NO="No"
     MSG_TTY_YN="s/N"
     MSG_TTY_PROCEED_YN="s/n"
-    MSG_WELCOME_TITLE="DistroClone Creador Universal de ISO v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Creador Universal de ISO v1.4.7"
     MSG_WELCOME_HEADING="Bienvenido a DistroClone"
     MSG_WELCOME_SUBTITLE="Creador universal de ISO Live para distribuciones Debian"
     MSG_SYSTEM_DETECTED="Sistema Detectado"
@@ -903,6 +906,7 @@ load_lang_es() {
     MSG_MD5_GEN="Generación de checksums MD5 y sha256"
     MSG_CREATED="Creados"
     MSG_TEST_ISO="Para probar la ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox: Crear VM y montar"
     MSG_TEST_USB="USB: dd if="
     MSG_STEP30="[30/30] (Último paso) Limpieza del sistema host"
@@ -913,7 +917,7 @@ load_lang_es() {
     MSG_REMOVING_DIR="→ Eliminando directorio..."
     MSG_COMPLETED_TITLE="DistroClone - Completado"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ¡ISO creada con éxito!</b></big>"
-    MSG_TEST_TEXT="<b>Probar la ISO:</b>\n• VirtualBox: Crear una VM y montar la ISO\n• USB: dd if="
+    MSG_TEST_TEXT="<b>Probar la ISO:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: Crear una VM y montar la ISO\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ ERROR: ¡ISO no creada!"
     MSG_ERROR_TITLE="DistroClone - Error"
     MSG_ISO_FAIL_BIG="<big><b>✗ ¡Creación de ISO fallida!</b></big>\n\nRevise el terminal para más detalles."
@@ -951,7 +955,7 @@ load_lang_de() {
     MSG_BTN_NO="Nein"
     MSG_TTY_YN="j/N"
     MSG_TTY_PROCEED_YN="j/n"
-    MSG_WELCOME_TITLE="DistroClone Universeller ISO-Ersteller v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Universeller ISO-Ersteller v1.4.7"
     MSG_WELCOME_HEADING="Willkommen bei DistroClone"
     MSG_WELCOME_SUBTITLE="Universeller Live-ISO-Ersteller für Debian-basierte Distributionen"
     MSG_SYSTEM_DETECTED="Erkanntes System"
@@ -1092,6 +1096,7 @@ load_lang_de() {
     MSG_MD5_GEN="MD5- und SHA256-Prüfsummen werden generiert"
     MSG_CREATED="Erstellt"
     MSG_TEST_ISO="Zum Testen der ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox: VM erstellen und einbinden"
     MSG_TEST_USB="USB: dd if="
     MSG_STEP30="[30/30] (Letzter Schritt) Bereinigung des Host-Systems"
@@ -1102,7 +1107,7 @@ load_lang_de() {
     MSG_REMOVING_DIR="→ Entferne Verzeichnis..."
     MSG_COMPLETED_TITLE="DistroClone - Abgeschlossen"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ISO erfolgreich erstellt!</b></big>"
-    MSG_TEST_TEXT="<b>ISO testen:</b>\n• VirtualBox: VM erstellen und ISO einbinden\n• USB: dd if="
+    MSG_TEST_TEXT="<b>ISO testen:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: VM erstellen und ISO einbinden\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ FEHLER: ISO nicht erstellt!"
     MSG_ERROR_TITLE="DistroClone - Fehler"
     MSG_ISO_FAIL_BIG="<big><b>✗ ISO-Erstellung fehlgeschlagen!</b></big>\n\nÜberprüfen Sie das Terminal für Details."
@@ -1140,7 +1145,7 @@ load_lang_pt() {
     MSG_BTN_NO="Não"
     MSG_TTY_YN="s/N"
     MSG_TTY_PROCEED_YN="s/n"
-    MSG_WELCOME_TITLE="DistroClone Criador Universal de ISO v1.3.3"
+    MSG_WELCOME_TITLE="DistroClone Criador Universal de ISO v1.4.7"
     MSG_WELCOME_HEADING="Bem-vindo ao DistroClone"
     MSG_WELCOME_SUBTITLE="Criador universal de ISO Live para distribuições Debian"
     MSG_SYSTEM_DETECTED="Sistema Detectado"
@@ -1281,6 +1286,7 @@ load_lang_pt() {
     MSG_MD5_GEN="Geração de checksums MD5 e sha256"
     MSG_CREATED="Criados"
     MSG_TEST_ISO="Para testar a ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
     MSG_TEST_VBOX="VirtualBox: Criar VM e montar"
     MSG_TEST_USB="USB: dd if="
     MSG_STEP30="[30/30] (Último passo) Limpeza do sistema host"
@@ -1291,7 +1297,7 @@ load_lang_pt() {
     MSG_REMOVING_DIR="→ A remover diretório..."
     MSG_COMPLETED_TITLE="DistroClone - Concluído"
     MSG_ISO_SUCCESS_BIG="<big><b>✓ ISO criada com sucesso!</b></big>"
-    MSG_TEST_TEXT="<b>Testar a ISO:</b>\n• VirtualBox: Criar uma VM e montar a ISO\n• USB: dd if="
+    MSG_TEST_TEXT="<b>Testar a ISO:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: Criar uma VM e montar a ISO\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
     MSG_ISO_ERROR="✗ ERRO: ISO não criada!"
     MSG_ERROR_TITLE="DistroClone - Erro"
     MSG_ISO_FAIL_BIG="<big><b>✗ Criação da ISO falhou!</b></big>\n\nVerifique o terminal para detalhes."
@@ -1413,7 +1419,7 @@ DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
 DEBIAN_FRONTEND=noninteractive apt-get install -f -y 2>/dev/null || true
 
 # Pacchetti obbligatori
-apt update; DEBIAN_FRONTEND=noninteractive apt install -y mtools syslinux-utils isolinux zenity syslinux-common \
+apt-get update || true; DEBIAN_FRONTEND=noninteractive apt install -y mtools syslinux-utils isolinux zenity syslinux-common \
   rsync xorriso live-boot live-config live-config-systemd imagemagick \
   calamares calamares-settings-debian grub-pc-bin yad fdisk \
   cryptsetup cryptsetup-initramfs cryptsetup-bin
@@ -1624,7 +1630,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.3.3"
+    echo "  $MSG_VERSION: 1.3.7"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -1791,6 +1797,9 @@ rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
   --exclude=/snap/* \
   --exclude=/var/snap \
   --exclude=/var/lib/snapd \
+  --exclude=/.snapshots \
+  --exclude=/.snapshots/* \
+  --exclude=/@.rollback-bak-* \
   "$SOURCE" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
 
 mkdir -p "$DEST"/{var/log,var/tmp}
@@ -1808,6 +1817,18 @@ umount -lf "$DEST/run" "$DEST/proc" "$DEST/sys" 2>/dev/null || true
 rm -rf "$DEST/run" "$DEST/proc" "$DEST/sys"
 rm -rf "$DEST/snap" "$DEST/var/snap" "$DEST/var/lib/snapd"
 mkdir -p "$DEST"/{run,proc,sys}
+
+# Btrfs snapshot sanitation: even with --one-file-system + --exclude rsync may
+# leave stub dirs (or partial copies if subvol boundaries shift between rsync
+# pass and squashfs). Snapper metadata (config/state) and rollback subvols
+# would otherwise leak the source machine's snapshot identity into the live
+# system and onto every install. Wipe them so the target's first-boot setup
+# starts from a clean state and creates its own baseline.
+rm -rf "$DEST/.snapshots" \
+       "$DEST"/@.rollback-bak-* \
+       "$DEST/var/lib/snapper/snapshots" \
+       "$DEST/etc/snapper/configs"/root.pre-spike-bak \
+       2>/dev/null || true
 
 log_msg "$MSG_STEP9"
 
@@ -2251,6 +2272,15 @@ fi
 log_msg "$MSG_STEP16"
 log_msg "  $MSG_CHROOT_INSTALLING"
 
+# Detect host root filesystem so Calamares defaults match (btrfs host -> btrfs default).
+HOST_ROOT_FS="$(findmnt -n -o FSTYPE / 2>/dev/null || echo ext4)"
+case "$HOST_ROOT_FS" in
+    ext4|btrfs|xfs) : ;;
+    *) HOST_ROOT_FS="ext4" ;;
+esac
+mkdir -p "$DEST/tmp"
+printf '%s\n' "$HOST_ROOT_FS" > "$DEST/tmp/.host_root_fs"
+
 chroot "$DEST" /bin/bash << 'CHROOT_EOF'
 set -e
 export DEBIAN_FRONTEND=noninteractive
@@ -2263,7 +2293,7 @@ echo "grub-efi-amd64 grub2/update_nvram boolean false" | debconf-set-selections
 echo "grub-efi-amd64 grub-efi/install_devices string" | debconf-set-selections
 echo "grub-pc grub-pc/install_devices string" | debconf-set-selections
 
-apt update
+apt-get update || true
 apt install -y --no-install-recommends \
   live-boot live-config live-config-systemd \
   initramfs-tools rsync squashfs-tools \
@@ -2357,13 +2387,63 @@ rm -f /etc/skel/Desktop/calamares-install-debian.desktop 2>/dev/null || true
 rm -f /etc/xdg/autostart/calamares-desktop-icon.desktop 2>/dev/null || true
 rm -f /usr/bin/add-calamares-desktop-icon 2>/dev/null || true
 
-# 2) Crea la voce Install System (menu)
+# 2a) Wrapper che lancia Calamares con logging persistente.
+# Calamares in pkexec normalmente non scrive log in posti facili da trovare
+# (env stripped, /var/log non scritto). Wrapper salva stdout+stderr in
+# /var/log/calamares-install-<timestamp>.log e copia anche /tmp/Calamares*.log
+# eventualmente prodotti dal core. Necessario per diagnosticare failure di
+# install che lascia target non bootabile senza traccia.
+cat > /usr/local/bin/launch-calamares.sh << 'LAUNCHCAL'
+#!/bin/bash
+TS="$(date +%Y%m%d-%H%M%S)"
+LOG="/var/log/calamares-install-${TS}.log"
+mkdir -p /var/log
+echo "=== distroClone calamares wrapper $(date -Iseconds) ===" > "$LOG"
+echo "argv: $*" >> "$LOG"
+echo "user: $(id)" >> "$LOG"
+echo "===" >> "$LOG"
+calamares -d "$@" >> "$LOG" 2>&1
+rc=$?
+echo "=== exit code: $rc ===" >> "$LOG"
+# Copia eventuali log di sessione che Calamares scrive in /tmp o ~/.cache
+for src in /tmp/Calamares*.log /root/.cache/Calamares/session.log /root/.cache/calamares/session.log; do
+  [ -f "$src" ] || continue
+  cp -a "$src" "/var/log/calamares-session-${TS}-$(basename "$src")" 2>/dev/null || true
+done
+exit $rc
+LAUNCHCAL
+chmod 755 /usr/local/bin/launch-calamares.sh
+
+# 2b) Polkit action per il wrapper (pkexec senza prompt-noauth interattivo
+# usa stesso schema di pkexec calamares: auth_admin_keep). Senza questa
+# action pkexec chiede password admin via dialog, comportamento accettato.
+cat > /usr/share/polkit-1/actions/org.distroclone.launch-calamares.policy << 'POLKIT'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <action id="org.distroclone.launch-calamares">
+    <description>Run Calamares installer with logging</description>
+    <message>Authentication is required to run the system installer</message>
+    <defaults>
+      <allow_any>auth_admin_keep</allow_any>
+      <allow_inactive>auth_admin_keep</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/local/bin/launch-calamares.sh</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+</policyconfig>
+POLKIT
+
+# 2c) Crea la voce Install System (menu)
 cat > /usr/share/applications/install-system.desktop << EOF
 [Desktop Entry]
 Type=Application
 Name=Install System
 Comment=Install $DISTRO_NAME on disk
-Exec=pkexec calamares
+Exec=pkexec /usr/local/bin/launch-calamares.sh
 Icon=/usr/share/icons/install-system.png
 Terminal=false
 Categories=System;Installer;
@@ -2382,7 +2462,7 @@ IS_GNOME=0
 dpkg-query -W -f='${Status}\n' gnome-shell 2>/dev/null | grep -q "installed" && IS_GNOME=1
 
 if [ "$IS_GNOME" -eq 1 ]; then
-  apt-get update
+  apt-get update || true
 
 cat > /usr/local/bin/syslinuxos-trust-desktop-launchers.sh <<'EOF'
 #!/bin/bash
@@ -2431,6 +2511,17 @@ for service in "${PROBLEMATIC_SERVICES[@]}"; do
         systemctl mask "$service" 2>/dev/null || true
         rm -f "/etc/systemd/system/$service"
     fi
+done
+
+# 4b. Prevent Samba (nmbd) from blocking boot
+# nmbd.service binds to a network interface; on the Live/clone no NIC has an IP
+# at that point, so the start job stalls ~1m41s (TimeoutStartSec) before failing
+# ("A start job is running for Samba NMB daemon..."). Disable Samba *server*
+# autostart so boot is not held up. The SMB client (gvfs/smbclient) is
+# unaffected; users who serve shares can re-enable with `systemctl enable nmbd`.
+echo "    Disabling Samba server autostart (nmbd/smbd boot hang)..."
+for service in nmbd.service smbd.service; do
+    systemctl disable "$service" 2>/dev/null || true
 done
 
 # 5. Ensure /var/run → /run symlink (fix deprecated path warnings)
@@ -2527,11 +2618,20 @@ MOUNT
 
 
 # 3. FSTAB
+# IMPORTANT: btrfs option must NOT include compress=zstd. Calamares' mount
+# module reuses mountOptions when mounting the target during install, so any
+# compression here is applied at install time. Files written by unpackfs
+# (rsync from squashfs, including /boot/vmlinuz-*) then land as compressed
+# extents on disk, and GRUB 2.12's btrfs driver fails reading them with
+# "premature end of file" on first boot. Leaving btrfs with the same plain
+# "defaults,noatime" as ext4/xfs ensures kernel files stay readable.
+# Users who want btrfs compression can enable it post-install (e.g. via
+# btrfs property set or mount option change), but not on /boot.
 cat > /etc/calamares/modules/fstab.conf << 'FSTAB_CONF'
 ---
 mountOptions:
     default: defaults,noatime
-    btrfs: defaults,noatime,compress=zstd
+    btrfs: defaults,noatime
     ext4: defaults,noatime
     xfs: defaults,noatime
 
@@ -2579,11 +2679,23 @@ userShell: /bin/bash
 USERS
 
 # 5. Partition.conf (obbligatorio su Ubuntu-based evita errore rsync 11)
-# Evita che installer Calamares in modalità auto non vede la partizione / 
-cat > /etc/calamares/modules/partition.conf << 'PARTCONF'
+# Evita che installer Calamares in modalità auto non vede la partizione /
+# Default FS = host root FS so "Erase disk" dropdown matches host (btrfs host -> btrfs default).
+# partitionLayout filesystem MUST be set to a real FS — Calamares treats an
+# empty/missing filesystem value as "Unformatted" (not "use UI dropdown"),
+# which leaves the partition raw and rsync (unpackfs) fails with exit 11.
+# We bind both defaultFileSystemType and partitionLayout.filesystem to the
+# host root FS so Erase-mode installs always format with a valid FS that
+# matches the host. Users needing a different FS use "Manual partitioning".
+HOST_FS_TYPE="$(cat /tmp/.host_root_fs 2>/dev/null || echo ext4)"
+case "$HOST_FS_TYPE" in
+    ext4|btrfs|xfs) : ;;
+    *) HOST_FS_TYPE="ext4" ;;
+esac
+cat > /etc/calamares/modules/partition.conf << PARTCONF
 ---
 efiSystemPartition: "/boot/efi"
-efiSystemPartitionSize: 300M
+efiSystemPartitionSize: 512M
 efiSystemPartitionName: EFI
 
 drawNestedPartitions: true
@@ -2605,16 +2717,28 @@ userSwapChoices:
 initialPartitioningChoice: erase
 initialSwapChoice: none
 
-defaultFileSystemType: "ext4"
+defaultFileSystemType: "${HOST_FS_TYPE}"
 availableFileSystemTypes: ["ext4","btrfs","xfs"]
 
 partitionLayout:
     - name: "rootfs"
-      filesystem: "ext4"
+      filesystem: "${HOST_FS_TYPE}"
       mountPoint: "/"
       size: 100%
       minSize: 8G
+
+# Btrfs subvolume layout (Calamares 3.3+ partition module).
+# Auto-applicato SOLO quando il target FS è btrfs; ignorato per ext4/xfs → zero regressioni.
+# SysLinuxOS layout Debian-style: @ come rootfs, @home come /home (subvol top-level).
+# .snapshots viene creato come subvol nidificato dentro @ dal postinst di
+# syslinuxos-snapshots al primo boot del target (snapper -c root create-config /).
+btrfsSubvolumes:
+  - mountPoint: /
+    subvolume: /@
+  - mountPoint: /home
+    subvolume: /@home
 PARTCONF
+rm -f /tmp/.host_root_fs
 
 # 6. PACKAGES (NON rimuovere durante install)
 cat > /etc/calamares/modules/packages.conf << 'PACKAGES'
@@ -2652,9 +2776,25 @@ cat > /usr/local/bin/calamares-grub-install.sh << 'GRUBSCRIPT'
 set -e
 set -x
 
+# Mirror all output (stdout + stderr) into a persistent log on the target so
+# we can diagnose post-reboot regressions even if Calamares' live /var/log
+# was lost. Find it later at /var/log/distroclone-grub-install.log on the
+# installed system, or mount the target and look in /@/var/log/.
+# Ensure /var/log exists first: Calamares' target chroot is sometimes minimal
+# at this stage and tee silently dropped output when the dir was missing.
+mkdir -p /var/log
+exec > >(tee -a /var/log/distroclone-grub-install.log) 2>&1
+
 echo "======================================"
 echo "  GRUB Installation Script"
 echo "======================================"
+echo "[INFO] $(date -Iseconds) - script start"
+echo "[INFO] root FS: $(findmnt -n -o FSTYPE / 2>/dev/null || echo unknown)"
+echo "[INFO] root device: $(findmnt -n -o SOURCE / 2>/dev/null || echo unknown)"
+echo "[INFO] /boot listing:"
+ls -laFh /boot/ 2>&1 || true
+echo "[INFO] /lib/modules listing:"
+ls -laFh /lib/modules/ 2>&1 || true
 
 # Detect distribution
 if [ -f /etc/os-release ]; then
@@ -2769,6 +2909,41 @@ else
 fi
 # --- Fine blocco LUKS ---
 
+# --- btrfs /boot file rewrite ---
+# GRUB 2.12's btrfs driver fails with "premature end of file" reading kernel
+# images written by unpackfs (rsync from squashfs). Even after btrfs
+# defragment -t 32M -f the bug persisted on the bigger Liquorix vmlinuz
+# (16M) while the smaller Debian stock kernel (12M) read fine — defragment
+# only rewrites in place and leaves extent metadata GRUB still cannot
+# traverse. The known reliable workaround is "apt-get install --reinstall
+# linux-image-<ver>" because it deletes the file and writes a fresh one
+# from the package, picking up a clean extent allocation. We can do the
+# same here without re-running apt: copy each /boot file to a temp name
+# with --reflink=never (forces a real data copy, no btrfs reflink), remove
+# the original, and rename. The replacement is allocated fresh and lands
+# as one or very few contiguous extents that GRUB reads correctly.
+# btrfs-progs ships in every Debian live with btrfs support, so the binary
+# is guaranteed present whenever the target FS is btrfs.
+if [ "$(findmnt -n -o FSTYPE / 2>/dev/null)" = "btrfs" ]; then
+  echo "[INFO] btrfs target - rewriting /boot files for clean extent allocation"
+  for f in /boot/vmlinuz-* /boot/initrd.img-*; do
+    [ -f "$f" ] || continue
+    echo "[INFO] rewrite: $f"
+    cp -a --reflink=never "$f" "${f}.new" && \
+      rm -f "$f" && \
+      mv "${f}.new" "$f" && \
+      echo "[OK] rewritten: $f" || \
+      echo "[WARN] rewrite failed: $f"
+  done
+  sync
+  # Defragment as belt-and-suspenders for any residual fragmentation
+  # (e.g. on /boot/grub/* that we did not rewrite).
+  btrfs filesystem defragment -r -t 32M -f /boot 2>&1 || true
+  sync
+  echo "[OK] /boot rewrite + defragment complete"
+fi
+# --- end btrfs /boot file rewrite ---
+
 if [ "$BOOT_MODE" = "uefi" ]; then
   echo "[STEP 1/5] Installing GRUB for UEFI..."
 
@@ -2776,6 +2951,19 @@ if [ "$BOOT_MODE" = "uefi" ]; then
     echo "[ERROR] /boot/efi is not mounted!"
     exit 1
   fi
+
+  # Remove any existing case-variant EFI directories (FAT32 case-insensitive conflict)
+  # Without this, old lowercase dirs (e.g. syslinuxos) coexist with new mixed-case
+  # dirs (e.g. SysLinuxOS), causing UEFI to load the wrong grubx64.efi → GRUB console
+  BOOTLOADER_ID_LOWER="${BOOTLOADER_ID,,}"
+  for existing_dir in /boot/efi/EFI/*/; do
+    [ -d "$existing_dir" ] || continue
+    dirname=$(basename "$existing_dir")
+    if [ "${dirname,,}" = "$BOOTLOADER_ID_LOWER" ]; then
+      echo "[INFO] Removing existing EFI dir (case conflict): $existing_dir"
+      rm -rf "$existing_dir"
+    fi
+  done
 
   # Primary install (vendor path)
   grub-install \
@@ -2854,6 +3042,13 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
+# Initramfs rebuild deferred to remove-live-admin.service at first boot of the
+# installed target. Doing it here (mkinitramfs inside the Calamares chroot)
+# was producing 0-byte initrd files on some hosts, breaking both kernels on
+# all filesystems. The live-mode initrd copied by unpackfs still boots a real
+# installation because the kernel root=UUID arg drives the boot path before
+# live-boot scripts try to find live media.
+
 echo "[STEP 5/5] Verifying grub.cfg..."
 if [ -f /boot/grub/grub.cfg ] && [ -s /boot/grub/grub.cfg ]; then
   echo "[OK] GRUB config generated successfully"
@@ -2872,6 +3067,36 @@ GRUBSCRIPT
 
 chmod +x /usr/local/bin/calamares-grub-install.sh
 
+# 7b. SCRIPT STANDALONE PER SNAPSHOTS SETUP (btrfs target only — no-op altrove)
+# Invoca syslinuxos-snapshots-setup nel target dopo grubinstall, ricreando
+# /.snapshots subvol mancante (escluso dalla squashfs source), generando il
+# baseline snapshot e rigenerando grub.cfg per popolare grub-btrfs.cfg.
+cat > /usr/local/bin/calamares-snapshots-setup.sh << 'SNAPSCRIPT'
+#!/bin/bash
+# Invoked by Calamares shellprocess inside the installed target (dontChroot:false).
+# The setup script bails on `ischroot` unless bypassed: we pass `--force` as argv
+# (immune to env stripping) AND set the legacy env var inline as fallback for
+# syslinuxos-snapshots < 0.3.6.
+set +e  # non bloccante: snapshot setup è "best effort"
+
+LOG=/var/log/calamares-snapshots-setup.log
+exec > >(tee -a "$LOG") 2>&1
+echo "[snapshots-setup] $(date -Iseconds) start"
+
+if [ -x /usr/sbin/syslinuxos-snapshots-setup ]; then
+    SYSLINUXOS_SNAPSHOTS_FORCE=1 /usr/sbin/syslinuxos-snapshots-setup --force
+    RC=$?
+    echo "[snapshots-setup] exit=$RC"
+else
+    echo "[snapshots-setup] /usr/sbin/syslinuxos-snapshots-setup non presente, skip."
+    echo "[snapshots-setup] (probabile: pacchetto syslinuxos-snapshots non installato sul host)"
+fi
+echo "[snapshots-setup] $(date -Iseconds) done"
+exit 0
+SNAPSCRIPT
+
+chmod +x /usr/local/bin/calamares-snapshots-setup.sh
+
 # 8. SHELLPROCESS per GRUB
 cat > /etc/calamares/modules/grubinstall.conf << 'GRUBINSTALL'
 ---
@@ -2881,6 +3106,15 @@ script:
     - /usr/local/bin/calamares-grub-install.sh
 GRUBINSTALL
 
+# 8b. SHELLPROCESS per SNAPSHOTS SETUP
+cat > /etc/calamares/modules/snapshots-setup.conf << 'SNAPCONF'
+---
+dontChroot: false
+timeout: 300
+script:
+    - /usr/local/bin/calamares-snapshots-setup.sh
+SNAPCONF
+
 # 8. SETTINGS.CONF (CON BRANDING PERSONALIZZATO)
 cat > /etc/calamares/settings.conf << 'SETTINGS'
 ---
@@ -2889,11 +3123,15 @@ modules-search: [ local, /usr/lib/x86_64-linux-gnu/calamares/modules ]
 instances:
   - id: grubinstall
     module: shellprocess
-    config: grubinstall.conf 
-    
+    config: grubinstall.conf
+
   - id: remove-live-user
     module: shellprocess
     config: remove-live-user.conf
+
+  - id: snapshots-setup
+    module: shellprocess
+    config: snapshots-setup.conf
 
 sequence:
   - show:
@@ -2918,9 +3156,10 @@ sequence:
       - networkcfg
       - hwclock
       - initramfscfg
-      - initramfs  
+      - initramfs
       - services-systemd
       - shellprocess@grubinstall
+      - shellprocess@snapshots-setup
       - umount
 
   - show:
@@ -2952,7 +3191,10 @@ rm -rf "/home/$LIVEUSER" 2>/dev/null || true
 # Rimuovi script Calamares non più necessari nel sistema installato
 echo "Cleaning up Calamares live scripts..."
 rm -f /usr/local/bin/calamares-grub-install.sh
+rm -f /usr/local/bin/calamares-snapshots-setup.sh
 rm -f /usr/local/bin/calamares-remove-live-user.sh
+rm -f /usr/local/bin/launch-calamares.sh
+rm -f /usr/share/polkit-1/actions/org.distroclone.launch-calamares.policy
 rm -f /etc/calamares/modules/grubinstall.conf
 rm -f /etc/calamares/modules/remove-live-user.conf
 
@@ -3021,16 +3263,27 @@ RemainAfterExit=no
 # Wait for dpkg lock
 ExecStartPost=-/bin/bash -c 'for i in $(seq 1 60); do fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 || break; sleep 5; done'
 
-# Remove live packages + Calamares + build tools
-ExecStartPost=-/usr/bin/apt-get -y purge live-boot live-boot-doc live-config live-config-systemd live-tools calamares calamares-settings-debian isolinux syslinux-common syslinux-utils mtools squashfs-tools qt5-assistant
+# Remove live packages + Calamares (wildcard) + build tools
+# Wildcard "calamares*" catches calamares, calamares-settings-debian,
+# calamares-extensions, qml-module-io-calamares-*, branding packages, etc.
+# bash -c required: systemd ExecStart does not expand globs.
+ExecStartPost=-/bin/bash -c 'apt-get -y purge live-boot live-boot-doc live-config live-config-systemd live-tools "calamares*" isolinux syslinux-common syslinux-utils mtools squashfs-tools qt5-assistant 2>/dev/null || true'
 
 # Retry calamares purge (may fail on first attempt due to dpkg lock)
-ExecStartPost=-/bin/bash -c 'sleep 10 && apt-get -y purge calamares calamares-settings-debian 2>/dev/null || true'
+ExecStartPost=-/bin/bash -c 'sleep 10 && apt-get -y purge "calamares*" 2>/dev/null || true'
 
 # Keep SysLinuxOS Tools: distroClone and distroclone-backup must survive autoremove
 ExecStartPost=-/usr/bin/apt-mark manual distroclone distroclone-backup
 ExecStartPost=-/usr/bin/apt-get -y autoremove --purge
 ExecStartPost=-/usr/bin/apt-get clean
+
+# Reset snapshot history: apt purges above triggered snapper apt-hook pre/post
+# pairs (5+ noise snapshots). Wipe them and create a single clean baseline so
+# the user boots into a sensible snapshot state. No-op on non-btrfs / missing
+# snapper config (the script self-guards). Non-fatal (leading dash).
+# Logs to a file so we have persistent evidence: journald may be volatile and
+# the unit file is removed below, making `journalctl -u` queries return empty.
+ExecStartPost=-/bin/bash -c '{ echo "=== $(date -Iseconds) reset-baseline start ==="; /usr/sbin/syslinuxos-snapshots-setup --reset-baseline; echo "exit=$?"; echo "=== $(date -Iseconds) reset-baseline done ==="; } >> /var/log/distroclone-reset-baseline.log 2>&1'
 
 # Remove Calamares leftovers/icons
 ExecStartPost=-/usr/bin/find /usr/share/applications -maxdepth 1 -type f -iname '*calamares*.desktop' -delete
@@ -3074,7 +3327,7 @@ ExecStartPost=-/bin/rm -rf /usr/share/icons/hicolor/icon-theme.cache
 # Rimuovi pacchetti LUKS solo se root NON è cifrato
 # (se cifrato, cryptsetup-initramfs deve rimanere!)
 #ExecStartPost=-/bin/bash -c 'if ! grep -q luks /etc/crypttab 2>/dev/null; then apt-get -y purge cryptsetup-bin; fi'
-ExecStartPost=-/usr/sbin/update-initramfs -u -k all
+ExecStartPost=-/usr/sbin/update-initramfs -c -k all
 
 # Remove self (non fatal)
 ExecStartPost=-/bin/systemctl disable --now remove-live-admin.service
@@ -3085,6 +3338,9 @@ ExecStartPost=-/bin/rm -f /usr/local/bin/calamares-remove-live-user.sh
 
 # Remove DistroClone-created scripts (not part of any package)
 ExecStartPost=-/bin/rm -f /usr/local/bin/calamares-grub-install.sh
+rm -f /usr/local/bin/calamares-snapshots-setup.sh
+ExecStartPost=-/bin/rm -f /usr/local/bin/launch-calamares.sh
+ExecStartPost=-/bin/rm -f /usr/share/polkit-1/actions/org.distroclone.launch-calamares.policy
 ExecStartPost=-/bin/rm -rf /etc/calamares
 ExecStartPost=-/bin/rm -rf /usr/share/calamares
 
@@ -3259,12 +3515,15 @@ mksquashfs "$DEST" "$ISO_DIR/live/filesystem.squashfs" \
   -e var/cache \
   -e var/tmp \
   -e var/log \
-  -e tmp \
   -e usr/share/doc \
   -e usr/share/info \
   -e root/.cache \
   -e home/*/.cache \
   -e home/*/.local/share/Trash \
+  -e .snapshots \
+  -e .snapshots/* \
+  -e var/lib/snapper/snapshots \
+  -e '@.rollback-bak-*' \
   -wildcards
 
 echo "  $MSG_SQUASH_SIZE: $(du -h "$ISO_DIR/live/filesystem.squashfs" | cut -f1)"
@@ -3333,17 +3592,17 @@ set default=0
 set timeout=5
 
 menuentry "$MSG_GRUB_TRY ${DISTRO_NAME}" {
-    linux /live/vmlinuz boot=live user=admin quiet splash
+    linux /live/vmlinuz boot=live user=admin quiet
     initrd /live/initrd.img
 }
 
 menuentry "${DISTRO_NAME} $MSG_GRUB_SAFE" {
-    linux /live/vmlinuz boot=live user=admin quiet splash nomodeset
+    linux /live/vmlinuz boot=live user=admin quiet nomodeset
     initrd /live/initrd.img
 }
 
 menuentry "$MSG_GRUB_INSTALL ${DISTRO_NAME}" {
-    linux /live/vmlinuz boot=live user=admin quiet splash systemd.unit=multi-user.target
+    linux /live/vmlinuz boot=live user=admin quiet systemd.unit=multi-user.target
     initrd /live/initrd.img
 }
 
@@ -3396,12 +3655,12 @@ MENU TITLE ${DISTRO_NAME} Boot Menu
 LABEL live
   MENU LABEL ^${DISTRO_NAME} Live
   KERNEL /live/vmlinuz
-  APPEND initrd=/live/initrd.img boot=live user=admin quiet splash
+  APPEND initrd=/live/initrd.img boot=live user=admin quiet
 
 LABEL install
   MENU LABEL ^Install ${DISTRO_NAME}
   KERNEL /live/vmlinuz
-  APPEND initrd=/live/initrd.img boot=live user=admin quiet splash
+  APPEND initrd=/live/initrd.img boot=live user=admin quiet
 
 LABEL debug
   MENU LABEL Live (^Debug)
@@ -3495,8 +3754,9 @@ echo "$MSG_CREATED: $LIVE_DIR/$ISO_NAME.md5 & $LIVE_DIR/$ISO_NAME.sha256"
   echo "=========================================="
   echo ""
   echo "$MSG_TEST_ISO"
-  echo "  1. $MSG_TEST_VBOX $ISO_NAME"
-  echo "  2. ${MSG_TEST_USB}$LIVE_DIR/$ISO_NAME of=/dev/sdX bs=4M status=progress"
+  echo "  1. $MSG_TEST_QEMU $LIVE_DIR/$ISO_NAME"
+  echo "  2. $MSG_TEST_VBOX $ISO_NAME"
+  echo "  3. ${MSG_TEST_USB}$LIVE_DIR/$ISO_NAME of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct && sudo sync"
   echo ""
   
 ############################################
@@ -3516,8 +3776,26 @@ log_msg "$MSG_STEP30"
   umount -lR /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
   sleep 2
   rm -rf /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
-  rm -rf /mnt/${DISTRO_ID}_live/iso 2>/dev/null || true  
-  
+  rm -rf /mnt/${DISTRO_ID}_live/iso 2>/dev/null || true
+
+  # Rimuovi voce "Install Debian" dal sistema host
+  # calamares-settings-debian deploya /etc/xdg/autostart/calamares-desktop-icon.desktop
+  # che a ogni login esegue add-calamares-desktop-icon e ricrea l'icona sul Desktop.
+  # Rimuoviamo autostart + script + launcher "Install Debian" residui.
+  # NB: install-system.desktop (creato in chroot per la live ISO) non viene toccato.
+  # distroClone reinstallera' calamares al prossimo lancio (riga ~1416),
+  # il cleanup verra' rieseguito qui.
+  echo "$MSG_REMOVING_CALAMARES"
+  rm -f /etc/xdg/autostart/calamares-desktop-icon.desktop 2>/dev/null || true
+  rm -f /usr/bin/add-calamares-desktop-icon 2>/dev/null || true
+  rm -f /usr/share/applications/calamares-install-debian.desktop 2>/dev/null || true
+  for d in /home/*/Desktop /root/Desktop; do
+    [ -d "$d" ] || continue
+    rm -f "$d"/calamares-install-debian.desktop 2>/dev/null || true
+  done
+  update-desktop-database 2>/dev/null || true
+  echo "$MSG_CALAMARES_REMOVED"
+
   # Chiudi finestra log
   exec 3>&- 2>/dev/null || true
   if [ -n "$LOG_PID" ] && kill -0 "$LOG_PID" 2>/dev/null; then
@@ -3532,7 +3810,7 @@ log_msg "$MSG_STEP30"
           --title="$MSG_COMPLETED_TITLE" \
           ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
           ${TEMP_LOGO:+--image="$TEMP_LOGO"} \
-          --text="$MSG_ISO_SUCCESS_BIG\n\n<b>$MSG_FILE:</b> $LIVE_DIR/$ISO_NAME\n<b>$MSG_SIZE:</b> $ISO_SIZE_FINAL\n\n${MSG_TEST_TEXT}$LIVE_DIR/$ISO_NAME of=/dev/sdX bs=4M status=progress" \
+          --text="$MSG_ISO_SUCCESS_BIG\n\n<b>$MSG_FILE:</b> $LIVE_DIR/$ISO_NAME\n<b>$MSG_SIZE:</b> $ISO_SIZE_FINAL\n\n${MSG_TEST_TEXT//%ISO%/$LIVE_DIR/$ISO_NAME}" \
           --button="OK:0" \
           --width=510 --height=200 \
           --fixed \

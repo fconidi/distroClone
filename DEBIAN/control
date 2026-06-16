@@ -1,5 +1,5 @@
-Package: distroClone
-Version: 1.3.6
+Package: distroclone
+Version: 1.4.8
 Section: admin
 Priority: optional
 Architecture: all
@@ -7,8 +7,7 @@ Depends: bash, rsync, xorriso, mtools, syslinux-utils, syslinux-common, isolinux
 Recommends: yad, zenity, grub-efi-amd64, efibootmgr, calamares, calamares-settings-debian, os-prober, fdisk, live-boot, live-config, live-config-systemd
 Suggests: polkitd | policykit-1
 Maintainer: Franco Conidi aka edmond <fconidi@gmail.com>
-Homepage-1: https://www.francoconidi.it
-Homepage-2: https://www.syslinuxos.com
+Homepage: https://www.syslinuxos.com
 Description: DistroClone - Universal Live ISO Builder
  Create customized bootable live ISO images from any running
  Debian-based system (Debian, Ubuntu, Linux Mint, Elementary OS,
@@ -23,3 +22,4 @@ Description: DistroClone - Universal Live ISO Builder
   - Real-time build log window
   - Success/error completion dialogs
   - Automatic cleanup of live packages after installation
+Installed-Size: 2624
