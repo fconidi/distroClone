@@ -1517,9 +1517,29 @@ if [ -n "$SPLASH_PID" ] && kill -0 "$SPLASH_PID" 2>/dev/null; then
 fi
 rm -f /tmp/distroClone-splash.png 2>/dev/null
 
+# DCB cache detection
+SOURCE_MODE="live"
+CACHE_DIR="/mnt/SysLinuxOS_backup/.rootfs_cache"
+DCB_CACHE_LABEL=""
+if [ -d "$CACHE_DIR" ] && [ -f "/mnt/SysLinuxOS_backup/.backup_meta" ]; then
+    _META_DATE=""; _META_DISTRO=""; _META_SIZE=""
+    # shellcheck source=/dev/null
+    source /mnt/SysLinuxOS_backup/.backup_meta 2>/dev/null || true
+    _META_DATE="${META_DATE:-}"
+    _META_DISTRO="${META_DISTRO:-}"
+    _META_SIZE="${META_SIZE:-}"
+    [ -n "$_META_DATE" ] && DCB_CACHE_LABEL="$_META_DATE | $_META_DISTRO | $_META_SIZE"
+fi
+
 # Mostra schermata di benvenuto
 if [ "$GUI_TOOL" = "yad" ]; then
     # ===== INTERFACCIA YAD (AVANZATA) =====
+    DCB_CACHE_FIELDS=()
+    if [ -n "$DCB_CACHE_LABEL" ]; then
+        DCB_CACHE_FIELDS=(
+            --field="Build from DCB cache ($DCB_CACHE_LABEL)":CHK "FALSE"
+        )
+    fi
     RESULT=$(yad --form \
         --title="$MSG_WELCOME_TITLE" \
         ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
@@ -1541,6 +1561,7 @@ if [ "$GUI_TOOL" = "yad" ]; then
         --field="$MSG_FIELD_COMPRESSION":CB "$MSG_COMP_STANDARD!$MSG_COMP_FAST!$MSG_COMP_MAX" \
         --field="$MSG_FIELD_PASSWORD":H "root" \
         --field="$MSG_FIELD_HOSTNAME":TEXT "live-system" \
+        "${DCB_CACHE_FIELDS[@]}" \
         --field=" ":LBL "" \
         --field="<span color='#0d47a1'><b>$MSG_MIN_REQUIREMENTS</b></span>:":LBL "" \
         --field="<span color='#666666'>$MSG_MIN_REQ_TEXT</span>:":LBL "" \
@@ -1563,6 +1584,10 @@ if [ "$GUI_TOOL" = "yad" ]; then
     COMPRESSION_CHOICE=$(echo "$RESULT" | cut -d'|' -f1)
     CUSTOM_ROOT_PASSWORD=$(echo "$RESULT" | cut -d'|' -f2)
     CUSTOM_HOSTNAME=$(echo "$RESULT" | cut -d'|' -f3)
+    if [ -n "$DCB_CACHE_LABEL" ]; then
+        _USE_DCB=$(echo "$RESULT" | cut -d'|' -f4)
+        [ "$_USE_DCB" = "TRUE" ] && SOURCE_MODE="cache"
+    fi
     
     # Determina tipo compressione
     case "$COMPRESSION_CHOICE" in
@@ -1748,8 +1773,8 @@ mkdir -p "$DEST" "$ISO_DIR"/{live,isolinux,boot/grub,EFI/BOOT}
 
 log_msg "$MSG_STEP7"
 
-# SOURCE must be /
-if [ "$SOURCE" != "/" ]; then
+# SOURCE must be / (skip check in cache mode)
+if [ "$SOURCE_MODE" != "cache" ] && [ "$SOURCE" != "/" ]; then
     log_msg "$(eval echo "$MSG_ERR_SOURCE")"
     exit 1
 fi
@@ -1777,32 +1802,61 @@ fi
 ############################################
 log_msg "$MSG_STEP8"
 
-rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
-  --exclude=/dev/* \
-  --exclude=/proc/* \
-  --exclude=/sys/* \
-  --exclude=/run/* \
-  --exclude=/tmp/* \
-  --exclude=/mnt/* \
-  --exclude=/media/* \
-  --exclude=/lost+found \
-  --exclude=/swapfile \
-  --exclude="$LIVE_DIR" \
-  --exclude=/home/* \
-  --exclude=/root/* \
-  --exclude=/var/cache/apt/archives/* \
-  --exclude=/var/lib/apt/lists/* \
-  --exclude=/var/log/* \
-  --exclude=/var/tmp/* \
-  --exclude=/etc/NetworkManager/system-connections/* \
-  --exclude=/snap \
-  --exclude=/snap/* \
-  --exclude=/var/snap \
-  --exclude=/var/lib/snapd \
-  --exclude=/.snapshots \
-  --exclude=/.snapshots/* \
-  --exclude=/@.rollback-bak-* \
-  "$SOURCE" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
+if [ "$SOURCE_MODE" = "cache" ]; then
+    log_msg "  [DCB] Source: $CACHE_DIR"
+    rsync -aAXH --numeric-ids --info=progress2 \
+      --exclude=/dev/* \
+      --exclude=/proc/* \
+      --exclude=/sys/* \
+      --exclude=/run/* \
+      --exclude=/tmp/* \
+      --exclude=/mnt/* \
+      --exclude=/media/* \
+      --exclude=/lost+found \
+      --exclude=/swapfile \
+      --exclude=/home/* \
+      --exclude=/root/* \
+      --exclude=/var/cache/apt/archives/* \
+      --exclude=/var/lib/apt/lists/* \
+      --exclude=/var/log/* \
+      --exclude=/var/tmp/* \
+      --exclude=/etc/NetworkManager/system-connections/* \
+      --exclude=/snap \
+      --exclude=/snap/* \
+      --exclude=/var/snap \
+      --exclude=/var/lib/snapd \
+      --exclude=/.snapshots \
+      --exclude=/.snapshots/* \
+      --exclude=/@.rollback-bak-* \
+      "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
+else
+    rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
+      --exclude=/dev/* \
+      --exclude=/proc/* \
+      --exclude=/sys/* \
+      --exclude=/run/* \
+      --exclude=/tmp/* \
+      --exclude=/mnt/* \
+      --exclude=/media/* \
+      --exclude=/lost+found \
+      --exclude=/swapfile \
+      --exclude="$LIVE_DIR" \
+      --exclude=/home/* \
+      --exclude=/root/* \
+      --exclude=/var/cache/apt/archives/* \
+      --exclude=/var/lib/apt/lists/* \
+      --exclude=/var/log/* \
+      --exclude=/var/tmp/* \
+      --exclude=/etc/NetworkManager/system-connections/* \
+      --exclude=/snap \
+      --exclude=/snap/* \
+      --exclude=/var/snap \
+      --exclude=/var/lib/snapd \
+      --exclude=/.snapshots \
+      --exclude=/.snapshots/* \
+      --exclude=/@.rollback-bak-* \
+      "$SOURCE" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
+fi
 
 mkdir -p "$DEST"/{var/log,var/tmp}
 chmod 1777 "$DEST/var/tmp"
@@ -3217,10 +3271,18 @@ timeout: 30
 script:
   - "/bin/bash -c 'if id admin >/dev/null 2>&1; then deluser --remove-home admin 2>/dev/null || true; fi'"
   - "/bin/rm -rf /home/admin"
+  - "/bin/bash -c 'mkdir -p /var/log/audit && chmod 0750 /var/log/audit'"
 EOF
 
 # Update initramfs
 update-initramfs -c -k all
+
+# /var/log/audit is owned by auditd package but rsync --exclude=/var/log/*
+# strips it. Recreate so auditd can start on the live ISO and installed target.
+mkdir -p /var/log/audit
+chmod 0750 /var/log/audit
+chown root:root /var/log/audit
+apt-mark manual auditd 2>/dev/null || true
 
 # Cleanup
 apt clean
@@ -3275,7 +3337,8 @@ ExecStartPost=-/bin/bash -c 'apt-get -y purge live-boot live-boot-doc live-confi
 ExecStartPost=-/bin/bash -c 'sleep 10 && apt-get -y purge "calamares*" 2>/dev/null || true'
 
 # Keep SysLinuxOS Tools: distroClone and distroclone-backup must survive autoremove
-ExecStartPost=-/usr/bin/apt-mark manual distroclone distroclone-backup
+# auditd: marked manual to survive autoremove after calamares purge
+ExecStartPost=-/usr/bin/apt-mark manual distroclone distroclone-backup auditd
 ExecStartPost=-/usr/bin/apt-get -y autoremove --purge
 ExecStartPost=-/usr/bin/apt-get clean
 
@@ -3512,11 +3575,15 @@ esac
 ############################################
 log_msg "$MSG_STEP23 ($COMP_LABEL)"
 
+# Pulisci var/log prima dello squashfs: rimuovi file log ma preserva
+# var/log/audit/ (directory owned da auditd, necessaria all'avvio del daemon).
+# Non usiamo -e var/log in mksquashfs per permettere l'inclusione di audit/.
+find "$DEST/var/log" -maxdepth 1 -mindepth 1 ! -name 'audit' -exec rm -rf {} + 2>/dev/null || true
+
 mksquashfs "$DEST" "$ISO_DIR/live/filesystem.squashfs" \
   $SQUASH_OPTS \
   -e var/cache \
   -e var/tmp \
-  -e var/log \
   -e usr/share/doc \
   -e usr/share/info \
   -e root/.cache \

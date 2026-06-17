@@ -7,6 +7,30 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.10 — 2026-06-17
+
+### Added
+
+- **Build from distroclone-backup cache**: if a distroclone-backup cache is detected at
+  `/mnt/SysLinuxOS_backup/.rootfs_cache` on launch, the welcome dialog shows a checkbox
+  to build the ISO directly from the cache instead of cloning the live system via rsync.
+  Cache metadata (date, distro, size) is read from `.backup_meta` and shown in the label.
+  The rsync clone step (step 7) is skipped entirely when building from cache.
+
+### Fixed
+
+- **auditd fails at boot on live ISO**: `mksquashfs -e var/log` excluded the entire
+  `/var/log/` directory including `var/log/audit/`, so auditd had no directory to write to.
+  Fix: pre-squashfs cleanup now removes individual log files/dirs under `/var/log/` while
+  preserving `var/log/audit/`, and the `-e var/log` flag is removed from mksquashfs.
+- **auditd fails at boot on installed target**: Calamares `unpackfs` `exclude: - /var/log/*`
+  stripped `var/log/audit/` from the installed system. Fix: added `mkdir -p /var/log/audit`
+  to the Calamares `remove-live-user.conf` shellprocess (runs inside installed target).
+- **auditd marked as auto-removable**: `apt-mark manual auditd` added in chroot and via
+  `remove-live-admin.service` `ExecStartPost` so auditd survives `autoremove --purge`.
+
+---
+
 ## Version 1.4.9 — 2026-06-17
 
 ### Fixed
