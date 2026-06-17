@@ -7,6 +7,18 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.9 — 2026-06-17
+
+### Fixed
+
+- Suppress spurious `needrestart` popup on launch: set `NEEDRESTART_SUSPEND=1`
+  around all `apt`/`dpkg` calls at startup, unset after. Popup appeared because
+  apt hooks triggered needrestart even when system was already up to date.
+- `postinst` now reads installed version dynamically from `dpkg-query` instead
+  of hardcoded string, so the "installed successfully" message is always correct.
+
+---
+
 ## Version 1.4.8 — 2026-06-15
 
 ### Added

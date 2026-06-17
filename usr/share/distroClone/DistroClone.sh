@@ -1415,6 +1415,7 @@ if [ -z "$SPLASH_PID" ] && command -v yad >/dev/null 2>&1; then
 fi
 
 # Ripara stato dpkg da build precedenti (clone da clone)
+export NEEDRESTART_SUSPEND=1
 DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
 DEBIAN_FRONTEND=noninteractive apt-get install -f -y 2>/dev/null || true
 
@@ -1425,7 +1426,8 @@ apt-get update || true; DEBIAN_FRONTEND=noninteractive apt install -y mtools sys
   cryptsetup cryptsetup-initramfs cryptsetup-bin
 
 # Forza reinstall yad (può fallire nel blocco precedente su clone da clone)
-apt-get install --reinstall -y yad 2>/dev/null || apt-get install -y yad 2>/dev/null || true  
+apt-get install --reinstall -y yad 2>/dev/null || apt-get install -y yad 2>/dev/null || true
+unset NEEDRESTART_SUSPEND
   
 # Aggiorna IM_CMD dopo installazione pacchetti
 IM_CMD=""
