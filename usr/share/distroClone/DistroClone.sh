@@ -1755,49 +1755,15 @@ rm -f /tmp/distroClone-splash.png 2>/dev/null
 
 # DCB cache detection
 SOURCE_MODE="live"
-
-# Fix (2026-08-27): distroclone-backup's cache dir is user-configurable
-# (CACHE_BASE_DIR in its settings.conf) and no longer defaults to /mnt —
-# this used to hardcode /mnt/SysLinuxOS_backup, so the checkbox silently
-# vanished the moment the backup target moved to a different mount. Read
-# the same config distroclone-backup itself uses, falling back to /mnt
-# (the old default) when no config is found.
-_DCB_HOME=""
-if [ -n "$SUDO_USER" ]; then
-    _DCB_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
-elif [ -n "$PKEXEC_UID" ]; then
-    _DCB_HOME=$(getent passwd "$PKEXEC_UID" | cut -d: -f6)
-fi
-_DCB_CONF=""
-if [ -n "$_DCB_HOME" ] && [ -f "$_DCB_HOME/.config/distroclone-backup/settings.conf" ]; then
-    _DCB_CONF="$_DCB_HOME/.config/distroclone-backup/settings.conf"
-elif [ -f "/etc/distroclone-backup/settings.conf" ]; then
-    _DCB_CONF="/etc/distroclone-backup/settings.conf"
-fi
-_DCB_BASE_DIR="/mnt"
-if [ -n "$_DCB_CONF" ]; then
-    _val=$(grep -E '^CACHE_BASE_DIR="[^"]*"$' "$_DCB_CONF" 2>/dev/null | tail -1 | cut -d'"' -f2)
-    [ -n "$_val" ] && _DCB_BASE_DIR="$_val"
-fi
-
-DCB_CACHE_BASE="${_DCB_BASE_DIR}/${DISTRO_ID}_backup"
-CACHE_DIR="${DCB_CACHE_BASE}/.rootfs_cache"
+CACHE_DIR="/mnt/SysLinuxOS_backup/.rootfs_cache"
 DCB_CACHE_LABEL=""
-if [ -d "$CACHE_DIR" ] && [ -f "${DCB_CACHE_BASE}/.backup_meta" ]; then
-    # Fix (2026-08-25 security scan, P0-4): this used to `source` the meta
-    # file as root with no validation. Anyone able to write to that mount
-    # (external drive, compromised backup target) could plant arbitrary bash
-    # and get it executed on the next run. Parse only plain KEY="VALUE" lines
-    # for the three keys we actually use — never execute the file's content.
+if [ -d "$CACHE_DIR" ] && [ -f "/mnt/SysLinuxOS_backup/.backup_meta" ]; then
     _META_DATE=""; _META_DISTRO=""; _META_SIZE=""
-    while IFS='=' read -r _key _val; do
-        _val="${_val%\"}"; _val="${_val#\"}"
-        case "$_key" in
-            META_DATE)   _META_DATE="$_val" ;;
-            META_DISTRO) _META_DISTRO="$_val" ;;
-            META_SIZE)   _META_SIZE="$_val" ;;
-        esac
-    done < <(grep -E '^(META_DATE|META_DISTRO|META_SIZE)="[^"]*"$' "${DCB_CACHE_BASE}/.backup_meta" 2>/dev/null)
+    # shellcheck source=/dev/null
+    source /mnt/SysLinuxOS_backup/.backup_meta 2>/dev/null || true
+    _META_DATE="${META_DATE:-}"
+    _META_DISTRO="${META_DISTRO:-}"
+    _META_SIZE="${META_SIZE:-}"
     [ -n "$_META_DATE" ] && DCB_CACHE_LABEL="$_META_DATE | $_META_DISTRO | $_META_SIZE"
 fi
 
@@ -2045,13 +2011,7 @@ log_msg "$MSG_STEP7"
 
 # SOURCE must be / (skip check in cache mode)
 if [ "$SOURCE_MODE" != "cache" ] && [ "$SOURCE" != "/" ]; then
-    # Fix (2026-08-25 security scan, P2): MSG_ERR_SOURCE stores the literal
-    # placeholder text `$SOURCE` (backslash-escaped at assignment) and used
-    # `eval echo` to substitute it at error time. $SOURCE is trusted today, but
-    # eval re-parses the whole string as a shell command — any future message
-    # built from less-trusted input would be arbitrary code execution. Plain
-    # substring substitution gets the same deferred-expansion result safely.
-    log_msg "${MSG_ERR_SOURCE/\$SOURCE/$SOURCE}"
+    log_msg "$(eval echo "$MSG_ERR_SOURCE")"
     exit 1
 fi
 
@@ -2080,51 +2040,31 @@ log_msg "$MSG_STEP8"
 
 if [ "$SOURCE_MODE" = "cache" ]; then
     log_msg "  [DCB] Source: $CACHE_DIR"
-    # Fix (2026-08-27): try a btrfs reflink clone first — near-instant, ~0 extra
-    # disk use until blocks are actually modified later by chroot/apt/sed steps.
-    # Only works when $CACHE_DIR and $DEST are on the *same* btrfs filesystem
-    # (cross-device reflink is impossible); falls back to the original full
-    # rsync, exclude list preserved, whenever that's not the case.
-    if cp -a --reflink=always "$CACHE_DIR/." "$DEST/" 2>/dev/null; then
-        log_msg "  [DCB] reflink clone OK — stripping excluded paths"
-        rm -rf "$DEST"/dev "$DEST"/proc "$DEST"/sys "$DEST"/run \
-               "$DEST"/tmp/* "$DEST"/mnt/* "$DEST"/media/* \
-               "$DEST"/lost+found "$DEST"/swapfile \
-               "$DEST"/home/* "$DEST"/root/* \
-               "$DEST"/var/cache/apt/archives/* "$DEST"/var/lib/apt/lists/* \
-               "$DEST"/var/log/* "$DEST"/var/tmp/* \
-               "$DEST"/etc/NetworkManager/system-connections/* \
-               "$DEST"/snap "$DEST"/var/snap "$DEST"/var/lib/snapd \
-               "$DEST"/.snapshots "$DEST"/@.rollback-bak-* 2>/dev/null
-        mkdir -p "$DEST"/{dev,proc,sys,run,tmp,mnt,media}
-    else
-        log_msg "  [DCB] reflink unavailable (different filesystem) — full rsync"
-        rsync -aAXH --numeric-ids --info=progress2 \
-          --exclude=/dev/* \
-          --exclude=/proc/* \
-          --exclude=/sys/* \
-          --exclude=/run/* \
-          --exclude=/tmp/* \
-          --exclude=/mnt/* \
-          --exclude=/media/* \
-          --exclude=/lost+found \
-          --exclude=/swapfile \
-          --exclude=/home/* \
-          --exclude=/root/* \
-          --exclude=/var/cache/apt/archives/* \
-          --exclude=/var/lib/apt/lists/* \
-          --exclude=/var/log/* \
-          --exclude=/var/tmp/* \
-          --exclude=/etc/NetworkManager/system-connections/* \
-          --exclude=/snap \
-          --exclude=/snap/* \
-          --exclude=/var/snap \
-          --exclude=/var/lib/snapd \
-          --exclude=/.snapshots \
-          --exclude=/.snapshots/* \
-          --exclude=/@.rollback-bak-* \
-          "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
-    fi
+    rsync -aAXH --numeric-ids --info=progress2 \
+      --exclude=/dev/* \
+      --exclude=/proc/* \
+      --exclude=/sys/* \
+      --exclude=/run/* \
+      --exclude=/tmp/* \
+      --exclude=/mnt/* \
+      --exclude=/media/* \
+      --exclude=/lost+found \
+      --exclude=/swapfile \
+      --exclude=/home/* \
+      --exclude=/root/* \
+      --exclude=/var/cache/apt/archives/* \
+      --exclude=/var/lib/apt/lists/* \
+      --exclude=/var/log/* \
+      --exclude=/var/tmp/* \
+      --exclude=/etc/NetworkManager/system-connections/* \
+      --exclude=/snap \
+      --exclude=/snap/* \
+      --exclude=/var/snap \
+      --exclude=/var/lib/snapd \
+      --exclude=/.snapshots \
+      --exclude=/.snapshots/* \
+      --exclude=/@.rollback-bak-* \
+      "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
 else
     rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
       --exclude=/dev/* \
@@ -2202,31 +2142,10 @@ fi
 ############################################
 log_msg "$MSG_STEP10"
 
-# Fix (2026-08-25 security scan, P1): with `set -e` active, any command
-# failing between here and the UMOUNT CHROOT step below used to leave
-# $DEST/proc,sys,dev,dev/pts,run,tmp bind-mounted on script exit. A later
-# manual `rm -rf "$DEST"` against that half-torn-down state would recurse
-# through the bind mounts into the HOST's real /proc,/sys,/dev — this trap
-# unmounts them on any exit, not just the normal path at step 18.
-chroot_cleanup() {
-  local ec=$?
-  for d in tmp dev/pts dev run sys proc; do
-    umount -l "$DEST/$d" 2>/dev/null || true
-  done
-  exit "$ec"
-}
-trap chroot_cleanup EXIT
-
-for d in proc sys dev dev/pts run; do
+for d in proc sys dev dev/pts run tmp; do
   mkdir -p "$DEST/$d"
   mount --bind "/$d" "$DEST/$d"
 done
-# Fix (2026-08-25 security scan, P0-5): tmp used to be bind-mounted straight
-# to the host's real /tmp — step 13 below then does `rm -rf "$DEST"/tmp/*`,
-# which wiped the live host's /tmp on every single run. Use a fresh tmpfs
-# instead so the chroot has its own throwaway /tmp, untouched by the host.
-mkdir -p "$DEST/tmp"
-mount -t tmpfs tmpfs "$DEST/tmp"
 chmod 1777 "$DEST/tmp"
 
 ############################################
@@ -2235,11 +2154,7 @@ chmod 1777 "$DEST/tmp"
 log_msg "$MSG_STEP11"
 
 for u in $(awk -F: '$3>=1000 && $3<65534 {print $1}' "$DEST/etc/passwd"); do
-  # Fix (2026-08-25 security scan, P2): $u was interpolated straight into the
-  # sed regex unescaped — a username containing a regex metacharacter
-  # (./*^$\) would match the wrong line(s) or fail to match at all. Escape it.
-  u_esc=$(printf '%s' "$u" | sed 's/[.[\*^$\/]/\\&/g')
-  [ "$u" != "$LIVE_USER" ] && sed -i "/^$u_esc:/d" "$DEST/etc/"{passwd,shadow,group,gshadow} || true
+  [ "$u" != "$LIVE_USER" ] && sed -i "/^$u:/d" "$DEST/etc/"{passwd,shadow,group,gshadow} || true
   rm -rf "$DEST/home/$u"
 done
 
@@ -2255,17 +2170,6 @@ chmod 755 "$DEST/boot" "$DEST/boot/grub" "$DEST/boot/efi"
 # [13/30] PRE-CLEANUP
 ############################################
 log_msg "$MSG_STEP13"
-
-# Fix (2026-08-25 security scan, P2): this destructive block used to run
-# before the [19/30] SANITY CHECK step further down — harmless today since
-# $DEST is a fixed "$LIVE_DIR/rootfs" set once near the top and step 7 already
-# confirms it isn't itself mounted, but a future refactor that lets $DEST go
-# empty here would turn every "$DEST"/... path into a host-root path. Cheap,
-# local guard instead of moving the whole sanity-check step earlier.
-if [ -z "$DEST" ] || [ "$DEST" = "/" ]; then
-    log_msg "ERROR: DEST is empty or '/' — refusing to run cleanup"
-    exit 1
-fi
 
 rm -rf "$DEST"/var/cache/apt/archives/*.deb
 rm -rf "$DEST"/var/lib/apt/lists/*
@@ -3340,24 +3244,16 @@ if [ "$BOOT_MODE" = "uefi" ]; then
     exit 1
   fi
 
-  # Rename away any existing case-variant EFI directories (FAT32 case-insensitive
-  # conflict). Without this, old lowercase dirs (e.g. syslinuxos) coexist with new
-  # mixed-case dirs (e.g. SysLinuxOS), causing UEFI to load the wrong grubx64.efi
-  # → GRUB console.
-  # Fix (2026-08-25 security scan, P2): this used to `rm -rf` the match outright.
-  # BOOTLOADER_ID falls back to the literal string "Debian" when /etc/os-release
-  # is missing on the target — on a real dual-boot machine with an actual Debian
-  # install, that would permanently delete the OTHER OS's real GRUB EFI directory,
-  # not just a stale leftover of our own. Rename instead of deleting: it still
-  # clears the case collision, but a real other-OS directory survives, recoverable.
+  # Remove any existing case-variant EFI directories (FAT32 case-insensitive conflict)
+  # Without this, old lowercase dirs (e.g. syslinuxos) coexist with new mixed-case
+  # dirs (e.g. SysLinuxOS), causing UEFI to load the wrong grubx64.efi → GRUB console
   BOOTLOADER_ID_LOWER="${BOOTLOADER_ID,,}"
   for existing_dir in /boot/efi/EFI/*/; do
     [ -d "$existing_dir" ] || continue
     dirname=$(basename "$existing_dir")
-    if [ "${dirname,,}" = "$BOOTLOADER_ID_LOWER" ] && [ "$dirname" != "$BOOTLOADER_ID" ]; then
-      backup_dir="${existing_dir%/}.preinstall-backup-$(date +%s)"
-      echo "[INFO] Case-conflicting EFI dir found, renaming out of the way (not deleting): $existing_dir -> $backup_dir"
-      mv "$existing_dir" "$backup_dir"
+    if [ "${dirname,,}" = "$BOOTLOADER_ID_LOWER" ]; then
+      echo "[INFO] Removing existing EFI dir (case conflict): $existing_dir"
+      rm -rf "$existing_dir"
     fi
   done
 
@@ -3436,7 +3332,6 @@ else
   echo "[OK] GRUB BIOS installed successfully"
 fi
 
-export GRUB_DISABLE_OS_PROBER=true
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Initramfs rebuild deferred to remove-live-admin.service at first boot of the
@@ -4136,23 +4031,12 @@ xorriso -as mkisofs \
   -isohybrid-apm-hfsplus \
   -append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B "$ISO_DIR/efiboot.img" \
   -output "$LIVE_DIR/$ISO_NAME" \
-  "$ISO_DIR" 2>&1 | grep -E "(Warning|Error)"
-# Fix (2026-08-25 security scan, P1): xorriso's own exit status used to be
-# thrown away by the pipe into grep, then masked again by `|| true` — a
-# killed or disk-full xorriso (truncated/corrupt ISO) still reported
-# "SUCCESS" below because that check only tested file-existence. Read the
-# real exit code via PIPESTATUS before it's gone.
-XORRISO_EXIT=${PIPESTATUS[0]}
+  "$ISO_DIR" 2>&1 | grep -E "(Warning|Error)" || true
 
 ############################################
 # [29/30] VERIFICA FINALE
 ############################################
 log_msg "$MSG_STEP29"
-
-if [ "$XORRISO_EXIT" -ne 0 ]; then
-  echo "ERROR: xorriso exited with status $XORRISO_EXIT — ISO was not built successfully." >&2
-  exit 1
-fi
 
 if [ -f "$LIVE_DIR/$ISO_NAME" ]; then
   ISO_SIZE_FINAL=$(du -h "$LIVE_DIR/$ISO_NAME" | cut -f1)
@@ -4193,18 +4077,11 @@ log_msg "$MSG_STEP30"
   
   # Rimuovi directory di lavoro
   echo "$MSG_REMOVING_DIR"
-  # Fix (2026-08-25 security scan, P2): unquoted $DISTRO_ID here means word
-  # splitting/globbing could turn a value with a space or wildcard into extra
-  # rm -rf targets — quote it. Also poll for the mountpoint to actually clear
-  # instead of a fixed `sleep 2` with errors silently swallowed by `|| true`.
   # Umount residui prima di rm
-  umount -lR "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || true
-  for _i in 1 2 3 4 5 6 7 8 9 10; do
-      mountpoint -q "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || break
-      sleep 1
-  done
-  rm -rf "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || true
-  rm -rf "/mnt/${DISTRO_ID}_live/iso" 2>/dev/null || true
+  umount -lR /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
+  sleep 2
+  rm -rf /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
+  rm -rf /mnt/${DISTRO_ID}_live/iso 2>/dev/null || true
 
   # Rimuovi voce "Install Debian" dal sistema host
   # calamares-settings-debian deploya /etc/xdg/autostart/calamares-desktop-icon.desktop

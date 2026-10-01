@@ -1,5 +1,5 @@
 Package: distroclone
-Version: 1.4.14
+Version: 1.4.11
 Section: admin
 Priority: optional
 Architecture: all
@@ -22,4 +22,4 @@ Description: DistroClone - Universal Live ISO Builder
   - Real-time build log window
   - Success/error completion dialogs
   - Automatic cleanup of live packages after installation
-Installed-Size: 2652
+Installed-Size: 2628
