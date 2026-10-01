@@ -84,6 +84,7 @@ if [ -z "$DISTROCLONE_LANG" ]; then
         es*) DISTROCLONE_LANG="es" ;;
         de*) DISTROCLONE_LANG="de" ;;
         pt*) DISTROCLONE_LANG="pt" ;;
+        ru*) DISTROCLONE_LANG="ru" ;;
         *)   DISTROCLONE_LANG="en" ;;
     esac
 fi
@@ -1312,6 +1313,240 @@ load_lang_pt() {
     MSG_GRUB_INSTALL="Instalar"
 }
 
+# Russian translation by Андрей Ступак (Andrey Stupak)
+load_lang_ru() {
+    # --- Startup ---
+    MSG_BANNER_TITLE="🐧 DistroClone - Live ISO Builder"
+    MSG_ERROR_OS_RELEASE="ОШИБКА: /etc/os-release не найден!"
+    MSG_DETECTED_DISTRO="Обнаружен дистрибутив:"
+    MSG_NAME="Имя"
+    MSG_VERSION="Версия"
+    MSG_DESKTOP="Рабочий стол"
+    MSG_ARCHITECTURE="Архитектура"
+    MSG_KERNEL="Ядро"
+
+    # --- Splash ---
+    MSG_SPLASH_TITLE="DistroClone"
+    MSG_SPLASH_TEXT="\n<big><b>DistroClone - Конструктор Live ISO</b></big>\n\n<i>Инициализация, пожалуйста, подождите...\nУстановка необходимых пакетов...</i>\n"
+
+    # --- GUI detection ---
+    MSG_STEP0="[0/28] Автоопределение дистрибутива"
+    MSG_STEP1="[1/30] Выбор графического интерфейса"
+    MSG_GUI_SELECTED="✓ Выбран графический интерфейс"
+    MSG_STEP2="[2/30] Обработчик запросов GUI"
+    MSG_STEP3="[3/30] Приветственное окно GUI"
+    MSG_STEP3x1="[3x1/30] Предварительная очистка"
+    MSG_YAD_DETECTED="✓ Обнаружен YAD — расширенный интерфейс"
+    MSG_ZENITY_DETECTED="✓ Обнаружен Zenity — стандартный интерфейс"
+    MSG_NO_GUI="Графический интерфейс недоступен — режим терминала"
+
+    # --- Question wrapper ---
+    MSG_BTN_YES="Да"
+    MSG_BTN_NO="Нет"
+    MSG_TTY_YN="y/N"
+    MSG_TTY_PROCEED_YN="s/n"
+
+    # --- Welcome dialog ---
+    MSG_WELCOME_TITLE="DistroClone Universal ISO Builder v1.4.7"
+    MSG_WELCOME_HEADING="Добро пожаловать в DistroClone"
+    MSG_WELCOME_SUBTITLE="Универсальный конструктор образов Live ISO для дистрибутивов на базе Debian"
+    MSG_SYSTEM_DETECTED="Обнаруженная система"
+    MSG_DISTRO="Дистрибутив"
+    MSG_ISO_CREATED="Создаваемый ISO"
+    MSG_ISO_GENERATED="Параметры генерируемого ISO-образа"
+    MSG_BUILD_CONFIG="Настройка процесса сборки:"
+    MSG_FIELD_COMPRESSION="<b>Тип сжатия Squashfs</b>:"
+    MSG_COMP_STANDARD="Стандартное xz (15-20 мин)"
+    MSG_COMP_FAST="Быстрое lz4 (5-10 мин)"
+    MSG_COMP_MAX="Максимальное xz+bcj (25-35 мин)"
+    MSG_FIELD_PASSWORD="<b>Пароль root для live-системы</b> (пользователь: admin):"
+    MSG_FIELD_HOSTNAME="<b>Имя хоста live-системы</b>:"
+    MSG_MIN_REQUIREMENTS="Минимальные требования"
+    MSG_MIN_REQ_TEXT="• Место на диске: 4–6 ГБ свободного места в /mnt\n• Оперативная память: минимум 2 ГБ\n• Примерное время: 10–30 минут (зависит от выбранного сжатия)"
+    MSG_BTN_CANCEL="Отмена!gtk-cancel"
+    MSG_BTN_NEXT="Далее — начать сборку!gtk-ok"
+    MSG_BUILD_CANCELED="Сборка отменена пользователем"
+    MSG_CHOSEN_CONFIG="✓ Выбранная конфигурация:"
+    MSG_COMPRESSION="Сжатие"
+    MSG_PASSWORD_ROOT="Пароль root"
+    MSG_DEFAULT_ROOT="по умолчанию (root)"
+    MSG_PERSONALIZED="персональный"
+    MSG_DEFAULT_CONFIG="✓ Использование настроек по умолчанию"
+    MSG_ZENITY_MODE="(Режим Zenity)"
+    MSG_PROCESS="Процесс"
+    MSG_PROCESS_TEXT="[00-28] Клонирование → Настройка → Squashfs → ISO"
+    MSG_PRESS_OK="Нажмите OK, чтобы начать создание Live ISO..."
+    MSG_PROCEED_BUILD="Приступить к сборке?"
+    MSG_BUILD_CANCELLED="Сборка отменена"
+
+    # --- TTY welcome ---
+    MSG_TTY_UNIVERSAL="Универсальный"
+    MSG_TTY_LIVEISOBUILDER="Конструктор Live ISO для систем на базе Debian"
+    MSG_TTY_DATE="Дата"
+    MSG_TTY_SYSTEM_DETECTED="ОБНАРУЖЕННАЯ СИСТЕМА"
+    MSG_TTY_ISO_GENERATED="ПАРАМЕТРЫ ГЕНЕРИРУЕМОГО ISO"
+    MSG_TTY_REQUIREMENTS="ТРЕБОВАНИЯ"
+    MSG_TTY_DISKSPACE="Место на диске: 4–6 ГБ свободного пространства в /mnt"
+    MSG_TTY_RAM="Оперативная память: минимум 2 ГБ"
+    MSG_TTY_TIME="Ориентировочное время: 10–30 минут"
+
+    # --- Build log ---
+    MSG_BUILDLOG_TITLE="DistroClone — Журнал сборки"
+    MSG_BTN_HIDE="Скрыть"
+
+    # --- Steps ---
+    MSG_STEP4="[4/30] Конфигурация"
+    MSG_STEP5="[5/30] Очистка точек монтирования"
+    MSG_STEP6="[6/30] Подготовка каталогов монтирования"
+    MSG_STEP7="[7/30][PRE] Проверка параметров SOURCE и состояния монтирования"
+    MSG_ERR_SOURCE="ОШИБКА: SOURCE должен быть / (обнаружено: \$SOURCE)"
+    MSG_ERR_DEST_MOUNTED="ОШИБКА: DEST уже смонтирован"
+    MSG_ERR_LIVEDIR_MOUNTED="ОШИБКА: LIVE_DIR смонтирован (риск рекурсивного клонирования)"
+    MSG_WARN_MULTI_ROOT="ПРЕДУПРЕЖДЕНИЕ: обнаружено несколько корневых файловых систем"
+    MSG_STEP8="[8/30] Клонирование системы с помощью rsync (это может занять несколько минут)..."
+    MSG_FORCED_CLEAN_HOME="→ Принудительная очистка /home в клонированной системе"
+    MSG_STEP9="[9/30] Очистка инструментов сборки"
+    MSG_ERR_DEST_NOTSET="ОШИБКА: Переменная DEST не задана или каталог не существует; очистка отменена"
+    MSG_STEP10="[10/30] Bind-монтирование окружения chroot"
+    MSG_STEP11="[11/30] Удаление пользователей хост-системы"
+    MSG_STEP12="[12/30] Подготовка каталога /boot для Calamares"
+    MSG_STEP13="[13/30] Предсборочная очистка"
+    MSG_STEP14="[14/30] Настройка логотипа, профилей и /etc/skel"
+    # --- User config dialog ---
+    MSG_USERCONF_TITLE="DistroClone — Пользовательские настройки"
+    MSG_USERCONF_HEADING="<b>Скопировать текущие пользовательские настройки в /etc/skel?</b>"
+    MSG_USERCONF_TEXT="Это позволит новым пользователям, созданным после установки системы,\nиметь те же параметры оформления (тему, значки, макет рабочего стола).\n\n<b>Что БУДЕТ скопировано:</b>\n- Настройки рабочего стола (тема, иконки, обои)\n- Расположение панелей и док-станций\n- Общие конфигурации приложений\n\n<b>Что НЕ БУДЕТ скопировано:</b>\n- Пароли, ключи и личные учетные данные\n- Кэш и временные файлы сессий\n- Настройки VirtualBox/Nextcloud и т. д.\n\n<i>Рекомендуется, если вы создаете дистрибутив со своим уникальным преднастроенным интерфейсом.</i>"
+    MSG_TTY_COPY_CONFIG="Скопировать настройки?"
+    MSG_USER_DETECTED="→ Обнаружен пользователь"
+    MSG_SKEL_COPIED="✓ Настройки успешно скопированы в /etc/skel"
+    MSG_SKEL_NEWUSERS="✓ Новые пользователи получат идентичный интерфейс"
+    MSG_SKEL_NOTFOUND="✗ Не удалось найти каталог .config для пользователя"
+    MSG_SKEL_CLEANING="→ Очистка /etc/skel от специфичных конфигураций хоста"
+    MSG_SKEL_KEEPING="✓ Сохранены параметры по умолчанию"
+    MSG_SKEL_DEFAULT="→ В /etc/skel оставлены только стандартные системные настройки"
+
+    # --- Branding ---
+    MSG_STEP15="[15/30] Динамический брендинг Calamares"
+    MSG_LOGO_COPIED="✓ Логотип DistroClone скопирован"
+    MSG_LOGO_NOTFOUND="→ Логотип DistroClone не найден, генерируется встроенный шестиугольный логотип"
+    MSG_LOGO_GENERATED="✓ Встроенный шестиугольный логотип DistroClone сгенерирован"
+    MSG_WELCOME_COPIED="✓ Экран приветствия DistroClone скопирован"
+    MSG_WELCOME_NOTFOUND="→ Экран приветствия DistroClone не найден, создается стандартная заглушка"
+    MSG_BRANDING_DESC="→ Создание файла branding.desc"
+    MSG_BRANDING_QML="→ Создание файла show.qml"
+    MSG_BRANDING_DONE="✓ Брендинг успешно настроен в"
+    MSG_INSTALLER_COPIED="✓ Значок установщика DistroClone скопирован"
+    MSG_INSTALLER_NOTFOUND="→ Значок установщика не найден, используется встроенный Hexagon-логотип"
+    MSG_INSTALLER_GENERATED="✓ Встроенный шестиугольный значок установщика сгенерирован"
+
+    # --- Chroot ---
+    MSG_STEP16="[16/30] Настройка Chroot"
+    MSG_CHROOT_INSTALLING="→ Chroot: установка пакетов и конфигурация системы (это может занять несколько минут)..."
+    MSG_CHROOT_DONE="✓ Настройка chroot успешно завершена"
+
+    # --- Post install ---
+    MSG_STEP17="[17/30] Подключение хуков очистки после установки"
+    MSG_STEP18="[18/30] Размонтирование chroot"
+    MSG_STEP19="[19/30] Проверка целостности /boot"
+    MSG_ERR_MISSING="ОШИБКА: Отсутствует"
+    MSG_STEP20="[20/30] Копирование ядра и initrd"
+    MSG_ERR_KERNEL="ОШИБКА: Ядро или initrd не найдены!"
+
+    # --- Manual edit ---
+    MSG_STEP21="[21/30] Расширенное ручное редактирование"
+    MSG_MANEDIT_TITLE="DistroClone — Расширенные настройки"
+    MSG_MANEDIT_HEADING="<b>Хотите ли вы внести ручные изменения в файловую систему перед сжатием в squashfs?</b>"
+    MSG_MANEDIT_TEXT="Эта опция предназначена для опытных пользователей, которые хотят:\n- Добавить или удалить пакеты внутри chroot-окружения\n- Вручную отредактировать конфигурационные файлы\n- Тонко настроить систему до начала финальной компрессии"
+    MSG_MANEDIT_PATH="Путь к chroot:"
+    MSG_MANEDIT_SELECT="Выберите <b>Нет</b>, чтобы продолжить в стандартном автоматическом режиме."
+    MSG_MANEDIT_ZENITY="Хотите ли вы внести изменения в файловую систему вручную перед созданием squashfs?"
+    MSG_BTN_EDIT="Да, я хочу внести изменения"
+    MSG_BTN_CONTINUE="Нет, продолжить сборку"
+    MSG_PAUSE_TITLE="ПАУЗА — РАЗРЕШЕНО РУЧНОЕ РЕДАКТИРОВАНИЕ"
+    MSG_PAUSE_AVAILABLE="Файловая система доступна по пути:"
+    MSG_PAUSE_CHROOT="Для входа в chroot выполните:"
+    MSG_PAUSE_DONE="Когда завершите изменения, нажмите ENTER в этом терминале для продолжения."
+    MSG_PAUSE_ENTER="Нажмите ENTER, чтобы запустить процесс создания squashfs..."
+    MSG_PAUSE_SHOOTING="Выполнение операций..."
+
+    # --- Compression selection ---
+    MSG_STEP22="[22/30] Выбор алгоритма сжатия SquashFS"
+    MSG_COMP_SELECT_TITLE="Сжатие SquashFS"
+    MSG_COMP_SELECT_TEXT="Выберите желаемый тип сжатия:"
+    MSG_COMP_USING="Использовать"
+    MSG_COMP_CODE="Код"
+    MSG_COMP_DESCRIPTION="Описание"
+    MSG_COMP_FAST_DESC="Быстрое (lz4, ISO-образ будет больше)"
+    MSG_COMP_STD_DESC="Стандартное (сбалансированный xz)"
+    MSG_COMP_MAX_DESC="Максимальное сжатие (xz -Xbcj x86)"
+    MSG_TTY_SELECT_COMP="Выберите сжатие SquashFS:"
+    MSG_TTY_COMP_FAST="Быстрое (lz4, 5-10 мин)"
+    MSG_TTY_COMP_STD="Стандартное (xz, 15-20 мин) [по умолчанию]"
+    MSG_TTY_COMP_MAX="Максимальное (xz+bcj, 25-35 мин)"
+    MSG_TTY_CHOICE="Ваш выбор (F/S/M)"
+    MSG_COMP_FAST_LOG="→ Выбрано быстрое сжатие (lz4)"
+    MSG_COMP_STD_LOG="→ Выбрано стандартное сжатие (xz)"
+    MSG_COMP_MAX_LOG="→ Выбрано максимальное сжатие (xz+bcj)"
+
+    # --- Squashfs ---
+    MSG_STEP23="[23/30] Создание filesystem.squashfs (это может занять несколько минут)..."
+    MSG_SQUASH_SIZE="✓ Размер Squashfs"
+
+    # --- GRUB ---
+    MSG_STEP24="[24/30] Конфигурация меню GRUB"
+    MSG_GRUB_CUSTOM="✓ Скопирован пользовательский фон GRUB (переопределение)"
+    MSG_GRUB_DEFAULT="✓ Сгенерирован стандартный фон GRUB (темно-синее стекло)"
+    MSG_GRUB_NOCONVERT="⚠ Утилита convert недоступна — используется резервный черный фон"
+    MSG_STEP25="[25/30] Сборка бинарных файлов GRUB EFI"
+
+    # --- EFI/ISO ---
+    MSG_STEP26="[26/30] Создание efiboot.img"
+    MSG_STEP27="[27/30] Создание загрузчика isolinux BIOS"
+    MSG_STEP28="[28/30] Генерация загрузочного образа ISO (может занять несколько минут)..."
+    MSG_WARN_BIGISO="Внимание: Слишком большой размер ISO, возможны проблемы на старых платах с BIOS"
+
+    # --- Final ---
+    MSG_STEP29="[29/30] Верификация ISO и расчет контрольных сумм md5/sha256 (это займет время)..."
+    MSG_ISO_SUCCESS="✓ СБОРКА ISO-ОБРАЗА УСПЕШНО ЗАВЕРШЕНА!"
+    MSG_FILE="Файл"
+    MSG_SIZE="Размер"
+    MSG_MD5_GEN="Генерация хэш-сумм MD5 и SHA256"
+    MSG_CREATED="Создано"
+    MSG_TEST_ISO="Для тестирования полученного ISO:"
+    MSG_TEST_QEMU="QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom"
+    MSG_TEST_VBOX="VirtualBox: Создайте новую виртуальную машину и смонтируйте образ"
+    MSG_TEST_USB="USB: dd if="
+
+    # --- Host system cleanup ---
+    MSG_STEP30="[30/30] (Финальный шаг) Полная очистка хост-системы"
+    MSG_REMOVING_CALAMARES="→ Удаление временных конфигураций Calamares из хост-системы..."
+    MSG_WARN_CALA_FAIL="Внимание: Не удалось полностью очистить следы Calamares"
+    MSG_CALAMARES_REMOVED="✓ Следы Calamares удалены из хост-системы"
+    MSG_REMOVING_LIVEBOOT="→ Удаление компонентов пакета live-boot и зависимостей из хост-системы..."
+    MSG_REMOVING_DIR="→ Удаление временных сборочных каталогов..."
+
+    # --- Final dialog ---
+    MSG_COMPLETED_TITLE="DistroClone — Готово"
+    MSG_ISO_SUCCESS_BIG="<big><b>✓ Live ISO-образ успешно создан!</b></big>"
+    MSG_TEST_TEXT="<b>Проверка ISO-образа:</b>\n• QEMU: qemu-system-x86_64 -enable-kvm -m 4G -bios /usr/share/ovmf/OVMF.fd -cdrom %ISO%\n• VirtualBox: Создайте виртуальную машину и подключите данный ISO\n• USB: dd if=%ISO% of=/dev/sdX bs=4M status=progress conv=fsync oflag=direct &amp;&amp; sudo sync"
+    MSG_ISO_ERROR="✗ ОШИБКА: ISO-образ не был создан!"
+    MSG_ERROR_TITLE="DistroClone — Ошибка сборки"
+    MSG_ISO_FAIL_BIG="<big><b>✗ Сбой создания ISO-образа!</b></big>\n\nИзучите вывод терминала для поиска подробностей."
+
+    # --- show.qml (Calamares slideshow) ---
+    MSG_QML_INSTALLING="Развертывание операционной системы..."
+    MSG_QML_WAIT="Пожалуйста, подождите, пока копируются системные файлы"
+    MSG_QML_CONFIGURING="Финальная настройка конфигураций..."
+    MSG_QML_SERVICES="Настройка учетных записей и запуск системных служб"
+    MSG_QML_ALMOST="Почти готово!"
+    MSG_QML_COMPLETE="Установка завершится в самое ближайшее время"
+
+    # --- GRUB menu entries ---
+    MSG_GRUB_TRY="Запустить "
+    MSG_GRUB_SAFE="Запустить Live (Безопасный режим графики VESA)"
+    MSG_GRUB_INSTALL="Установить "
+}
+
 # Load selected language
 case "$DISTROCLONE_LANG" in
     it) load_lang_it ;;
@@ -1319,6 +1554,7 @@ case "$DISTROCLONE_LANG" in
     es) load_lang_es ;;
     de) load_lang_de ;;
     pt) load_lang_pt ;;
+    ru) load_lang_ru ;;
     *)  load_lang_en ;;
 esac
 
@@ -1519,15 +1755,49 @@ rm -f /tmp/distroClone-splash.png 2>/dev/null
 
 # DCB cache detection
 SOURCE_MODE="live"
-CACHE_DIR="/mnt/SysLinuxOS_backup/.rootfs_cache"
+
+# Fix (2026-08-27): distroclone-backup's cache dir is user-configurable
+# (CACHE_BASE_DIR in its settings.conf) and no longer defaults to /mnt —
+# this used to hardcode /mnt/SysLinuxOS_backup, so the checkbox silently
+# vanished the moment the backup target moved to a different mount. Read
+# the same config distroclone-backup itself uses, falling back to /mnt
+# (the old default) when no config is found.
+_DCB_HOME=""
+if [ -n "$SUDO_USER" ]; then
+    _DCB_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+elif [ -n "$PKEXEC_UID" ]; then
+    _DCB_HOME=$(getent passwd "$PKEXEC_UID" | cut -d: -f6)
+fi
+_DCB_CONF=""
+if [ -n "$_DCB_HOME" ] && [ -f "$_DCB_HOME/.config/distroclone-backup/settings.conf" ]; then
+    _DCB_CONF="$_DCB_HOME/.config/distroclone-backup/settings.conf"
+elif [ -f "/etc/distroclone-backup/settings.conf" ]; then
+    _DCB_CONF="/etc/distroclone-backup/settings.conf"
+fi
+_DCB_BASE_DIR="/mnt"
+if [ -n "$_DCB_CONF" ]; then
+    _val=$(grep -E '^CACHE_BASE_DIR="[^"]*"$' "$_DCB_CONF" 2>/dev/null | tail -1 | cut -d'"' -f2)
+    [ -n "$_val" ] && _DCB_BASE_DIR="$_val"
+fi
+
+DCB_CACHE_BASE="${_DCB_BASE_DIR}/${DISTRO_ID}_backup"
+CACHE_DIR="${DCB_CACHE_BASE}/.rootfs_cache"
 DCB_CACHE_LABEL=""
-if [ -d "$CACHE_DIR" ] && [ -f "/mnt/SysLinuxOS_backup/.backup_meta" ]; then
+if [ -d "$CACHE_DIR" ] && [ -f "${DCB_CACHE_BASE}/.backup_meta" ]; then
+    # Fix (2026-08-25 security scan, P0-4): this used to `source` the meta
+    # file as root with no validation. Anyone able to write to that mount
+    # (external drive, compromised backup target) could plant arbitrary bash
+    # and get it executed on the next run. Parse only plain KEY="VALUE" lines
+    # for the three keys we actually use — never execute the file's content.
     _META_DATE=""; _META_DISTRO=""; _META_SIZE=""
-    # shellcheck source=/dev/null
-    source /mnt/SysLinuxOS_backup/.backup_meta 2>/dev/null || true
-    _META_DATE="${META_DATE:-}"
-    _META_DISTRO="${META_DISTRO:-}"
-    _META_SIZE="${META_SIZE:-}"
+    while IFS='=' read -r _key _val; do
+        _val="${_val%\"}"; _val="${_val#\"}"
+        case "$_key" in
+            META_DATE)   _META_DATE="$_val" ;;
+            META_DISTRO) _META_DISTRO="$_val" ;;
+            META_SIZE)   _META_SIZE="$_val" ;;
+        esac
+    done < <(grep -E '^(META_DATE|META_DISTRO|META_SIZE)="[^"]*"$' "${DCB_CACHE_BASE}/.backup_meta" 2>/dev/null)
     [ -n "$_META_DATE" ] && DCB_CACHE_LABEL="$_META_DATE | $_META_DISTRO | $_META_SIZE"
 fi
 
@@ -1775,7 +2045,13 @@ log_msg "$MSG_STEP7"
 
 # SOURCE must be / (skip check in cache mode)
 if [ "$SOURCE_MODE" != "cache" ] && [ "$SOURCE" != "/" ]; then
-    log_msg "$(eval echo "$MSG_ERR_SOURCE")"
+    # Fix (2026-08-25 security scan, P2): MSG_ERR_SOURCE stores the literal
+    # placeholder text `$SOURCE` (backslash-escaped at assignment) and used
+    # `eval echo` to substitute it at error time. $SOURCE is trusted today, but
+    # eval re-parses the whole string as a shell command — any future message
+    # built from less-trusted input would be arbitrary code execution. Plain
+    # substring substitution gets the same deferred-expansion result safely.
+    log_msg "${MSG_ERR_SOURCE/\$SOURCE/$SOURCE}"
     exit 1
 fi
 
@@ -1804,31 +2080,51 @@ log_msg "$MSG_STEP8"
 
 if [ "$SOURCE_MODE" = "cache" ]; then
     log_msg "  [DCB] Source: $CACHE_DIR"
-    rsync -aAXH --numeric-ids --info=progress2 \
-      --exclude=/dev/* \
-      --exclude=/proc/* \
-      --exclude=/sys/* \
-      --exclude=/run/* \
-      --exclude=/tmp/* \
-      --exclude=/mnt/* \
-      --exclude=/media/* \
-      --exclude=/lost+found \
-      --exclude=/swapfile \
-      --exclude=/home/* \
-      --exclude=/root/* \
-      --exclude=/var/cache/apt/archives/* \
-      --exclude=/var/lib/apt/lists/* \
-      --exclude=/var/log/* \
-      --exclude=/var/tmp/* \
-      --exclude=/etc/NetworkManager/system-connections/* \
-      --exclude=/snap \
-      --exclude=/snap/* \
-      --exclude=/var/snap \
-      --exclude=/var/lib/snapd \
-      --exclude=/.snapshots \
-      --exclude=/.snapshots/* \
-      --exclude=/@.rollback-bak-* \
-      "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
+    # Fix (2026-08-27): try a btrfs reflink clone first — near-instant, ~0 extra
+    # disk use until blocks are actually modified later by chroot/apt/sed steps.
+    # Only works when $CACHE_DIR and $DEST are on the *same* btrfs filesystem
+    # (cross-device reflink is impossible); falls back to the original full
+    # rsync, exclude list preserved, whenever that's not the case.
+    if cp -a --reflink=always "$CACHE_DIR/." "$DEST/" 2>/dev/null; then
+        log_msg "  [DCB] reflink clone OK — stripping excluded paths"
+        rm -rf "$DEST"/dev "$DEST"/proc "$DEST"/sys "$DEST"/run \
+               "$DEST"/tmp/* "$DEST"/mnt/* "$DEST"/media/* \
+               "$DEST"/lost+found "$DEST"/swapfile \
+               "$DEST"/home/* "$DEST"/root/* \
+               "$DEST"/var/cache/apt/archives/* "$DEST"/var/lib/apt/lists/* \
+               "$DEST"/var/log/* "$DEST"/var/tmp/* \
+               "$DEST"/etc/NetworkManager/system-connections/* \
+               "$DEST"/snap "$DEST"/var/snap "$DEST"/var/lib/snapd \
+               "$DEST"/.snapshots "$DEST"/@.rollback-bak-* 2>/dev/null
+        mkdir -p "$DEST"/{dev,proc,sys,run,tmp,mnt,media}
+    else
+        log_msg "  [DCB] reflink unavailable (different filesystem) — full rsync"
+        rsync -aAXH --numeric-ids --info=progress2 \
+          --exclude=/dev/* \
+          --exclude=/proc/* \
+          --exclude=/sys/* \
+          --exclude=/run/* \
+          --exclude=/tmp/* \
+          --exclude=/mnt/* \
+          --exclude=/media/* \
+          --exclude=/lost+found \
+          --exclude=/swapfile \
+          --exclude=/home/* \
+          --exclude=/root/* \
+          --exclude=/var/cache/apt/archives/* \
+          --exclude=/var/lib/apt/lists/* \
+          --exclude=/var/log/* \
+          --exclude=/var/tmp/* \
+          --exclude=/etc/NetworkManager/system-connections/* \
+          --exclude=/snap \
+          --exclude=/snap/* \
+          --exclude=/var/snap \
+          --exclude=/var/lib/snapd \
+          --exclude=/.snapshots \
+          --exclude=/.snapshots/* \
+          --exclude=/@.rollback-bak-* \
+          "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
+    fi
 else
     rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
       --exclude=/dev/* \
@@ -1906,10 +2202,31 @@ fi
 ############################################
 log_msg "$MSG_STEP10"
 
-for d in proc sys dev dev/pts run tmp; do
+# Fix (2026-08-25 security scan, P1): with `set -e` active, any command
+# failing between here and the UMOUNT CHROOT step below used to leave
+# $DEST/proc,sys,dev,dev/pts,run,tmp bind-mounted on script exit. A later
+# manual `rm -rf "$DEST"` against that half-torn-down state would recurse
+# through the bind mounts into the HOST's real /proc,/sys,/dev — this trap
+# unmounts them on any exit, not just the normal path at step 18.
+chroot_cleanup() {
+  local ec=$?
+  for d in tmp dev/pts dev run sys proc; do
+    umount -l "$DEST/$d" 2>/dev/null || true
+  done
+  exit "$ec"
+}
+trap chroot_cleanup EXIT
+
+for d in proc sys dev dev/pts run; do
   mkdir -p "$DEST/$d"
   mount --bind "/$d" "$DEST/$d"
 done
+# Fix (2026-08-25 security scan, P0-5): tmp used to be bind-mounted straight
+# to the host's real /tmp — step 13 below then does `rm -rf "$DEST"/tmp/*`,
+# which wiped the live host's /tmp on every single run. Use a fresh tmpfs
+# instead so the chroot has its own throwaway /tmp, untouched by the host.
+mkdir -p "$DEST/tmp"
+mount -t tmpfs tmpfs "$DEST/tmp"
 chmod 1777 "$DEST/tmp"
 
 ############################################
@@ -1918,7 +2235,11 @@ chmod 1777 "$DEST/tmp"
 log_msg "$MSG_STEP11"
 
 for u in $(awk -F: '$3>=1000 && $3<65534 {print $1}' "$DEST/etc/passwd"); do
-  [ "$u" != "$LIVE_USER" ] && sed -i "/^$u:/d" "$DEST/etc/"{passwd,shadow,group,gshadow} || true
+  # Fix (2026-08-25 security scan, P2): $u was interpolated straight into the
+  # sed regex unescaped — a username containing a regex metacharacter
+  # (./*^$\) would match the wrong line(s) or fail to match at all. Escape it.
+  u_esc=$(printf '%s' "$u" | sed 's/[.[\*^$\/]/\\&/g')
+  [ "$u" != "$LIVE_USER" ] && sed -i "/^$u_esc:/d" "$DEST/etc/"{passwd,shadow,group,gshadow} || true
   rm -rf "$DEST/home/$u"
 done
 
@@ -1934,6 +2255,17 @@ chmod 755 "$DEST/boot" "$DEST/boot/grub" "$DEST/boot/efi"
 # [13/30] PRE-CLEANUP
 ############################################
 log_msg "$MSG_STEP13"
+
+# Fix (2026-08-25 security scan, P2): this destructive block used to run
+# before the [19/30] SANITY CHECK step further down — harmless today since
+# $DEST is a fixed "$LIVE_DIR/rootfs" set once near the top and step 7 already
+# confirms it isn't itself mounted, but a future refactor that lets $DEST go
+# empty here would turn every "$DEST"/... path into a host-root path. Cheap,
+# local guard instead of moving the whole sanity-check step earlier.
+if [ -z "$DEST" ] || [ "$DEST" = "/" ]; then
+    log_msg "ERROR: DEST is empty or '/' — refusing to run cleanup"
+    exit 1
+fi
 
 rm -rf "$DEST"/var/cache/apt/archives/*.deb
 rm -rf "$DEST"/var/lib/apt/lists/*
@@ -3008,16 +3340,24 @@ if [ "$BOOT_MODE" = "uefi" ]; then
     exit 1
   fi
 
-  # Remove any existing case-variant EFI directories (FAT32 case-insensitive conflict)
-  # Without this, old lowercase dirs (e.g. syslinuxos) coexist with new mixed-case
-  # dirs (e.g. SysLinuxOS), causing UEFI to load the wrong grubx64.efi → GRUB console
+  # Rename away any existing case-variant EFI directories (FAT32 case-insensitive
+  # conflict). Without this, old lowercase dirs (e.g. syslinuxos) coexist with new
+  # mixed-case dirs (e.g. SysLinuxOS), causing UEFI to load the wrong grubx64.efi
+  # → GRUB console.
+  # Fix (2026-08-25 security scan, P2): this used to `rm -rf` the match outright.
+  # BOOTLOADER_ID falls back to the literal string "Debian" when /etc/os-release
+  # is missing on the target — on a real dual-boot machine with an actual Debian
+  # install, that would permanently delete the OTHER OS's real GRUB EFI directory,
+  # not just a stale leftover of our own. Rename instead of deleting: it still
+  # clears the case collision, but a real other-OS directory survives, recoverable.
   BOOTLOADER_ID_LOWER="${BOOTLOADER_ID,,}"
   for existing_dir in /boot/efi/EFI/*/; do
     [ -d "$existing_dir" ] || continue
     dirname=$(basename "$existing_dir")
-    if [ "${dirname,,}" = "$BOOTLOADER_ID_LOWER" ]; then
-      echo "[INFO] Removing existing EFI dir (case conflict): $existing_dir"
-      rm -rf "$existing_dir"
+    if [ "${dirname,,}" = "$BOOTLOADER_ID_LOWER" ] && [ "$dirname" != "$BOOTLOADER_ID" ]; then
+      backup_dir="${existing_dir%/}.preinstall-backup-$(date +%s)"
+      echo "[INFO] Case-conflicting EFI dir found, renaming out of the way (not deleting): $existing_dir -> $backup_dir"
+      mv "$existing_dir" "$backup_dir"
     fi
   done
 
@@ -3096,6 +3436,7 @@ else
   echo "[OK] GRUB BIOS installed successfully"
 fi
 
+export GRUB_DISABLE_OS_PROBER=true
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Initramfs rebuild deferred to remove-live-admin.service at first boot of the
@@ -3795,12 +4136,23 @@ xorriso -as mkisofs \
   -isohybrid-apm-hfsplus \
   -append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B "$ISO_DIR/efiboot.img" \
   -output "$LIVE_DIR/$ISO_NAME" \
-  "$ISO_DIR" 2>&1 | grep -E "(Warning|Error)" || true
+  "$ISO_DIR" 2>&1 | grep -E "(Warning|Error)"
+# Fix (2026-08-25 security scan, P1): xorriso's own exit status used to be
+# thrown away by the pipe into grep, then masked again by `|| true` — a
+# killed or disk-full xorriso (truncated/corrupt ISO) still reported
+# "SUCCESS" below because that check only tested file-existence. Read the
+# real exit code via PIPESTATUS before it's gone.
+XORRISO_EXIT=${PIPESTATUS[0]}
 
 ############################################
 # [29/30] VERIFICA FINALE
 ############################################
 log_msg "$MSG_STEP29"
+
+if [ "$XORRISO_EXIT" -ne 0 ]; then
+  echo "ERROR: xorriso exited with status $XORRISO_EXIT — ISO was not built successfully." >&2
+  exit 1
+fi
 
 if [ -f "$LIVE_DIR/$ISO_NAME" ]; then
   ISO_SIZE_FINAL=$(du -h "$LIVE_DIR/$ISO_NAME" | cut -f1)
@@ -3841,11 +4193,18 @@ log_msg "$MSG_STEP30"
   
   # Rimuovi directory di lavoro
   echo "$MSG_REMOVING_DIR"
+  # Fix (2026-08-25 security scan, P2): unquoted $DISTRO_ID here means word
+  # splitting/globbing could turn a value with a space or wildcard into extra
+  # rm -rf targets — quote it. Also poll for the mountpoint to actually clear
+  # instead of a fixed `sleep 2` with errors silently swallowed by `|| true`.
   # Umount residui prima di rm
-  umount -lR /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
-  sleep 2
-  rm -rf /mnt/${DISTRO_ID}_live/rootfs 2>/dev/null || true
-  rm -rf /mnt/${DISTRO_ID}_live/iso 2>/dev/null || true
+  umount -lR "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || true
+  for _i in 1 2 3 4 5 6 7 8 9 10; do
+      mountpoint -q "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || break
+      sleep 1
+  done
+  rm -rf "/mnt/${DISTRO_ID}_live/rootfs" 2>/dev/null || true
+  rm -rf "/mnt/${DISTRO_ID}_live/iso" 2>/dev/null || true
 
   # Rimuovi voce "Install Debian" dal sistema host
   # calamares-settings-debian deploya /etc/xdg/autostart/calamares-desktop-icon.desktop

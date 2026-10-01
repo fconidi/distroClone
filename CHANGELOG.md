@@ -7,6 +7,14 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.14 — 2026-10-01
+
+### Added
+- Russian (ru) translation, contributed by Андрей Ступак (Andrey Stupak)
+
+### Note
+- Source also includes changes from 1.4.11–1.4.13 (see package changelog)
+
 ## Version 1.4.10 — 2026-06-17
 
 ### Added
