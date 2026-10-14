@@ -3,9 +3,7 @@
 **Universal Live ISO Builder for Debian-based distributions**
 
 
-
 DistroClone creates a bootable live ISO image from any running Debian-based system, preserving the current configuration, installed packages, desktop theme, and user settings. The resulting ISO includes the Calamares installer for permanent installation on other machines.
-
 
 
 <img width="1472" height="720" alt="DC-Welcome" src="https://github.com/user-attachments/assets/ab9fdd83-f0aa-4017-b809-ab88aa559243" />
@@ -145,22 +143,6 @@ The ISO is created in `/mnt/<distro>_live/` with the naming convention:
 Examples: `Ubuntu-24.04-Gnome.iso`, `SysLinuxOS-12-Mate.iso`
 
 MD5 and SHA256 checksums are generated alongside the ISO.
-
-### Testing the ISO
-
-With VirtualBox:
-
-```
-Create a new VM and mount the ISO file.
-```
-
-With a USB drive:
-
-```bash
-sudo dd if=/mnt/<distro>_live/<n>.iso of=/dev/sdX bs=4M status=progress
-```
-
----
 
 ## Dependencies
 

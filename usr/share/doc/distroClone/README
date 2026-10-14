@@ -121,17 +121,6 @@ For example: `Ubuntu-24.04-Gnome.iso`, `SysLinuxOS-12-Mate.iso`
 
 MD5 and SHA256 checksums are generated alongside the ISO.
 
-### Testing the ISO
-
-With VirtualBox:
-
-    Create a new VM and mount the ISO file.
-
-With a USB drive:
-
-    sudo dd if=/mnt/<distro>_live/<n>.iso of=/dev/sdX bs=4M status=progress
-
-
 ## Dependencies
 
 ### Required (installed by .deb or script)
