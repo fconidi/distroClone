@@ -1,41 +1,5 @@
-
-
-# Internal agent documents stay local and must never be published.
-[Aa][Gg][Ee][Nn][Tt][Ss]*.[Mm][Dd]
-[Cc][Ll][Aa][Uu][Dd][Ee]*.[Mm][Dd]
-[Hh][Aa][Nn][Dd][Oo][Ff][Ff]*.[Mm][Dd]
-[Hh][Aa][Nn][Hh][Oo][Ff][Ff]*.[Mm][Dd]
-[Mm][Ee][Mm][Oo][Rr][Yy]*.[Mm][Dd]
-[Ss][Pp][Ee][Cc]*.[Mm][Dd]
-.remember/
-.claude/
-.codex/
-.agents/
-
-# Local planning, session notes and generated analysis reports.
-.superpowers/
-docs/superpowers/
-graphify-out/
-_wip-test/
-SESSION-NOTES*.[Mm][Dd]
-STATO*.[Mm][Dd]
-VALIDATION*.[Mm][Dd]
-[Tt][Aa][Ss][Kk][Ss]/*.md
-[Ss][Pp][Ee][Cc][Ss]/*.md
-[Pp][Ll][Aa][Nn][Ss]/*.md
-[Ss][Ee][Ss][Ss][Ii][Oo][Nn]*.md
-[Aa][Nn][Aa][Ll][Ii][Ss][Ii]*.md
-[Cc][Oo][Dd][Ee][Xx]*.md
-
-# Generated test/VM output is local; test source files remain versioned.
-.test-artifacts/
-.pytest_cache/
-test-results/
-playwright-report/
-coverage/
-htmlcov/
-*.qcow2
-*.vdi
-*.vmdk
-*.pcap
-*.pcapng
+__pycache__/
+build/
+dist/
+*.deb
+*.iso

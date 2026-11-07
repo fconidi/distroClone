@@ -62,8 +62,8 @@ DEFAULT PASSWORD LIVE = root
 
 ```bash
 sudo apt install -y yad
-sudo apt install -y ./distroClone_1.4.10_all.deb # recommended
-sudo dpkg -i distroClone_1.4.10_all.deb  
+sudo apt install -y ./distroclone_1.4.12_all.deb # recommended
+sudo dpkg -i distroclone_1.4.12_all.deb
 sudo apt install -f
 ```
 
@@ -78,6 +78,8 @@ The package installs:
 | `/usr/share/icons/hicolor/` | DC icon at 48, 128, 256 px |
 
 ### From script (standalone)
+
+Keep `DistroClone.sh` and `distroclone-safety.sh` in the same directory.
 
 ```bash
 chmod +x DistroClone.sh
@@ -185,6 +187,7 @@ DistroClone detects the running desktop environment and applies specific handlin
 
 ```
 DistroClone.sh            Main build script (multilanguage)
+distroclone-safety.sh     Work directory and clone safety helpers
 distroClone               Launcher script (multilanguage splash)
 distroClone-logo.png      Calamares branding logo (optional, auto-generated)
 distroClone-welcome.png   Calamares welcome image (optional)

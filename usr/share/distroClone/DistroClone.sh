@@ -7,6 +7,9 @@ set -e
 set -o pipefail
 trap '' PIPE
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/distroclone-safety.sh"
+
 # Funzione per trovare logo DC (pacchetto .deb → genera con convert)
 get_dc_logo() {
     local SIZE="${1:-128}"
@@ -190,7 +193,7 @@ load_lang_en() {
     # --- User config dialog ---
     MSG_USERCONF_TITLE="DistroClone - User Configurations"
     MSG_USERCONF_HEADING="<b>Copy user configurations to /etc/skel?</b>"
-    MSG_USERCONF_TEXT="This will allow new users created after installation\nto have the same settings (theme, icons, desktop layout).\n\n<b>What will be copied:</b>\n- Desktop configurations (theme, icons, wallpaper)\n- Panel and dock layout\n- Application preferences\n\n<b>What will NOT be copied:</b>\n- Password and credentials\n- Cache and temporary files\n- VirtualBox/Nextcloud configurations etc etc\n\n<i>Recommended if you want to distribute an ISO with preset configurations.</i>"
+    MSG_USERCONF_TEXT="This will allow new users created after installation\nto have the same settings (theme, icons, desktop layout).\n\n<b>What will be copied:</b>\n- Desktop configurations (theme, icons, wallpaper)\n- Panel and dock layout\n- Desktop appearance preferences\n\n<b>What will NOT be copied:</b>\n- Password and credentials\n- Cache and temporary files\n- Other application configurations\n\n<i>Recommended if you want to distribute an ISO with preset configurations.</i>"
     MSG_TTY_COPY_CONFIG="Copy configurations?"
     MSG_USER_DETECTED="→ User detected"
     MSG_SKEL_COPIED="✓ Configurations copied to /etc/skel"
@@ -422,7 +425,7 @@ load_lang_it() {
     # --- User config dialog ---
     MSG_USERCONF_TITLE="DistroClone - Configurazioni Utente"
     MSG_USERCONF_HEADING="<b>Copiare le configurazioni utente in /etc/skel?</b>"
-    MSG_USERCONF_TEXT="Questo permetterà ai nuovi utenti creati dopo l'installazione\ndi avere le stesse impostazioni (tema, icone, layout desktop).\n\n<b>Cosa verrà copiato:</b>\n- Configurazioni desktop (tema, icone, sfondo)\n- Layout pannello e dock\n- Preferenze applicazioni\n\n<b>Cosa NON verrà copiato:</b>\n- Password e credenziali\n- Cache e file temporanei\n- Configurazioni VirtualBox/Nextcloud ecc ecc\n\n<i>Consigliato se vuoi distribuire una ISO con configurazioni preimpostate.</i>"
+    MSG_USERCONF_TEXT="Questo permetterà ai nuovi utenti creati dopo l'installazione\ndi avere le stesse impostazioni (tema, icone, layout desktop).\n\n<b>Cosa verrà copiato:</b>\n- Configurazioni desktop (tema, icone, sfondo)\n- Layout pannello e dock\n- Preferenze estetiche del desktop\n\n<b>Cosa NON verrà copiato:</b>\n- Password e credenziali\n- Cache e file temporanei\n- Configurazioni di altre applicazioni\n\n<i>Consigliato se vuoi distribuire una ISO con configurazioni preimpostate.</i>"
     MSG_TTY_COPY_CONFIG="Copiare le configurazioni?"
     MSG_USER_DETECTED="→ Utente rilevato"
     MSG_SKEL_COPIED="✓ Configurazioni copiate in /etc/skel"
@@ -637,7 +640,7 @@ load_lang_fr() {
     MSG_STEP14="[14/30] Logo-config-utilisateur-/etc/skel"
     MSG_USERCONF_TITLE="DistroClone - Configurations Utilisateur"
     MSG_USERCONF_HEADING="<b>Copier les configurations utilisateur dans /etc/skel ?</b>"
-    MSG_USERCONF_TEXT="Cela permettra aux nouveaux utilisateurs créés après l'installation\nd'avoir les mêmes paramètres (thème, icônes, disposition du bureau).\n\n<b>Ce qui sera copié :</b>\n- Configurations du bureau (thème, icônes, fond d'écran)\n- Disposition du panneau et du dock\n- Préférences des applications\n\n<b>Ce qui ne sera PAS copié :</b>\n- Mots de passe et identifiants\n- Cache et fichiers temporaires\n- Configurations VirtualBox/Nextcloud etc.\n\n<i>Recommandé si vous souhaitez distribuer une ISO avec des configurations prédéfinies.</i>"
+    MSG_USERCONF_TEXT="Cela permettra aux nouveaux utilisateurs créés après l'installation\nd'avoir les mêmes paramètres (thème, icônes, disposition du bureau).\n\n<b>Ce qui sera copié :</b>\n- Configurations du bureau (thème, icônes, fond d'écran)\n- Disposition du panneau et du dock\n- Préférences visuelles du bureau\n\n<b>Ce qui ne sera PAS copié :</b>\n- Mots de passe et identifiants\n- Cache et fichiers temporaires\n- Configurations des autres applications\n\n<i>Recommandé si vous souhaitez distribuer une ISO avec des configurations prédéfinies.</i>"
     MSG_TTY_COPY_CONFIG="Copier les configurations ?"
     MSG_USER_DETECTED="→ Utilisateur détecté"
     MSG_SKEL_COPIED="✓ Configurations copiées dans /etc/skel"
@@ -827,7 +830,7 @@ load_lang_es() {
     MSG_STEP14="[14/30] Logo-config-usuario-/etc/skel"
     MSG_USERCONF_TITLE="DistroClone - Configuraciones de Usuario"
     MSG_USERCONF_HEADING="<b>¿Copiar configuraciones de usuario a /etc/skel?</b>"
-    MSG_USERCONF_TEXT="Esto permitirá que los nuevos usuarios creados después de la instalación\ntengan las mismas configuraciones (tema, iconos, disposición del escritorio).\n\n<b>Lo que se copiará:</b>\n- Configuraciones del escritorio (tema, iconos, fondo)\n- Disposición del panel y dock\n- Preferencias de aplicaciones\n\n<b>Lo que NO se copiará:</b>\n- Contraseñas y credenciales\n- Caché y archivos temporales\n- Configuraciones de VirtualBox/Nextcloud etc.\n\n<i>Recomendado si desea distribuir una ISO con configuraciones preestablecidas.</i>"
+    MSG_USERCONF_TEXT="Esto permitirá que los nuevos usuarios creados después de la instalación\ntengan las mismas configuraciones (tema, iconos, disposición del escritorio).\n\n<b>Lo que se copiará:</b>\n- Configuraciones del escritorio (tema, iconos, fondo)\n- Disposición del panel y dock\n- Preferencias visuales del escritorio\n\n<b>Lo que NO se copiará:</b>\n- Contraseñas y credenciales\n- Caché y archivos temporales\n- Configuraciones de otras aplicaciones\n\n<i>Recomendado si desea distribuir una ISO con configuraciones preestablecidas.</i>"
     MSG_TTY_COPY_CONFIG="¿Copiar configuraciones?"
     MSG_USER_DETECTED="→ Usuario detectado"
     MSG_SKEL_COPIED="✓ Configuraciones copiadas a /etc/skel"
@@ -1017,7 +1020,7 @@ load_lang_de() {
     MSG_STEP14="[14/30] Logo-Config-Benutzer-/etc/skel"
     MSG_USERCONF_TITLE="DistroClone - Benutzerkonfigurationen"
     MSG_USERCONF_HEADING="<b>Benutzerkonfigurationen nach /etc/skel kopieren?</b>"
-    MSG_USERCONF_TEXT="Dies ermöglicht neuen Benutzern nach der Installation\ndie gleichen Einstellungen (Theme, Icons, Desktop-Layout).\n\n<b>Was kopiert wird:</b>\n- Desktop-Konfigurationen (Theme, Icons, Hintergrund)\n- Panel- und Dock-Layout\n- Anwendungseinstellungen\n\n<b>Was NICHT kopiert wird:</b>\n- Passwörter und Anmeldedaten\n- Cache und temporäre Dateien\n- VirtualBox/Nextcloud-Konfigurationen usw.\n\n<i>Empfohlen wenn Sie eine ISO mit voreingestellten Konfigurationen verteilen möchten.</i>"
+    MSG_USERCONF_TEXT="Dies ermöglicht neuen Benutzern nach der Installation\ndie gleichen Einstellungen (Theme, Icons, Desktop-Layout).\n\n<b>Was kopiert wird:</b>\n- Desktop-Konfigurationen (Theme, Icons, Hintergrund)\n- Panel- und Dock-Layout\n- Desktop-Darstellungseinstellungen\n\n<b>Was NICHT kopiert wird:</b>\n- Passwörter und Anmeldedaten\n- Cache und temporäre Dateien\n- Konfigurationen anderer Anwendungen\n\n<i>Empfohlen wenn Sie eine ISO mit voreingestellten Konfigurationen verteilen möchten.</i>"
     MSG_TTY_COPY_CONFIG="Konfigurationen kopieren?"
     MSG_USER_DETECTED="→ Benutzer erkannt"
     MSG_SKEL_COPIED="✓ Konfigurationen nach /etc/skel kopiert"
@@ -1207,7 +1210,7 @@ load_lang_pt() {
     MSG_STEP14="[14/30] Logo-config-utilizador-/etc/skel"
     MSG_USERCONF_TITLE="DistroClone - Configurações do Utilizador"
     MSG_USERCONF_HEADING="<b>Copiar configurações do utilizador para /etc/skel?</b>"
-    MSG_USERCONF_TEXT="Isto permitirá que novos utilizadores criados após a instalação\ntenham as mesmas definições (tema, ícones, disposição do ambiente de trabalho).\n\n<b>O que será copiado:</b>\n- Configurações do ambiente de trabalho (tema, ícones, fundo)\n- Disposição do painel e dock\n- Preferências de aplicações\n\n<b>O que NÃO será copiado:</b>\n- Palavras-passe e credenciais\n- Cache e ficheiros temporários\n- Configurações VirtualBox/Nextcloud etc.\n\n<i>Recomendado se pretende distribuir uma ISO com configurações predefinidas.</i>"
+    MSG_USERCONF_TEXT="Isto permitirá que novos utilizadores criados após a instalação\ntenham as mesmas definições (tema, ícones, disposição do ambiente de trabalho).\n\n<b>O que será copiado:</b>\n- Configurações do ambiente de trabalho (tema, ícones, fundo)\n- Disposição do painel e dock\n- Preferências visuais do ambiente de trabalho\n\n<b>O que NÃO será copiado:</b>\n- Palavras-passe e credenciais\n- Cache e ficheiros temporários\n- Configurações de outras aplicações\n\n<i>Recomendado se pretende distribuir uma ISO com configurações predefinidas.</i>"
     MSG_TTY_COPY_CONFIG="Copiar configurações?"
     MSG_USER_DETECTED="→ Utilizador detectado"
     MSG_SKEL_COPIED="✓ Configurações copiadas para /etc/skel"
@@ -1415,7 +1418,7 @@ load_lang_ru() {
     # --- User config dialog ---
     MSG_USERCONF_TITLE="DistroClone — Пользовательские настройки"
     MSG_USERCONF_HEADING="<b>Скопировать текущие пользовательские настройки в /etc/skel?</b>"
-    MSG_USERCONF_TEXT="Это позволит новым пользователям, созданным после установки системы,\nиметь те же параметры оформления (тему, значки, макет рабочего стола).\n\n<b>Что БУДЕТ скопировано:</b>\n- Настройки рабочего стола (тема, иконки, обои)\n- Расположение панелей и док-станций\n- Общие конфигурации приложений\n\n<b>Что НЕ БУДЕТ скопировано:</b>\n- Пароли, ключи и личные учетные данные\n- Кэш и временные файлы сессий\n- Настройки VirtualBox/Nextcloud и т. д.\n\n<i>Рекомендуется, если вы создаете дистрибутив со своим уникальным преднастроенным интерфейсом.</i>"
+    MSG_USERCONF_TEXT="Это позволит новым пользователям, созданным после установки системы,\nиметь те же параметры оформления (тему, значки, макет рабочего стола).\n\n<b>Что БУДЕТ скопировано:</b>\n- Настройки рабочего стола (тема, иконки, обои)\n- Расположение панелей и док-станций\n- Настройки оформления рабочего стола\n\n<b>Что НЕ БУДЕТ скопировано:</b>\n- Пароли, ключи и личные учетные данные\n- Кэш и временные файлы сессий\n- Настройки других приложений\n\n<i>Рекомендуется, если вы создаете дистрибутив со своим уникальным преднастроенным интерфейсом.</i>"
     MSG_TTY_COPY_CONFIG="Скопировать настройки?"
     MSG_USER_DETECTED="→ Обнаружен пользователь"
     MSG_SKEL_COPIED="✓ Настройки успешно скопированы в /etc/skel"
@@ -1758,9 +1761,7 @@ SOURCE_MODE="live"
 CACHE_DIR="/mnt/SysLinuxOS_backup/.rootfs_cache"
 DCB_CACHE_LABEL=""
 if [ -d "$CACHE_DIR" ] && [ -f "/mnt/SysLinuxOS_backup/.backup_meta" ]; then
-    _META_DATE=""; _META_DISTRO=""; _META_SIZE=""
-    # shellcheck source=/dev/null
-    source /mnt/SysLinuxOS_backup/.backup_meta 2>/dev/null || true
+    distroclone_read_cache_meta /mnt/SysLinuxOS_backup/.backup_meta || true
     _META_DATE="${META_DATE:-}"
     _META_DISTRO="${META_DISTRO:-}"
     _META_SIZE="${META_SIZE:-}"
@@ -1893,7 +1894,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.3.7"
+    echo "  $MSG_VERSION: 1.4.12"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -1961,9 +1962,7 @@ log_msg() {
 ############################################
 log_msg "$MSG_STEP3x1"
 
-# Pulizia residui da build precedenti
-rm -rf /etc/calamares 2>/dev/null || true
-rm -rf /usr/share/calamares/branding 2>/dev/null || true
+# Ripara pacchetti incompleti da build precedenti.
 DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
 DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get install -f -y 2>/dev/null || true
 
@@ -1988,19 +1987,13 @@ ROOT_PASSWORD="${ROOT_PASSWORD:-root}"
 ############################################
 log_msg "$MSG_STEP5"
 
-umount -l "$LIVE_DIR/rootfs/proc" "$LIVE_DIR/rootfs/sys" \
-       "$LIVE_DIR/rootfs/dev/pts" "$LIVE_DIR/rootfs/dev" \
-       "$LIVE_DIR/rootfs/run" "$LIVE_DIR/rootfs/tmp" 2>/dev/null || true
-
-rm -rf "/mnt/${DISTRO_ID}_live"
-mkdir -p "/mnt/${DISTRO_ID}_live"
+distroclone_reset_workdir "$LIVE_DIR"
 
 ############################################
 # [6/30] PREP DIRECTORY
 ############################################
 log_msg "$MSG_STEP6"
 
-rm -rf "$LIVE_DIR"
 mkdir -p "$DEST" "$ISO_DIR"/{live,isolinux,boot/grub,EFI/BOOT}
 
 ############################################
@@ -2038,61 +2031,19 @@ fi
 ############################################
 log_msg "$MSG_STEP8"
 
+distroclone_clone_excludes
 if [ "$SOURCE_MODE" = "cache" ]; then
     log_msg "  [DCB] Source: $CACHE_DIR"
     rsync -aAXH --numeric-ids --info=progress2 \
-      --exclude=/dev/* \
-      --exclude=/proc/* \
-      --exclude=/sys/* \
-      --exclude=/run/* \
-      --exclude=/tmp/* \
-      --exclude=/mnt/* \
-      --exclude=/media/* \
-      --exclude=/lost+found \
-      --exclude=/swapfile \
-      --exclude=/home/* \
-      --exclude=/root/* \
-      --exclude=/var/cache/apt/archives/* \
-      --exclude=/var/lib/apt/lists/* \
-      --exclude=/var/log/* \
-      --exclude=/var/tmp/* \
-      --exclude=/etc/NetworkManager/system-connections/* \
-      --exclude=/snap \
-      --exclude=/snap/* \
-      --exclude=/var/snap \
-      --exclude=/var/lib/snapd \
-      --exclude=/.snapshots \
-      --exclude=/.snapshots/* \
-      --exclude=/@.rollback-bak-* \
+      "${CLONE_EXCLUDES[@]}" \
       "$CACHE_DIR/" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
 else
     rsync -aAXH --numeric-ids --info=progress2 --one-file-system \
-      --exclude=/dev/* \
-      --exclude=/proc/* \
-      --exclude=/sys/* \
-      --exclude=/run/* \
-      --exclude=/tmp/* \
-      --exclude=/mnt/* \
-      --exclude=/media/* \
-      --exclude=/lost+found \
-      --exclude=/swapfile \
-      --exclude="$LIVE_DIR" \
-      --exclude=/home/* \
-      --exclude=/root/* \
-      --exclude=/var/cache/apt/archives/* \
-      --exclude=/var/lib/apt/lists/* \
-      --exclude=/var/log/* \
-      --exclude=/var/tmp/* \
-      --exclude=/etc/NetworkManager/system-connections/* \
-      --exclude=/snap \
-      --exclude=/snap/* \
-      --exclude=/var/snap \
-      --exclude=/var/lib/snapd \
-      --exclude=/.snapshots \
-      --exclude=/.snapshots/* \
-      --exclude=/@.rollback-bak-* \
+      "${CLONE_EXCLUDES[@]}" \
       "$SOURCE" "$DEST" || { RC=$?; [ $RC -eq 24 ] && true || exit $RC; }
 fi
+
+distroclone_prepare_identity "$DEST"
 
 mkdir -p "$DEST"/{var/log,var/tmp}
 chmod 1777 "$DEST/var/tmp"
@@ -2197,11 +2148,6 @@ for homedir in "$DEST"/home/* "$DEST"/root; do
   rm -rf "$homedir"/.config/chromium 2>/dev/null || true
   rm -rf "$homedir"/.config/google-chrome 2>/dev/null || true
   
-  # Configurazioni Nextcloud (cartelle e client)
-  rm -rf "$homedir"/.config/Nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/.config/nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/Nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/nextcloud 2>/dev/null || true
 
 done
 
@@ -2265,22 +2211,8 @@ if [ "$COPY_USER_CONFIG" = true ]; then
         rm -rf "$DEST/etc/skel/.config" "$DEST/etc/skel/.local"
         mkdir -p "$DEST/etc/skel/.config"
 
-        # Copia .config escludendo dati sensibili
-        rsync -a --exclude='*.log' \
-                 --exclude='*cache*' \
-                 --exclude='*Cache*' \
-                 --exclude='chromium' \
-                 --exclude='google-chrome' \
-                 --exclude='mozilla' \
-                 --exclude='Code/User/globalStorage' \
-                 --exclude='Code/User/workspaceStorage' \
-                 --exclude='VirtualBox' \
-                 --exclude='nextcloud' \
-                 --exclude='Nextcloud' \
-                 --exclude='pulse' \
-                 --exclude='*.sock' \
-                 --exclude='*.pid' \
-                 "/home/$CURRENT_USER/.config/" "$DEST/etc/skel/.config/"
+        # Copia solo preferenze desktop note; altre app possono contenere credenziali.
+        distroclone_copy_desktop_config "/home/$CURRENT_USER/.config" "$DEST/etc/skel/.config"
 
         rm -f "$DEST/etc/skel/.config/user-dirs.dirs" 2>/dev/null || true
 
@@ -2291,7 +2223,6 @@ if [ "$COPY_USER_CONFIG" = true ]; then
                      --exclude='recently-used.xbel*' \
                      "/home/$CURRENT_USER/.local/share/icons" \
                      "/home/$CURRENT_USER/.local/share/themes" \
-                     "/home/$CURRENT_USER/.local/share/applications" \
                      "$DEST/etc/skel/.local/share/" 2>/dev/null || true
         fi
 
@@ -2635,11 +2566,6 @@ for homedir in /home/* /root; do
   rm -rf "$homedir"/.config/chromium 2>/dev/null || true
   rm -rf "$homedir"/.config/google-chrome 2>/dev/null || true
   
-    # Configurazioni Nextcloud (cartelle e client)
-  rm -rf "$homedir"/.config/Nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/.config/nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/Nextcloud 2>/dev/null || true
-  rm -rf "$homedir"/nextcloud 2>/dev/null || true
 
 done
 
@@ -2661,13 +2587,7 @@ EOF
 id admin &>/dev/null || useradd -m -s /bin/bash -u 1000 admin
 usermod -aG sudo,audio,video,dialout,cdrom,plugdev,netdev admin
 
-# Pulizia Nextcloud dalla home admin appena creata
-rm -rf /home/admin/.config/Nextcloud 2>/dev/null || true
-rm -rf /home/admin/.config/nextcloud 2>/dev/null || true
 rm -rf /home/admin/.config/autostart 2>/dev/null || true
-rm -rf /home/admin/.local/share/Nextcloud 2>/dev/null || true
-rm -rf /home/admin/Nextcloud 2>/dev/null || true
-rm -rf /home/admin/nextcloud 2>/dev/null || true
 
 # Pulizia keyrings
 rm -rf /home/admin/.local/share/keyrings 2>/dev/null || true
@@ -3815,6 +3735,9 @@ log_msg "$MSG_STEP23 ($COMP_LABEL)"
 # var/log/audit/ (directory owned da auditd, necessaria all'avvio del daemon).
 # Non usiamo -e var/log in mksquashfs per permettere l'inclusione di audit/.
 find "$DEST/var/log" -maxdepth 1 -mindepth 1 ! -name 'audit' -exec rm -rf {} + 2>/dev/null || true
+
+# Chroot e personalizzazioni possono avere rigenerato identità e chiavi.
+distroclone_prepare_identity "$DEST"
 
 mksquashfs "$DEST" "$ISO_DIR/live/filesystem.squashfs" \
   $SQUASH_OPTS \

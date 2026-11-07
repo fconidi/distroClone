@@ -51,7 +51,7 @@ for permanent installation on other machines.
 
 ### From .deb package (recommended)
 
-    sudo dpkg -i distroClone_1.3_all.deb
+    sudo dpkg -i distroclone_1.4.12_all.deb
     sudo apt install -f
 
 The package installs:
@@ -63,6 +63,8 @@ The package installs:
 - `/usr/share/icons/hicolor/` -- DC icon at 48, 128, 256px
 
 ### From script (standalone)
+
+Keep `DistroClone.sh` and `distroclone-safety.sh` in the same directory.
 
     chmod +x DistroClone.sh
     sudo ./DistroClone.sh
@@ -160,6 +162,7 @@ handling where needed:
 ## File Structure (script)
 
     DistroClone.sh          Main build script (multilanguage)
+    distroclone-safety.sh   Work directory and clone safety helpers
     distroClone             Launcher script (multilanguage splash)
     distroClone-logo.png    Calamares branding logo (optional, auto-generated)
     distroClone-welcome.png Calamares welcome image (optional)

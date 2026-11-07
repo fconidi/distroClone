@@ -7,6 +7,18 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.12 — 2026-11-07
+
+### Fixed
+- Refuse to clear a work directory while it contains mounted filesystems.
+- Keep the host Calamares configuration when starting a build.
+- Parse backup cache metadata as data instead of executing it.
+- Remove machine identity and SSH host keys from cloned systems, regenerate SSH host keys on boot, and exclude common credential stores from the ISO.
+- Copy only desktop appearance settings into new user profiles instead of arbitrary application configuration.
+- Correct package checksums and installation version references.
+
+---
+
 ## Version 1.4.11 — 2026-10-01
 
 ### Added
