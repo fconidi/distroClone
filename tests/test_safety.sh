@@ -84,10 +84,14 @@ printf 'key\n' > "$work/source/etc/ssl/private/server.key"
 printf 'secret\n' > "$work/source/etc/apt/auth.conf"
 printf 'seed\n' > "$work/source/var/lib/systemd/random-seed"
 printf 'safe\n' > "$work/source/etc/hostname"
+mkdir -p "$work/source/etc/initramfs-tools/hooks"
+printf '#!/bin/sh\n' > "$work/source/etc/initramfs-tools/hooks/distromove-crypt"
+printf '#!/bin/sh\n' > "$work/source/etc/initramfs-tools/hooks/copy-crypttab"
 distroclone_clone_excludes
 rsync -a "${CLONE_EXCLUDES[@]}" "$work/source/" "$work/clone/"
 test -f "$work/clone/etc/hostname"
-for path in etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed; do
+test -f "$work/clone/etc/initramfs-tools/hooks/copy-crypttab"
+for path in etc/initramfs-tools/hooks/distromove-crypt etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed; do
     test ! -e "$work/clone/$path" || { echo "Copied secret: $path" >&2; exit 1; }
 done
 

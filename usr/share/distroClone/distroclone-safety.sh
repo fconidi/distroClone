@@ -74,6 +74,7 @@ distroclone_clone_excludes() {
         --exclude='/etc/NetworkManager/system-connections/*'
         --exclude='/var/lib/NetworkManager/*'
         --exclude='/etc/wpa_supplicant/wpa_supplicant.conf'
+        --exclude='/etc/initramfs-tools/hooks/distromove-crypt'
         --exclude='/etc/netplan/*.yaml'
     )
 }
