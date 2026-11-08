@@ -67,14 +67,13 @@ distroclone_clone_excludes() {
         --exclude='/var/lib/systemd/random-seed'
         --exclude='/etc/ssh/ssh_host_*' --exclude='/etc/wireguard'
         --exclude='/etc/openvpn' --exclude='/etc/ssl/private'
-        --exclude='/etc/letsencrypt' --exclude='/etc/crypttab'
+        --exclude='/etc/letsencrypt'
         --exclude='/var/lib/tailscale' --exclude='/var/lib/samba/private'
         --exclude='/etc/samba/private'
         --exclude='/etc/apt/auth.conf' --exclude='/etc/apt/auth.conf.d'
         --exclude='/etc/NetworkManager/system-connections/*'
         --exclude='/var/lib/NetworkManager/*'
         --exclude='/etc/wpa_supplicant/wpa_supplicant.conf'
-        --exclude='/etc/initramfs-tools/hooks/distromove-crypt'
         --exclude='/etc/netplan/*.yaml'
     )
 }

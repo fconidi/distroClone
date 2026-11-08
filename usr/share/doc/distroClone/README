@@ -51,7 +51,7 @@ for permanent installation on other machines.
 
 ### From .deb package (recommended)
 
-    sudo dpkg -i distroclone_1.4.13_all.deb
+    sudo dpkg -i distroclone_1.4.14_all.deb
     sudo apt install -f
 
 The package installs:

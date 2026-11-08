@@ -1894,7 +1894,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.13"
+    echo "  $MSG_VERSION: 1.4.14"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -1962,7 +1962,9 @@ log_msg() {
 ############################################
 log_msg "$MSG_STEP3x1"
 
-# Ripara pacchetti incompleti da build precedenti.
+# Pulizia residui da build precedenti
+rm -rf /etc/calamares 2>/dev/null || true
+rm -rf /usr/share/calamares/branding 2>/dev/null || true
 DEBIAN_FRONTEND=noninteractive dpkg --configure -a 2>/dev/null || true
 DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get install -f -y 2>/dev/null || true
 
@@ -2148,6 +2150,11 @@ for homedir in "$DEST"/home/* "$DEST"/root; do
   rm -rf "$homedir"/.config/chromium 2>/dev/null || true
   rm -rf "$homedir"/.config/google-chrome 2>/dev/null || true
   
+  # Configurazioni Nextcloud (cartelle e client)
+  rm -rf "$homedir"/.config/Nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/.config/nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/Nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/nextcloud 2>/dev/null || true
 
 done
 
@@ -2224,6 +2231,21 @@ if [ "$COPY_USER_CONFIG" = true ]; then
                  --exclude='nextcloud' \
                  --exclude='Nextcloud' \
                  --exclude='pulse' \
+                 --exclude='/Claude' \
+                 --exclude='/Codex' \
+                 --exclude='/BraveSoftware' \
+                 --exclude='/microsoft-edge' \
+                 --exclude='/opera' \
+                 --exclude='/vivaldi' \
+                 --exclude='/Ferdium' \
+                 --exclude='/teams-for-linux' \
+                 --exclude='/qBittorrent' \
+                 --exclude='/gh' \
+                 --exclude='/rclone' \
+                 --exclude='/eas-cli-nodejs' \
+                 --exclude='/advanced-comics-converter' \
+                 --exclude='/rename-comics-universal' \
+                 --exclude='/terminal-router' \
                  --exclude='*.sock' \
                  --exclude='*.pid' \
                  "/home/$CURRENT_USER/.config/" "$DEST/etc/skel/.config/"
@@ -2581,6 +2603,11 @@ for homedir in /home/* /root; do
   rm -rf "$homedir"/.config/chromium 2>/dev/null || true
   rm -rf "$homedir"/.config/google-chrome 2>/dev/null || true
   
+    # Configurazioni Nextcloud (cartelle e client)
+  rm -rf "$homedir"/.config/Nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/.config/nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/Nextcloud 2>/dev/null || true
+  rm -rf "$homedir"/nextcloud 2>/dev/null || true
 
 done
 
@@ -2602,7 +2629,13 @@ EOF
 id admin &>/dev/null || useradd -m -s /bin/bash -u 1000 admin
 usermod -aG sudo,audio,video,dialout,cdrom,plugdev,netdev admin
 
+# Pulizia Nextcloud dalla home admin appena creata
+rm -rf /home/admin/.config/Nextcloud 2>/dev/null || true
+rm -rf /home/admin/.config/nextcloud 2>/dev/null || true
 rm -rf /home/admin/.config/autostart 2>/dev/null || true
+rm -rf /home/admin/.local/share/Nextcloud 2>/dev/null || true
+rm -rf /home/admin/Nextcloud 2>/dev/null || true
+rm -rf /home/admin/nextcloud 2>/dev/null || true
 
 # Pulizia keyrings
 rm -rf /home/admin/.local/share/keyrings 2>/dev/null || true

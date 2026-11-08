@@ -7,6 +7,16 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.14 — 2026-11-08
+
+### Fixed
+- Restore the behaviour of 1.4.11 for everything except the security fixes: the user configuration copied to /etc/skel (icons, Plank, panel, wallpaper settings), /etc/crypttab, the Calamares configuration cleanup and the cloud client cleanup in the cloned homes.
+- Keep the security fixes of 1.4.12: refuse to clear a work directory that still holds mounts (leftover mounts are detached first), parse backup cache metadata as data, regenerate machine identity and SSH host keys, and exclude private keys and credential stores from the ISO.
+- Fix the build stopping silently after step 5 on systems whose os-release ID contains uppercase letters (e.g. SysLinuxOS).
+- Do not copy browser profiles, messaging and download clients, command-line tool credentials, and assistant application settings from the user profile into /etc/skel.
+
+---
+
 ## Version 1.4.13 — 2026-11-08
 
 ### Fixed
