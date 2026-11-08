@@ -7,7 +7,21 @@ distroclone_reset_workdir() {
     [[ "$workdir" == "$base/"* && ! -L "$workdir" ]] || return 1
     [[ "$(realpath -m -- "$workdir")" == "$workdir" ]] || return 1
     name="${workdir#"$base"/}"
-    [[ "$name" =~ ^[a-z0-9][a-z0-9._-]*_live$ ]] || return 1
+    [[ "$name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*_live$ ]] || {
+        printf 'Invalid work directory name: %s\n' "$workdir" >&2
+        return 1
+    }
+    # Detach leftover bind mounts of an interrupted build, deepest first.
+    mounts="$(findmnt -rn -o TARGET --raw)" || return 1
+    while IFS= read -r mount_path; do
+        case "$mount_path" in
+            "$workdir"/*) printf '%s\n' "$mount_path" ;;
+        esac
+    done <<< "$mounts" | awk '{ print length($0) "\t" $0 }' | sort -rn \
+        | cut -f2- | while IFS= read -r mount_path; do
+            umount -l -- "$mount_path" 2>/dev/null || true
+        done
+    # Never remove anything while a mount is still present.
     mounts="$(findmnt -rn -o TARGET --raw)" || return 1
     while IFS= read -r mount_path; do
         case "$mount_path" in

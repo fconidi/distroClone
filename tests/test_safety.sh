@@ -16,9 +16,17 @@ trap cleanup EXIT
 mkdir -p "$work/bin"
 cat > "$work/bin/findmnt" <<'EOF'
 #!/usr/bin/env bash
-printf '%s\n' "${FAKE_MOUNTS:-}"
+if [ -n "${FAKE_MOUNTS_FILE:-}" ]; then cat "$FAKE_MOUNTS_FILE"; else printf '%s\n' "${FAKE_MOUNTS:-}"; fi
 EOF
-chmod +x "$work/bin/findmnt"
+cat > "$work/bin/umount" <<'EOF'
+#!/usr/bin/env bash
+[ -n "${FAKE_MOUNTS_FILE:-}" ] || exit 1
+target="${@: -1}"
+printf '%s\n' "$target" >> "$FAKE_MOUNTS_FILE.log"
+grep -vxF -- "$target" "$FAKE_MOUNTS_FILE" > "$FAKE_MOUNTS_FILE.new" || true
+mv "$FAKE_MOUNTS_FILE.new" "$FAKE_MOUNTS_FILE"
+EOF
+chmod +x "$work/bin/findmnt" "$work/bin/umount"
 export PATH="$work/bin:$PATH"
 
 source "$repo_root/usr/share/distroClone/distroclone-safety.sh"
@@ -37,6 +45,23 @@ export FAKE_MOUNTS
 distroclone_reset_workdir "$work/mount-base/debian_live" "$work/mount-base"
 test -d "$work/mount-base/debian_live"
 test ! -e "$work/mount-base/debian_live/rootfs/data"
+
+# leftover bind mounts are detached, deepest first, then the dir is reset
+mkdir -p "$work/mount-base/stale_live/rootfs/dev/pts"
+printf 'x\n' > "$work/mount-base/stale_live/rootfs/f"
+printf '%s\n' "$work/mount-base/stale_live/rootfs/dev" \
+    "$work/mount-base/stale_live/rootfs/dev/pts" > "$work/fake-mounts"
+FAKE_MOUNTS_FILE="$work/fake-mounts"
+export FAKE_MOUNTS_FILE
+distroclone_reset_workdir "$work/mount-base/stale_live" "$work/mount-base"
+test ! -e "$work/mount-base/stale_live/rootfs/f"
+test "$(head -1 "$work/fake-mounts.log")" = "$work/mount-base/stale_live/rootfs/dev/pts"
+unset FAKE_MOUNTS_FILE
+
+# os-release ID may be mixed case (SysLinuxOS)
+mkdir -p "$work/mount-base/SysLinuxOS_live/rootfs"
+distroclone_reset_workdir "$work/mount-base/SysLinuxOS_live" "$work/mount-base"
+test -d "$work/mount-base/SysLinuxOS_live"
 
 mkdir -p "$work/cache"
 export TEST_MARKER="$work/executed"

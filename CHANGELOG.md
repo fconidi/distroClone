@@ -7,6 +7,14 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.13 — 2026-11-08
+
+### Fixed
+- Fix the build stopping silently after step 5 on systems whose os-release ID contains uppercase letters (e.g. SysLinuxOS).
+- Detach leftover mounts of an interrupted build from the work directory before cleaning it; refuse to remove it only if a mount remains.
+
+---
+
 ## Version 1.4.12 — 2026-11-07
 
 ### Fixed
