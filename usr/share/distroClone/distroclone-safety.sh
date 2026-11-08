@@ -79,25 +79,6 @@ distroclone_clone_excludes() {
     )
 }
 
-# Only copy desktop appearance/layout settings. Arbitrary ~/.config trees may
-# contain account tokens even when their directory names look harmless.
-distroclone_copy_desktop_config() {
-    local source="$1" dest="$2"
-    [[ -d "$source" && "$(realpath -m -- "$dest")" == "$dest" ]] || return 1
-    mkdir -p -- "$dest" || return 1
-    rsync -a \
-        --include='/gtk-2.0/***' --include='/gtk-3.0/***' \
-        --include='/gtk-4.0/***' --include='/fontconfig/***' \
-        --include='/xfce4/***' --include='/mate/***' \
-        --include='/cinnamon/***' --include='/plank/***' \
-        --include='/lxqt/***' --include='/openbox/***' \
-        --include='/Kvantum/***' \
-        --include='/kdeglobals' --include='/plasmarc' \
-        --include='/plasmashellrc' --include='/kwinrc' \
-        --exclude='*' \
-        "$source/" "$dest/"
-}
-
 distroclone_prepare_identity() {
     local dest="$1" unit_dir parent
     [[ -d "$dest/etc" && ! -L "$dest/etc" ]] || return 1

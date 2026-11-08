@@ -95,13 +95,6 @@ for path in etc/initramfs-tools/hooks/distromove-crypt etc/machine-id etc/ssh/ss
     test ! -e "$work/clone/$path" || { echo "Copied secret: $path" >&2; exit 1; }
 done
 
-mkdir -p "$work/user-config/gtk-3.0" "$work/user-config/cloud-client"
-printf 'theme=dark\n' > "$work/user-config/gtk-3.0/settings.ini"
-printf 'token\n' > "$work/user-config/cloud-client/credentials"
-distroclone_copy_desktop_config "$work/user-config" "$work/skel-config"
-test -f "$work/skel-config/gtk-3.0/settings.ini"
-test ! -e "$work/skel-config/cloud-client/credentials"
-
 mkdir -p "$work/clone/etc" "$work/clone/etc/systemd/system"
 distroclone_prepare_identity "$work/clone"
 test -f "$work/clone/etc/machine-id"

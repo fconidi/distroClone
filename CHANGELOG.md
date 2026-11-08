@@ -13,6 +13,7 @@ Versioning follows Semantic Versioning (https://semver.org/).
 - Fix the build stopping silently after step 5 on systems whose os-release ID contains uppercase letters (e.g. SysLinuxOS).
 - Detach leftover mounts of an interrupted build from the work directory before cleaning it; refuse to remove it only if a mount remains.
 - Fix the build failing at step 16 (initramfs generation) on systems migrated with DistroMove: its initramfs hook is no longer copied into the clone, since the host crypttab is not cloned either.
+- Copy user configuration into /etc/skel as before 1.4.12 (full ~/.config with the usual exclusions, plus icons, themes and applications), which restores icons, Plank, panel and wallpaper settings in the ISO.
 
 ---
 
