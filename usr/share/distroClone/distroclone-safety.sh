@@ -75,7 +75,42 @@ distroclone_clone_excludes() {
         --exclude='/var/lib/NetworkManager/*'
         --exclude='/etc/wpa_supplicant/wpa_supplicant.conf'
         --exclude='/etc/netplan/*.yaml'
+        --exclude='/etc/crypttab'
+        --exclude='/etc/initramfs-tools/hooks/distromove-crypt'
+        --exclude='/etc/initramfs-tools/hooks/copy-crypttab'
     )
+}
+
+# The live system must not inherit the host crypttab: live-boot runs
+# local-top/cryptroot and systemd would unlock the source LUKS volumes at
+# boot. The clone gets an empty crypttab and loses the keyfiles named there.
+distroclone_prepare_crypttab() {
+    local dest="$1" host_crypttab="${2:-/etc/crypttab}" line name source key parent target
+    [[ -d "$dest/etc" && ! -L "$dest/etc" ]] || return 1
+    [[ "$(realpath -e -- "$dest")" == "$dest" ]] || return 1
+    if [[ -f "$host_crypttab" ]]; then
+        while IFS= read -r line || [[ -n "$line" ]]; do
+            line="${line%%#*}"
+            name='' source='' key=''
+            read -r name source key _ <<< "$line" || true
+            [[ -n "$name" && -n "$source" && -n "$key" ]] || continue
+            case "$key" in
+                none|-|/dev/*) continue ;;
+                /*) ;;
+                *) continue ;;
+            esac
+            case "/$key/" in */../*|*/./*) continue ;; esac
+            parent="$(realpath -m -- "${dest}${key%/*}")" || continue
+            [[ "$parent" == "$dest" || "$parent" == "$dest/"* ]] || continue
+            target="$parent/${key##*/}"
+            if [[ -d "$target" && ! -L "$target" ]]; then
+                continue
+            fi
+            rm -f -- "$target" || return 1
+        done < "$host_crypttab"
+    fi
+    printf '# <target name>\t<source device>\t\t<key file>\t<options>\n' \
+        > "$dest/etc/crypttab" || return 1
 }
 
 distroclone_prepare_identity() {

@@ -84,12 +84,18 @@ printf 'key\n' > "$work/source/etc/ssl/private/server.key"
 printf 'secret\n' > "$work/source/etc/apt/auth.conf"
 printf 'seed\n' > "$work/source/var/lib/systemd/random-seed"
 printf 'safe\n' > "$work/source/etc/hostname"
-printf 'luks\n' > "$work/source/etc/crypttab"
+# The host crypttab and the initramfs hooks that copy it must stay out of the
+# clone: live-boot runs local-top/cryptroot and would unlock the source LUKS.
+mkdir -p "$work/source/etc/initramfs-tools/hooks"
+printf 'luks-1 UUID=1 none luks,discard,initramfs\n' > "$work/source/etc/crypttab"
+printf '#!/bin/sh\n' > "$work/source/etc/initramfs-tools/hooks/distromove-crypt"
+printf '#!/bin/sh\n' > "$work/source/etc/initramfs-tools/hooks/copy-crypttab"
+printf '#!/bin/sh\n' > "$work/source/etc/initramfs-tools/hooks/keep-me"
 distroclone_clone_excludes
 rsync -a "${CLONE_EXCLUDES[@]}" "$work/source/" "$work/clone/"
 test -f "$work/clone/etc/hostname"
-test -f "$work/clone/etc/crypttab"
-for path in etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed; do
+test -f "$work/clone/etc/initramfs-tools/hooks/keep-me"
+for path in etc/crypttab etc/initramfs-tools/hooks/distromove-crypt etc/initramfs-tools/hooks/copy-crypttab etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed; do
     test ! -e "$work/clone/$path" || { echo "Copied secret: $path" >&2; exit 1; }
 done
 
@@ -110,5 +116,62 @@ test ! -e "$work/clone/etc/ssh/ssh_host_ed25519_key"
 test ! -s "$work/clone/etc/machine-id"
 test ! -e "$work/clone/var/lib/dbus/machine-id"
 test ! -e "$work/clone/var/lib/systemd/random-seed"
+
+# The clone gets an empty crypttab and loses the keyfiles named by the host one.
+mkdir -p "$work/host/etc" "$work/clone2/etc/luks" "$work/clone2/etc/keys"
+cat > "$work/host/etc/crypttab" <<'EOF'
+# comment line
+
+luks-root UUID=aaaa none luks,discard,initramfs
+home      UUID=bbbb /etc/luks/home.key luks
+data      UUID=cccc /etc/keys/data.key luks,keyscript=/lib/cryptsetup/scripts/passdev
+swap      /dev/sdb2 /dev/urandom swap
+dash      UUID=dddd - luks
+odd       UUID=eeee /etc/keys/../keys/other.key luks
+rel       UUID=ffff relative.key luks
+EOF
+printf 'k\n' > "$work/clone2/etc/luks/home.key"
+printf 'k\n' > "$work/clone2/etc/keys/data.key"
+printf 'k\n' > "$work/clone2/etc/keys/other.key"
+printf 'safe\n' > "$work/clone2/etc/hostname"
+distroclone_prepare_crypttab "$work/clone2" "$work/host/etc/crypttab"
+test ! -e "$work/clone2/etc/luks/home.key"
+test ! -e "$work/clone2/etc/keys/data.key"
+test -f "$work/clone2/etc/keys/other.key"
+test -f "$work/clone2/etc/hostname"
+test "$(wc -l < "$work/clone2/etc/crypttab")" -eq 1
+grep -q '^# <target name>' "$work/clone2/etc/crypttab"
+
+# No host crypttab (or none in the cache): the clone still gets the empty one.
+mkdir -p "$work/clone3/etc"
+distroclone_prepare_crypttab "$work/clone3" "$work/host/etc/missing"
+grep -q '^# <target name>' "$work/clone3/etc/crypttab"
+
+# A keyfile symlink is removed, its target outside the clone is kept.
+mkdir -p "$work/clone4/etc/luks" "$work/outside"
+printf 'k\n' > "$work/outside/real.key"
+ln -s "$work/outside/real.key" "$work/clone4/etc/luks/link.key"
+printf 'home UUID=1 /etc/luks/link.key luks\n' > "$work/host/crypttab4"
+distroclone_prepare_crypttab "$work/clone4" "$work/host/crypttab4"
+test ! -e "$work/clone4/etc/luks/link.key"
+test -f "$work/outside/real.key"
+
+# A keyfile under a directory symlink pointing out of the clone is never removed.
+mkdir -p "$work/clone5/etc" "$work/outside5"
+printf 'k\n' > "$work/outside5/x.key"
+ln -s "$work/outside5" "$work/clone5/etc/luks"
+printf 'home UUID=1 /etc/luks/x.key luks\n' > "$work/host/crypttab5"
+distroclone_prepare_crypttab "$work/clone5" "$work/host/crypttab5"
+test -f "$work/outside5/x.key"
+grep -q '^# <target name>' "$work/clone5/etc/crypttab"
+
+# A clone whose /etc is a symlink is refused.
+mkdir -p "$work/clone6" "$work/outside6"
+ln -s "$work/outside6" "$work/clone6/etc"
+if distroclone_prepare_crypttab "$work/clone6" "$work/host/crypttab5"; then
+    echo 'Symlinked /etc accepted' >&2
+    exit 1
+fi
+test ! -e "$work/outside6/crypttab"
 
 echo 'Safety tests passed'

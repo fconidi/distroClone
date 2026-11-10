@@ -7,6 +7,13 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.15 — 2026-11-11
+
+### Fixed
+- The live ISO no longer unlocks the LUKS volumes of the source system at boot. The host /etc/crypttab is not cloned any more: live-boot runs the cryptroot initramfs script and systemd reads crypttab, so the live system asked for the passphrase and left the internal disk mapped. The live system now gets an empty crypttab before its initramfs is built, the initramfs hooks that copy the host crypttab (distromove-crypt, copy-crypttab) stay out of the clone, and keyfiles named in the host crypttab are removed from the clone. Systems installed from the ISO keep getting their own crypttab from the installer.
+
+---
+
 ## Version 1.4.14 — 2026-11-08
 
 ### Fixed

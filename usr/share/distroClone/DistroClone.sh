@@ -1894,7 +1894,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.14"
+    echo "  $MSG_VERSION: 1.4.15"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -2046,6 +2046,16 @@ else
 fi
 
 distroclone_prepare_identity "$DEST"
+
+# The live ISO must not unlock the LUKS volumes of the source system at boot:
+# the host crypttab stays out of the clone and its keyfiles are removed.
+if [ "$SOURCE_MODE" = "cache" ]; then
+    HOST_CRYPTTAB="$CACHE_DIR/etc/crypttab"
+else
+    HOST_CRYPTTAB="${SOURCE%/}/etc/crypttab"
+fi
+distroclone_prepare_crypttab "$DEST" "$HOST_CRYPTTAB" \
+  || { log_msg "  [ERROR] crypttab cleanup failed in $DEST"; exit 1; }
 
 mkdir -p "$DEST"/{var/log,var/tmp}
 chmod 1777 "$DEST/var/tmp"
@@ -3786,6 +3796,8 @@ find "$DEST/var/log" -maxdepth 1 -mindepth 1 ! -name 'audit' -exec rm -rf {} + 2
 
 # Chroot e personalizzazioni possono avere rigenerato identità e chiavi.
 distroclone_prepare_identity "$DEST"
+distroclone_prepare_crypttab "$DEST" "$HOST_CRYPTTAB" \
+  || { log_msg "  [ERROR] crypttab cleanup failed in $DEST"; exit 1; }
 
 mksquashfs "$DEST" "$ISO_DIR/live/filesystem.squashfs" \
   $SQUASH_OPTS \
