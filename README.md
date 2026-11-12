@@ -62,8 +62,8 @@ DEFAULT PASSWORD LIVE = root
 
 ```bash
 sudo apt install -y yad
-sudo apt install -y ./distroclone_1.4.16_all.deb # recommended
-sudo dpkg -i distroclone_1.4.16_all.deb
+sudo apt install -y ./distroclone_1.4.17_all.deb # recommended
+sudo dpkg -i distroclone_1.4.17_all.deb
 sudo apt install -f
 ```
 

@@ -7,7 +7,7 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
-## Unreleased
+## Version 1.4.17 — 2026-11-12
 
 ### Fixed
 - Create an empty private Samba directory in the cloned system so Samba can initialize its own account databases; source machine credentials remain excluded.
