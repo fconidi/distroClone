@@ -81,6 +81,25 @@ distroclone_clone_excludes() {
     )
 }
 
+# Samba's private databases belong to the source machine. Keep them out of the
+# ISO, but provide the directory Samba needs to create fresh databases.
+distroclone_prepare_samba_private() {
+    local dest="$1" samba_dir private_dir
+    [[ -d "$dest/etc/samba" && ! -L "$dest/etc/samba" ]] || return 0
+    [[ "$(realpath -e -- "$dest")" == "$dest" ]] || return 1
+    [[ -d "$dest/var/lib" && ! -L "$dest/var/lib" ]] || return 1
+    samba_dir="$dest/var/lib/samba"
+    [[ ! -L "$samba_dir" ]] || return 1
+    if [[ -e "$samba_dir" ]]; then
+        [[ -d "$samba_dir" && "$(realpath -e -- "$samba_dir")" == "$samba_dir" ]] || return 1
+    else
+        install -d -m 0755 -- "$samba_dir" || return 1
+    fi
+    private_dir="$samba_dir/private"
+    [[ ! -e "$private_dir" && ! -L "$private_dir" ]] || return 1
+    install -d -m 0700 -- "$private_dir"
+}
+
 # The live system must not inherit the host crypttab: live-boot runs
 # local-top/cryptroot and systemd would unlock the source LUKS volumes at
 # boot. The clone gets an empty crypttab and loses the keyfiles named there.

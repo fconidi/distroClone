@@ -2071,6 +2071,8 @@ else
 fi
 
 distroclone_prepare_identity "$DEST"
+distroclone_prepare_samba_private "$DEST" \
+  || { log_msg "  [ERROR] Samba private directory setup failed in $DEST"; exit 1; }
 
 # The live ISO must not unlock the LUKS volumes of the source system at boot:
 # the host crypttab stays out of the clone and its keyfiles are removed.

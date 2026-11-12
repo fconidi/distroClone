@@ -76,14 +76,16 @@ test "$META_DISTRO" = '$(touch $TEST_MARKER)'
 test "$META_SIZE" = '1G'
 test ! -e "$TEST_MARKER"
 
-mkdir -p "$work/source/etc/ssh" "$work/source/etc/wireguard" "$work/source/etc/ssl/private" "$work/source/etc/apt" "$work/source/var/lib/systemd"
+mkdir -p "$work/source/etc/ssh" "$work/source/etc/wireguard" "$work/source/etc/ssl/private" "$work/source/etc/apt" "$work/source/var/lib/systemd" "$work/source/var/lib/samba/private"
 printf 'machine\n' > "$work/source/etc/machine-id"
 printf 'key\n' > "$work/source/etc/ssh/ssh_host_ed25519_key"
 printf 'key\n' > "$work/source/etc/wireguard/wg0.conf"
 printf 'key\n' > "$work/source/etc/ssl/private/server.key"
 printf 'secret\n' > "$work/source/etc/apt/auth.conf"
 printf 'seed\n' > "$work/source/var/lib/systemd/random-seed"
+printf 'host credentials\n' > "$work/source/var/lib/samba/private/passdb.tdb"
 printf 'safe\n' > "$work/source/etc/hostname"
+mkdir -p "$work/source/etc/samba"
 # The host crypttab and the initramfs hooks that copy it must stay out of the
 # clone: live-boot runs local-top/cryptroot and would unlock the source LUKS.
 mkdir -p "$work/source/etc/initramfs-tools/hooks"
@@ -95,9 +97,22 @@ distroclone_clone_excludes
 rsync -a "${CLONE_EXCLUDES[@]}" "$work/source/" "$work/clone/"
 test -f "$work/clone/etc/hostname"
 test -f "$work/clone/etc/initramfs-tools/hooks/keep-me"
-for path in etc/crypttab etc/initramfs-tools/hooks/distromove-crypt etc/initramfs-tools/hooks/copy-crypttab etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed; do
+for path in etc/crypttab etc/initramfs-tools/hooks/distromove-crypt etc/initramfs-tools/hooks/copy-crypttab etc/machine-id etc/ssh/ssh_host_ed25519_key etc/wireguard/wg0.conf etc/ssl/private/server.key etc/apt/auth.conf var/lib/systemd/random-seed var/lib/samba/private/passdb.tdb; do
     test ! -e "$work/clone/$path" || { echo "Copied secret: $path" >&2; exit 1; }
 done
+distroclone_prepare_samba_private "$work/clone"
+test -d "$work/clone/var/lib/samba/private"
+test "$(stat -c %a "$work/clone/var/lib/samba/private")" = 700
+test ! -e "$work/clone/var/lib/samba/private/passdb.tdb"
+mkdir -p "$work/samba-new/etc/samba" "$work/samba-new/var/lib" "$work/samba-link/etc/samba" "$work/samba-link/var/lib" "$work/outside-samba"
+distroclone_prepare_samba_private "$work/samba-new"
+test "$(stat -c %a "$work/samba-new/var/lib/samba/private")" = 700
+ln -s "$work/outside-samba" "$work/samba-link/var/lib/samba"
+if distroclone_prepare_samba_private "$work/samba-link"; then
+    echo 'Symlinked Samba state directory accepted' >&2
+    exit 1
+fi
+test ! -e "$work/outside-samba/private"
 
 mkdir -p "$work/clone/etc" "$work/clone/etc/systemd/system"
 distroclone_prepare_identity "$work/clone"
