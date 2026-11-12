@@ -7,6 +7,14 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.16 — 2026-11-12
+
+### Fixed
+- The pause before the squashfs step, enabled by choosing to edit the root filesystem manually, now shows a dialog with the path, the chroot command and a Continue button. Started from the application menu there is no terminal, so the old "press ENTER" prompt could not be answered. The terminal prompt is still used when yad is not available.
+- The "Build from DCB cache" option is shown again when the cache of DistroClone Backup is not in /mnt/SysLinuxOS_backup. The cache is now looked for in the base directory configured in DistroClone Backup (CACHE_BASE_DIR) under <distro id>_backup, with /mnt as default.
+
+---
+
 ## Version 1.4.15 — 2026-11-11
 
 ### Fixed

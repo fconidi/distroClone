@@ -246,6 +246,7 @@ load_lang_en() {
     MSG_PAUSE_DONE="When you're done, press ENTER to continue."
     MSG_PAUSE_ENTER="Press ENTER to continue creating the squashfs..."
     MSG_PAUSE_SHOOTING="Shooting in progress..."
+    MSG_PAUSE_BTN="Continue creating squashfs"
 
     # --- Compression selection ---
     MSG_STEP22="[22/30] SquashFS compression selection"
@@ -478,6 +479,7 @@ load_lang_it() {
     MSG_PAUSE_DONE="Quando hai finito, premi INVIO per continuare."
     MSG_PAUSE_ENTER="Premi INVIO per continuare con la creazione dello squashfs..."
     MSG_PAUSE_SHOOTING="Creazione in corso..."
+    MSG_PAUSE_BTN="Continua con la creazione dello squashfs"
 
     # --- Compression selection ---
     MSG_STEP22="[22/30] Selezione compressione SquashFS"
@@ -685,6 +687,7 @@ load_lang_fr() {
     MSG_PAUSE_DONE="Quand vous avez terminé, appuyez sur ENTRÉE pour continuer."
     MSG_PAUSE_ENTER="Appuyez sur ENTRÉE pour continuer la création du squashfs..."
     MSG_PAUSE_SHOOTING="Création en cours..."
+    MSG_PAUSE_BTN="Continuer la création du squashfs"
     MSG_STEP22="[22/30] Sélection compression SquashFS"
     MSG_COMP_SELECT_TITLE="Compression SquashFS"
     MSG_COMP_SELECT_TEXT="Sélectionnez le type de compression :"
@@ -875,6 +878,7 @@ load_lang_es() {
     MSG_PAUSE_DONE="Cuando termine, presione ENTER para continuar."
     MSG_PAUSE_ENTER="Presione ENTER para continuar con la creación del squashfs..."
     MSG_PAUSE_SHOOTING="Creación en curso..."
+    MSG_PAUSE_BTN="Continuar con la creación del squashfs"
     MSG_STEP22="[22/30] Selección de compresión SquashFS"
     MSG_COMP_SELECT_TITLE="Compresión SquashFS"
     MSG_COMP_SELECT_TEXT="Seleccione el tipo de compresión:"
@@ -1065,6 +1069,7 @@ load_lang_de() {
     MSG_PAUSE_DONE="Wenn Sie fertig sind, drücken Sie ENTER um fortzufahren."
     MSG_PAUSE_ENTER="Drücken Sie ENTER um mit der Squashfs-Erstellung fortzufahren..."
     MSG_PAUSE_SHOOTING="Erstellung läuft..."
+    MSG_PAUSE_BTN="Squashfs-Erstellung fortsetzen"
     MSG_STEP22="[22/30] SquashFS-Komprimierungsauswahl"
     MSG_COMP_SELECT_TITLE="SquashFS-Komprimierung"
     MSG_COMP_SELECT_TEXT="Wählen Sie den Komprimierungstyp:"
@@ -1255,6 +1260,7 @@ load_lang_pt() {
     MSG_PAUSE_DONE="Quando terminar, prima ENTER para continuar."
     MSG_PAUSE_ENTER="Prima ENTER para continuar com a criação do squashfs..."
     MSG_PAUSE_SHOOTING="Criação em curso..."
+    MSG_PAUSE_BTN="Continuar a criação do squashfs"
     MSG_STEP22="[22/30] Seleção de compressão SquashFS"
     MSG_COMP_SELECT_TITLE="Compressão SquashFS"
     MSG_COMP_SELECT_TEXT="Selecione o tipo de compressão:"
@@ -1471,6 +1477,7 @@ load_lang_ru() {
     MSG_PAUSE_DONE="Когда завершите изменения, нажмите ENTER в этом терминале для продолжения."
     MSG_PAUSE_ENTER="Нажмите ENTER, чтобы запустить процесс создания squashfs..."
     MSG_PAUSE_SHOOTING="Выполнение операций..."
+    MSG_PAUSE_BTN="Продолжить создание squashfs"
 
     # --- Compression selection ---
     MSG_STEP22="[22/30] Выбор алгоритма сжатия SquashFS"
@@ -1758,10 +1765,28 @@ rm -f /tmp/distroClone-splash.png 2>/dev/null
 
 # DCB cache detection
 SOURCE_MODE="live"
-CACHE_DIR="/mnt/SysLinuxOS_backup/.rootfs_cache"
+CACHE_DIR=""
+CACHE_META_FILE=""
 DCB_CACHE_LABEL=""
-if [ -d "$CACHE_DIR" ] && [ -f "/mnt/SysLinuxOS_backup/.backup_meta" ]; then
-    distroclone_read_cache_meta /mnt/SysLinuxOS_backup/.backup_meta || true
+# DCB keeps the cache in <CACHE_BASE_DIR>/<distro id>_backup (CACHE_BASE_DIR is configurable)
+_dcb_bases=()
+for _conf in /etc/distroclone-backup/settings.conf /home/*/.config/distroclone-backup/settings.conf; do
+    [ -f "$_conf" ] || continue
+    _b=$(sed -n 's/^CACHE_BASE_DIR=//p' "$_conf" | head -n1 | tr -d "\"'")
+    [[ "$_b" =~ ^/[A-Za-z0-9._/@+-]*$ ]] && _dcb_bases+=("${_b%/}")
+done
+_dcb_bases+=(/mnt)
+for _b in "${_dcb_bases[@]}"; do
+    for _d in "${DISTRO_ID}_backup" SysLinuxOS_backup; do
+        if [ -d "$_b/$_d/.rootfs_cache" ] && [ -f "$_b/$_d/.backup_meta" ]; then
+            CACHE_DIR="$_b/$_d/.rootfs_cache"
+            CACHE_META_FILE="$_b/$_d/.backup_meta"
+            break 2
+        fi
+    done
+done
+if [ -n "$CACHE_DIR" ]; then
+    distroclone_read_cache_meta "$CACHE_META_FILE" || true
     _META_DATE="${META_DATE:-}"
     _META_DISTRO="${META_DISTRO:-}"
     _META_SIZE="${META_SIZE:-}"
@@ -1894,7 +1919,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.15"
+    echo "  $MSG_VERSION: 1.4.16"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -3712,7 +3737,24 @@ if [ "$MANUAL_EDIT" = true ]; then
     echo "  $MSG_PAUSE_DONE"
     echo ""
     echo "=========================================="
-    read -p "$MSG_PAUSE_ENTER "
+    if [ "$GUI_TOOL" = "yad" ]; then
+        # Launched from the menu there is no terminal: read would never get ENTER
+        yad --info \
+            --title="$MSG_PAUSE_TITLE" \
+            ${TEMP_LOGO:+--window-icon="$TEMP_LOGO"} \
+            ${TEMP_LOGO:+--image="$TEMP_LOGO"} \
+            --text="<b>$MSG_PAUSE_TITLE</b>\n\n$MSG_PAUSE_AVAILABLE\n$DEST\n\n$MSG_PAUSE_CHROOT\n<tt>sudo chroot $DEST /bin/bash</tt>" \
+            --selectable-labels \
+            --button="$MSG_PAUSE_BTN:0" \
+            --width=500 --fixed --center --on-top \
+            --no-escape 2>/dev/null
+    elif [ -t 0 ]; then
+        read -p "$MSG_PAUSE_ENTER "
+    else
+        zenity --info --title="$MSG_PAUSE_TITLE" \
+            --text="$MSG_PAUSE_AVAILABLE $DEST\n\n$MSG_PAUSE_CHROOT sudo chroot $DEST /bin/bash" \
+            --ok-label="$MSG_PAUSE_BTN" --width=450 2>/dev/null
+    fi
     echo "$MSG_PAUSE_SHOOTING"
 fi
 
