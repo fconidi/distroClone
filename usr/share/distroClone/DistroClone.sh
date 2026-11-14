@@ -2810,17 +2810,6 @@ for service in "${PROBLEMATIC_SERVICES[@]}"; do
     fi
 done
 
-# 4b. Prevent Samba (nmbd) from blocking boot
-# nmbd.service binds to a network interface; on the Live/clone no NIC has an IP
-# at that point, so the start job stalls ~1m41s (TimeoutStartSec) before failing
-# ("A start job is running for Samba NMB daemon..."). Disable Samba *server*
-# autostart so boot is not held up. The SMB client (gvfs/smbclient) is
-# unaffected; users who serve shares can re-enable with `systemctl enable nmbd`.
-echo "    Disabling Samba server autostart (nmbd/smbd boot hang)..."
-for service in nmbd.service smbd.service; do
-    systemctl disable "$service" 2>/dev/null || true
-done
-
 # 5. Ensure /var/run → /run symlink (fix deprecated path warnings)
 if [ ! -L /var/run ]; then
     echo "    Creating /var/run → /run symlink"
