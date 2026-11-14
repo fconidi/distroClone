@@ -7,6 +7,16 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.18 — 2026-11-14
+
+### Fixed
+- Samba (`smbd` and `nmbd`) now stays enabled in the cloned system. Previously the clone disabled both services, so Samba did not start on the installed system until the package was reinstalled.
+
+### Removed
+- Removed the cleanup of two legacy services (`telinit-emerd.service`, `calamares-anydesk.service`) that no package provides.
+
+---
+
 ## Version 1.4.17 — 2026-11-12
 
 ### Fixed

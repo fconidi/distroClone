@@ -1919,7 +1919,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.17"
+    echo "  $MSG_VERSION: 1.4.18"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -2793,22 +2793,6 @@ X-GNOME-Autostart-enabled=true
 NoDisplay=true
 EOF
 fi
-
-# 4. Remove problematic systemd services with syntax errors
-echo "  Removing problematic systemd services..."
-PROBLEMATIC_SERVICES=(
-    "telinit-emerd.service"
-    "calamares-anydesk.service"
-)
-
-for service in "${PROBLEMATIC_SERVICES[@]}"; do
-    if [ -f "/etc/systemd/system/$service" ]; then
-        echo "    Removing $service (syntax errors/deprecated paths)"
-        systemctl disable "$service" 2>/dev/null || true
-        systemctl mask "$service" 2>/dev/null || true
-        rm -f "/etc/systemd/system/$service"
-    fi
-done
 
 # 5. Ensure /var/run → /run symlink (fix deprecated path warnings)
 if [ ! -L /var/run ]; then
