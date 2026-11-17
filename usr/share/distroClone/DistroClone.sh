@@ -1919,7 +1919,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.18"
+    echo "  $MSG_VERSION: 1.4.19"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -3820,7 +3820,6 @@ mksquashfs "$DEST" "$ISO_DIR/live/filesystem.squashfs" \
   $SQUASH_OPTS \
   -e var/cache \
   -e var/tmp \
-  -e usr/share/doc \
   -e usr/share/info \
   -e root/.cache \
   -e home/*/.cache \

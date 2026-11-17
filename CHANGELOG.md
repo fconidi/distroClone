@@ -7,6 +7,13 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.19 — 2026-11-17
+
+### Fixed
+- The generated live ISO and the installed clone now include `/usr/share/doc`. It was excluded from the squashfs, so changelogs and licences of every package were missing, and the Help > About > License / Changelog buttons of applications failed with "No such file or directory".
+
+---
+
 ## Version 1.4.18 — 2026-11-14
 
 ### Fixed
