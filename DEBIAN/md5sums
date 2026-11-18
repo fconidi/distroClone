@@ -2,10 +2,10 @@
 32d5b22303e7a482646ee9c739273430  usr/share/applications/distroClone.desktop
 9930e1c51ac79aa4bcaac4e915e5d159  usr/share/distroClone/distroClone-installer.png
 a7146ae5d08c32a9624b9881e07a069d  usr/share/distroClone/distroClone-logo.png
-f7a0bf39f8a8fa493dc3ed620d1b9ca3  usr/share/distroClone/distroclone-safety.sh
-47d28810ef431e44284b5ae9ca4c1506  usr/share/distroClone/DistroClone.sh
+0d2103e4fe713d88a1544aa31fad0cdd  usr/share/distroClone/distroclone-safety.sh
+c0d95b60edc9a1832bcd199fd6e1ecf6  usr/share/distroClone/DistroClone.sh
 d8f0e03ecea50ff6142346d4778998c5  usr/share/distroClone/distroClone-welcome.png
-0068280b364d2b9e9153d3f7842c5755  usr/share/doc/distroClone/changelog.gz
+f289627a2f34af6d732f682db43d483b  usr/share/doc/distroClone/changelog.gz
 ba5fc55b5526b5520a510f7d92a5acd2  usr/share/doc/distroClone/copyright
 06572f8fdddfc8f71fc13643922c478b  usr/share/doc/distroClone/README
 317aba004f7823d5ebdc7edb913fb781  usr/share/icons/hicolor/128x128/apps/distroClone.png
