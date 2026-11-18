@@ -189,4 +189,23 @@ if distroclone_prepare_crypttab "$work/clone6" "$work/host/crypttab5"; then
 fi
 test ! -e "$work/outside6/crypttab"
 
+# Only allowlisted ~/.config entries reach /etc/skel.
+mkdir -p "$work/skelhome/ssh-easygui" "$work/skelhome/mate" "$work/skelhome/newapp" \
+    "$work/skelhome/gtk-3.0/Cache" "$work/skelskel"
+printf 'x\n' > "$work/skelhome/ssh-easygui/profiles.json"
+printf 'x\n' > "$work/skelhome/newapp/token"
+printf 'x\n' > "$work/skelhome/mate/panel.conf"
+printf 'x\n' > "$work/skelhome/mate/debug.log"
+printf 'x\n' > "$work/skelhome/gtk-3.0/Cache/c"
+printf 'x\n' > "$work/skelhome/mimeapps.list"
+printf 'x\n' > "$work/skelhome/secrets.env"
+distroclone_copy_skel_config "$work/skelhome" "$work/skelskel"
+test -f "$work/skelskel/mate/panel.conf"
+test -f "$work/skelskel/mimeapps.list"
+test ! -e "$work/skelskel/ssh-easygui"
+test ! -e "$work/skelskel/newapp"
+test ! -e "$work/skelskel/secrets.env"
+test ! -e "$work/skelskel/mate/debug.log"
+test ! -e "$work/skelskel/gtk-3.0/Cache"
+
 echo 'Safety tests passed'

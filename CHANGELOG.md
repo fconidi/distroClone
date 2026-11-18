@@ -7,6 +7,13 @@ Versioning follows Semantic Versioning (https://semver.org/).
 
 ---
 
+## Version 1.4.20 — 2026-11-18
+
+### Security
+- The configuration copied from the source user into `/etc/skel` is now an allowlist of desktop settings instead of a denylist. Application profiles, SSH settings, backup settings and anything installed later are no longer carried into the ISO and into every installed system.
+
+---
+
 ## Version 1.4.19 — 2026-11-17
 
 ### Fixed

@@ -81,6 +81,30 @@ distroclone_clone_excludes() {
     )
 }
 
+# Only these entries of the source user's ~/.config are copied to /etc/skel.
+# Everything else (SSH profiles, backup settings, app data, tokens) stays out,
+# including applications installed after this list was written.
+DISTROCLONE_SKEL_CONFIG_ALLOW=(
+    .gtktermrc QtProject.conf mimeapps.list user-dirs.locale yad.conf
+    SysLinuxOS autostart caja caja-actions dconf enchant fastfetch
+    gtk-3.0 gtk-4.0 ibus libreoffice mate mate-session menus plank pluma
+    procps screenfetch terminator vlc
+)
+
+distroclone_copy_skel_config() {
+    local src="$1" dest="$2" name
+    local -a filters=(
+        --exclude='*.log' --exclude='*cache*' --exclude='*Cache*'
+        --exclude='*.sock' --exclude='*.pid'
+    )
+    [[ -d "$src" && ! -L "$src" ]] || return 1
+    for name in "${DISTROCLONE_SKEL_CONFIG_ALLOW[@]}"; do
+        filters+=(--include="/$name" --include="/$name/***")
+    done
+    filters+=(--exclude='*')
+    rsync -a "${filters[@]}" "$src/" "$dest/"
+}
+
 # Samba's private databases belong to the source machine. Keep them out of the
 # ISO, but provide the directory Samba needs to create fresh databases.
 distroclone_prepare_samba_private() {

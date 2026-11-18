@@ -1919,7 +1919,7 @@ else
     echo "║          $MSG_TTY_LIVEISOBUILDER                 ║"
     echo "╚════════════════════════════════════════════════════════════════╝"
     echo ""
-    echo "  $MSG_VERSION: 1.4.19"
+    echo "  $MSG_VERSION: 1.4.20"
     echo "  $MSG_TTY_DATE: $(date '+%Y-%m-%d %H:%M')"
     echo ""
     echo "$MSG_TTY_SYSTEM_DETECTED:"
@@ -2255,37 +2255,10 @@ if [ "$COPY_USER_CONFIG" = true ]; then
         rm -rf "$DEST/etc/skel/.config" "$DEST/etc/skel/.local"
         mkdir -p "$DEST/etc/skel/.config"
 
-        # Copia .config escludendo dati sensibili
-        rsync -a --exclude='*.log' \
-                 --exclude='*cache*' \
-                 --exclude='*Cache*' \
-                 --exclude='chromium' \
-                 --exclude='google-chrome' \
-                 --exclude='mozilla' \
-                 --exclude='Code/User/globalStorage' \
-                 --exclude='Code/User/workspaceStorage' \
-                 --exclude='VirtualBox' \
-                 --exclude='nextcloud' \
-                 --exclude='Nextcloud' \
-                 --exclude='pulse' \
-                 --exclude='/Claude' \
-                 --exclude='/Codex' \
-                 --exclude='/BraveSoftware' \
-                 --exclude='/microsoft-edge' \
-                 --exclude='/opera' \
-                 --exclude='/vivaldi' \
-                 --exclude='/Ferdium' \
-                 --exclude='/teams-for-linux' \
-                 --exclude='/qBittorrent' \
-                 --exclude='/gh' \
-                 --exclude='/rclone' \
-                 --exclude='/eas-cli-nodejs' \
-                 --exclude='/advanced-comics-converter' \
-                 --exclude='/rename-comics-universal' \
-                 --exclude='/terminal-router' \
-                 --exclude='*.sock' \
-                 --exclude='*.pid' \
-                 "/home/$CURRENT_USER/.config/" "$DEST/etc/skel/.config/"
+        # Copia solo le voci di .config in allowlist (distroclone-safety.sh)
+        distroclone_copy_skel_config "/home/$CURRENT_USER/.config" \
+            "$DEST/etc/skel/.config" \
+            || { log_msg "  [ERROR] skel config copy failed"; exit 1; }
 
         rm -f "$DEST/etc/skel/.config/user-dirs.dirs" 2>/dev/null || true
 
